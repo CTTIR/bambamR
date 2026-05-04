@@ -1,0 +1,361 @@
+---
+title: "bambamR Quick Start Guide"
+output: rmarkdown::html_vignette
+vignette: >
+  %\VignetteIndexEntry{bambamR Quick Start Guide}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+---
+
+```{r setup, include = FALSE}
+knitr::opts_chunk$set(
+  collapse = TRUE,
+  comment = "#>",
+  fig.width = 7,
+  fig.height = 5
+)
+```
+
+```{r logo, echo = FALSE, out.width = "150px", fig.align = "right"}
+knitr::include_graphics("../man/figures/logo.png")
+```
+
+## Overview
+
+bambamR is an end-to-end RNA-seq analysis toolkit that takes you from raw
+sequencing data (FASTQ/BAM) through alignment, counting, normalization,
+differential expression, and publication-ready visualizations.
+
+It operates in two modes:
+
+- **Minimal mode** (CRAN-only): CPM/TPM normalization, all plots, FASTQ
+  import via base R, and system tool wrappers. No Bioconductor needed.
+- **Full mode** (+ Bioconductor): DESeq2/edgeR/limma DE analysis,
+  TMM/RLE normalization, native BAM/FASTQ parsing via Rsamtools/ShortRead.
+
+This vignette walks through a complete analysis using only the bundled
+example data -- no external files required.
+
+## Installation
+
+```{r install, eval = FALSE}
+# CRAN
+install.packages("bambamR")
+
+# GitHub development version
+pak::pak("r-heller/bambamR")
+
+# Optional Bioconductor packages for full mode
+BiocManager::install(c("DESeq2", "edgeR", "limma", "ShortRead", "Rsamtools"))
+```
+
+```{r library}
+library(bambamR)
+```
+
+---
+
+## Step 1: Load Example Data
+
+bambamR ships with three example datasets accessible via convenience functions.
+Nothing to download -- they are bundled with the package.
+
+```{r load-data}
+# RNA-seq count matrix: 200 genes x 10 samples (5 control, 5 treatment)
+ex <- bb_example_counts()
+counts   <- ex$counts
+metadata <- ex$metadata
+```
+
+Let's inspect the data:
+
+```{r inspect-counts}
+dim(counts)
+counts[1:6, 1:5]
+```
+
+```{r inspect-metadata}
+metadata
+```
+
+The metadata has columns for **condition** (control vs. treatment),
+**batch**, **sex**, and **age**. The first 20 genes in the count matrix
+have simulated differential expression between conditions.
+
+---
+
+## Step 2: Normalization
+
+CPM normalization works everywhere -- no Bioconductor needed:
+
+```{r normalize-cpm}
+cpm <- bb_normalize(counts, method = "cpm")
+head(cpm[, 1:3])
+```
+
+TPM normalization requires gene lengths (also bundled):
+
+```{r normalize-tpm}
+gene_lengths <- readRDS(
+  system.file("extdata", "example_gene_lengths.rds", package = "bambamR")
+)
+tpm <- bb_normalize(counts, method = "tpm", gene_lengths = gene_lengths$length)
+head(tpm[, 1:3])
+```
+
+With Bioconductor installed you can also use `"tmm"` (edgeR) or `"rle"`
+(DESeq2):
+
+```{r normalize-tmm, eval = requireNamespace("edgeR", quietly = TRUE)}
+tmm <- bb_normalize(counts, method = "tmm")
+```
+
+---
+
+## Step 3: PCA Plot
+
+Visualize sample-level structure. Color by any metadata column:
+
+```{r pca-condition, fig.width=6, fig.height=5}
+bb_pca(cpm, metadata, color_by = "condition")
+```
+
+Add shape mapping and sample labels:
+
+```{r pca-batch, fig.width=6, fig.height=5}
+bb_pca(cpm, metadata, color_by = "condition", shape_by = "batch", label = TRUE)
+```
+
+---
+
+## Step 4: Heatmap
+
+Show the top 30 most variable genes:
+
+```{r heatmap-var, fig.width=7, fig.height=6}
+bb_heatmap(cpm, n_genes = 30)
+```
+
+---
+
+## Step 5: Differential Expression
+
+### Option A: With DESeq2 (requires Bioconductor)
+
+```{r de-deseq2, eval = requireNamespace("DESeq2", quietly = TRUE)}
+de_results <- bb_deseq2(counts, metadata)
+head(de_results[order(de_results$padj), ])
+```
+
+### Option B: Use Pre-computed DE Results (no Bioconductor!)
+
+bambamR bundles a realistic pre-computed DE result set so you can explore
+all downstream plots without installing Bioconductor:
+
+```{r de-example}
+de_results <- bb_example_de()
+head(de_results[order(de_results$padj), ])
+```
+
+```{r de-summary}
+cat("Total genes:", nrow(de_results), "\n")
+cat("Significant (padj < 0.05):", sum(de_results$padj < 0.05, na.rm = TRUE), "\n")
+cat("Up-regulated (log2FC > 1):",
+    sum(de_results$padj < 0.05 & de_results$log2fc > 1, na.rm = TRUE), "\n")
+cat("Down-regulated (log2FC < -1):",
+    sum(de_results$padj < 0.05 & de_results$log2fc < -1, na.rm = TRUE), "\n")
+```
+
+---
+
+## Step 6: Volcano Plot
+
+```{r volcano, fig.width=7, fig.height=5}
+bb_volcano(de_results, fc_cutoff = 1, p_cutoff = 0.05, n_label = 8)
+```
+
+Customize the cutoffs and label specific genes:
+
+```{r volcano-custom, fig.width=7, fig.height=5}
+bb_volcano(de_results,
+           fc_cutoff = 0.5,
+           p_cutoff = 0.01,
+           label_genes = c("TP53", "KRAS", "EGFR", "PTEN"),
+           colors = c(up = "#E41A1C", down = "#377EB8", ns = "grey80"))
+```
+
+---
+
+## Step 7: MA Plot
+
+The MA plot shows log2 fold-change vs. mean expression, highlighting
+genes that change at different expression levels:
+
+```{r ma-plot, fig.width=7, fig.height=5}
+bb_ma_plot(de_results, p_cutoff = 0.05)
+```
+
+---
+
+## Step 8: Heatmap of Top DE Genes
+
+Pass DE results to `bb_heatmap()` to show the top differentially
+expressed genes instead of the most variable:
+
+```{r heatmap-de, fig.width=7, fig.height=6}
+bb_heatmap(cpm, de_result = de_results, n_genes = 25)
+```
+
+---
+
+## Step 9: Oncoplot
+
+The oncoplot is bambamR's signature visualization -- a waterfall-style
+mutation landscape across samples. Load the bundled mutation data:
+
+```{r oncoplot-data}
+mut <- bb_example_mutations()
+head(mut$mutations)
+head(mut$clinical)
+```
+
+### Basic Oncoplot
+
+```{r oncoplot-basic, fig.width=10, fig.height=6}
+bb_oncoplot(mut$mutations, n_genes = 10)
+```
+
+### With Clinical Annotations
+
+```{r oncoplot-clinical, fig.width=10, fig.height=7}
+bb_oncoplot(mut$mutations, n_genes = 10, annotation_df = mut$clinical)
+```
+
+### Select Specific Genes
+
+```{r oncoplot-genes, fig.width=10, fig.height=5}
+bb_oncoplot(mut$mutations,
+            genes = c("TP53", "KRAS", "PIK3CA", "BRAF", "EGFR"))
+```
+
+See `vignette("bambamR-oncoplot")` for more customization options.
+
+---
+
+## Step 10: Read FASTQ Files
+
+bambamR includes a small example FASTQ file (100 reads):
+
+```{r fastq-import}
+fq_path <- system.file("extdata", "example_reads.fastq", package = "bambamR")
+reads <- bb_read_fastq(fq_path, n = 5)
+reads
+```
+
+```{r fastq-all}
+all_reads <- bb_read_fastq(fq_path)
+cat("Total reads:", nrow(all_reads), "\n")
+cat("Read length:", nchar(all_reads$sequence[1]), "bp\n")
+```
+
+---
+
+## Step 11: Quality Control
+
+Run QC on the example FASTQ file:
+
+```{r qc}
+qc <- bb_qc(fastq_path = fq_path)
+qc
+```
+
+```{r qc-summary}
+bb_qc_summary(qc)
+```
+
+Visualize QC metrics:
+
+```{r qc-plot, fig.width=7, fig.height=8}
+bb_plot_qc(qc)
+```
+
+---
+
+## Step 12: Export Results
+
+Save your results in various formats:
+
+```{r export, eval = FALSE}
+# Save DE results as CSV / TSV
+bb_export_csv(de_results, "de_results.csv")
+bb_export_tsv(de_results, "de_results.tsv")
+
+# Save the full analysis as RDS (preserves R objects)
+bb_export_rds(de_results, "de_results.rds")
+```
+
+---
+
+## Full Pipeline (FASTQ to Plots in One Call)
+
+When you have real data (FASTQ files, a genome index, and a GTF
+annotation), run the entire pipeline with a single function:
+
+```{r pipeline, eval = FALSE}
+result <- bb_pipeline(
+  fastq_dir    = "raw_reads/",
+  genome_index = "STAR_index/",
+  annotation   = "genes.gtf",
+  sample_info  = metadata,
+  aligner      = "STAR",
+  de_method    = "DESeq2",
+  threads      = 8
+)
+
+# Access results
+result$counts          # count matrix
+result$de_results      # DE data.frame
+result$plots$pca       # ggplot object
+result$plots$volcano   # ggplot object
+result$plots$heatmap   # ggplot object
+```
+
+You can enter the pipeline at any stage:
+
+```{r pipeline-bam, eval = FALSE}
+# From BAM files (skip alignment)
+result <- bb_pipeline(
+  bam_dir    = "aligned/",
+  annotation = "genes.gtf",
+  sample_info = metadata
+)
+
+# From a count matrix (skip alignment + counting)
+result <- bb_pipeline(
+  count_matrix = my_counts,
+  sample_info  = metadata,
+  de_method    = "edgeR"
+)
+```
+
+---
+
+## Interactive Shiny App
+
+For a point-and-click interface, launch the Shiny app:
+
+```{r app, eval = FALSE}
+bb_run_app()
+```
+
+The app lets you upload data, configure parameters, run the analysis, and
+interactively explore volcano plots, heatmaps, PCA, and onco plots. You
+can export results as CSV, RDS, or PDF directly from the browser.
+
+---
+
+## What's Next?
+
+- `vignette("bambamR-oncoplot")` -- detailed oncoplot customization
+- `?bb_pipeline` -- full pipeline documentation
+- `?bb_deseq2`, `?bb_edger`, `?bb_limma_voom` -- DE method details

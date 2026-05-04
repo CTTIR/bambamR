@@ -1,0 +1,60 @@
+Package: bambamR
+Title: End-to-End RNA-Seq Processing from FASTQ to Publication-Ready Plots
+Version: 0.1.0
+Authors@R: c(
+    person("Raban", "Heller",
+           email = "raban.heller@uni-ulm.de",
+           role = c("aut", "cre"),
+           comment = c(ORCID = "0000-0001-8006-9742")),
+    person("Hanno", "Witte", role = "aut"),
+    person("Konrad", "Steinestel", role = "aut")
+    )
+Description: A streamlined toolkit for RNA-seq analysis covering FASTQ/BAM
+    import, quality control, alignment, read counting, normalization,
+    differential expression analysis, and publication-ready visualizations
+    including onco plots, volcano plots, heatmaps, and PCA. Operates in
+    minimal mode with CRAN-only dependencies or in full mode when
+    Bioconductor packages are available.
+Depends:
+    R (>= 4.1.0)
+Imports:
+    ggplot2 (>= 3.4.0),
+    data.table,
+    stats,
+    utils,
+    grDevices,
+    methods
+Suggests:
+    BiocManager,
+    ShortRead,
+    Biostrings,
+    Rsamtools,
+    GenomicAlignments,
+    GenomicFeatures,
+    GenomicRanges,
+    DESeq2,
+    edgeR,
+    limma,
+    SummarizedExperiment,
+    Biobase,
+    ComplexHeatmap,
+    pheatmap,
+    patchwork,
+    ggrepel,
+    shiny,
+    shinydashboard,
+    bslib,
+    DT,
+    testthat (>= 3.0.0),
+    knitr,
+    rmarkdown,
+    withr
+License: MIT + file LICENSE
+Encoding: UTF-8
+Roxygen: list(markdown = TRUE)
+RoxygenNote: 7.3.3
+VignetteBuilder: knitr
+URL: https://r-heller.github.io/bambamR/, https://github.com/r-heller/bambamR
+BugReports: https://github.com/r-heller/bambamR/issues
+Config/testthat/edition: 3
+Config/Needs/website: pkgdown

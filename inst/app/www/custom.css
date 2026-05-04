@@ -1,0 +1,30 @@
+/* bambamR Shiny App Custom Styles */
+
+body {
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen,
+    Ubuntu, Cantarell, sans-serif;
+}
+
+.card-header {
+  font-weight: 600;
+}
+
+.btn-success {
+  background-color: #2166AC;
+  border-color: #2166AC;
+}
+
+.btn-success:hover {
+  background-color: #1a5490;
+  border-color: #1a5490;
+}
+
+.sidebar {
+  background-color: #f8f9fa;
+}
+
+.plot-container {
+  border: 1px solid #dee2e6;
+  border-radius: 4px;
+  padding: 10px;
+}

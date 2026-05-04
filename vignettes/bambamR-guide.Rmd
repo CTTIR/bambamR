@@ -1,0 +1,480 @@
+---
+title: "bambamR: End-to-End RNA-Seq Processing from FASTQ to Publication-Ready Plots"
+author: "Raban Heller, Hanno Witte, Konrad Steinestel"
+date: "`r Sys.Date()`"
+output: rmarkdown::html_vignette
+vignette: >
+  %\VignetteIndexEntry{bambamR: End-to-End RNA-Seq Processing from FASTQ to Publication-Ready Plots}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+---
+
+```{r setup, include = FALSE}
+knitr::opts_chunk$set(
+  collapse = TRUE,
+  comment = "#>",
+  fig.width = 6.5,
+  fig.height = 4.5,
+  fig.align = "center",
+  out.width = "90%",
+  warning = FALSE,
+  message = FALSE
+)
+```
+
+```{r logo, echo = FALSE, out.width = "150px", fig.align = "right"}
+knitr::include_graphics("../man/figures/logo.png")
+```
+
+# Introduction
+
+**bambamR** is an R package for end-to-end RNA-seq analysis. It covers the
+full pipeline from raw FASTQ/BAM files through quality control, alignment,
+read counting, normalization, differential expression analysis, and
+publication-ready visualizations including onco plots, volcano plots,
+heatmaps, PCA, and MA plots.
+
+## Key Design Principles
+
+- **Graceful degradation**: All Bioconductor dependencies are optional.
+  The package operates in *minimal mode* (CRAN-only) or *full mode*
+  (with Bioconductor). It never breaks if Bioconductor is missing.
+- **Consistent interface**: All exported functions use the `bb_` prefix.
+  All plot functions return `ggplot2` objects for easy customization.
+- **Bundled example data**: Every feature can be explored without
+  downloading external files or installing Bioconductor.
+
+## Minimal vs. Full Mode
+
+| Feature | Minimal (CRAN) | Full (+ Bioconductor) |
+|---|:---:|:---:|
+| CPM / TPM normalization | Yes | Yes |
+| TMM / RLE normalization | -- | Yes |
+| DESeq2 / edgeR / limma | -- | Yes |
+| PCA, volcano, heatmap, MA | Yes | Yes |
+| Onco plots | Yes | Yes |
+| FASTQ / BAM import | Base-R | ShortRead / Rsamtools |
+| Alignment wrappers | Yes | Yes |
+| Read counting | featureCounts CLI | GenomicAlignments |
+| Shiny interactive app | Yes | Yes |
+
+# Installation
+
+Install from CRAN (when available):
+
+```{r install-cran, eval = FALSE}
+install.packages("bambamR")
+```
+
+Install the development version from GitHub:
+
+```{r install-github, eval = FALSE}
+pak::pak("r-heller/bambamR")
+```
+
+Optionally install Bioconductor packages for full-mode features:
+
+```{r install-bioc, eval = FALSE}
+BiocManager::install(c(
+  "DESeq2", "edgeR", "limma",
+  "ShortRead", "Rsamtools",
+  "GenomicAlignments", "GenomicRanges"
+))
+```
+
+```{r load-library}
+library(bambamR)
+```
+
+---
+
+# Bundled Example Data
+
+bambamR ships with ready-to-use datasets accessible via convenience
+functions:
+
+| Function | Contents |
+|---|---|
+| `bb_example_counts()` | 200 genes x 10 samples + metadata |
+| `bb_example_mutations()` | 300 mutations, 50 samples, 20 genes + clinical data |
+| `bb_example_de()` | 500-gene pre-computed DE results |
+
+```{r load-data}
+# RNA-seq count matrix (200 genes x 10 samples)
+ex <- bb_example_counts()
+counts   <- ex$counts
+metadata <- ex$metadata
+```
+
+```{r show-counts}
+dim(counts)
+counts[1:5, 1:5]
+```
+
+```{r show-metadata}
+metadata
+```
+
+---
+
+# Normalization
+
+## CPM (Counts Per Million)
+
+CPM normalization works without any optional dependencies:
+
+```{r normalize-cpm}
+cpm <- bb_normalize(counts, method = "cpm")
+```
+
+## TPM (Transcripts Per Million)
+
+TPM requires gene lengths:
+
+```{r normalize-tpm}
+gene_lengths <- readRDS(
+  system.file("extdata", "example_gene_lengths.rds", package = "bambamR")
+)
+tpm <- bb_normalize(counts, method = "tpm",
+                    gene_lengths = gene_lengths$length)
+```
+
+## TMM and RLE (Bioconductor)
+
+With Bioconductor installed:
+
+```{r normalize-bioc, eval = FALSE}
+tmm <- bb_normalize(counts, method = "tmm")  # requires edgeR
+rle <- bb_normalize(counts, method = "rle")  # requires DESeq2
+```
+
+---
+
+# Visualization
+
+All plot functions return `ggplot2` objects that can be further
+customized with `+ theme()`, `+ labs()`, etc.
+
+## PCA Plot
+
+```{r pca, fig.cap = "PCA plot colored by experimental condition."}
+bb_pca(cpm, metadata, color_by = "condition")
+```
+
+```{r pca-batch, fig.cap = "PCA plot with shape mapping for batch effect."}
+bb_pca(cpm, metadata, color_by = "condition",
+       shape_by = "batch", label = TRUE, point_size = 4)
+```
+
+---
+
+## Heatmap
+
+```{r heatmap-var, fig.cap = "Heatmap of the 30 most variable genes.", fig.height = 6}
+bb_heatmap(cpm, n_genes = 30)
+```
+
+---
+
+## Volcano Plot
+
+Using the pre-computed DE results (no Bioconductor required):
+
+```{r de-load}
+de_results <- bb_example_de()
+sig <- sum(de_results$padj < 0.05, na.rm = TRUE)
+cat("Significant genes (FDR < 0.05):", sig, "\n")
+```
+
+```{r volcano, fig.cap = "Volcano plot highlighting differentially expressed genes."}
+bb_volcano(de_results, fc_cutoff = 1, p_cutoff = 0.05, n_label = 8)
+```
+
+---
+
+```{r volcano-custom, fig.cap = "Volcano plot with custom gene labels and colors."}
+bb_volcano(de_results,
+           fc_cutoff = 0.5,
+           p_cutoff = 0.01,
+           label_genes = c("TP53", "KRAS", "EGFR", "PTEN"),
+           colors = c(up = "#E41A1C", down = "#377EB8", ns = "grey80"))
+```
+
+## MA Plot
+
+```{r ma-plot, fig.cap = "MA plot showing fold-change vs.~mean expression."}
+bb_ma_plot(de_results, p_cutoff = 0.05)
+```
+
+---
+
+## Heatmap of Top DE Genes
+
+```{r heatmap-de, fig.cap = "Heatmap of the top 25 differentially expressed genes.", fig.height = 6}
+bb_heatmap(cpm, de_result = de_results, n_genes = 25)
+```
+
+---
+
+# Oncoplot
+
+The `bb_oncoplot()` function creates publication-ready waterfall-style
+mutation landscape plots.
+
+## Data Format
+
+bambamR accepts a `data.frame` with columns `sample`, `gene`, and
+`mutation_type`, or MAF-format data with `Hugo_Symbol`,
+`Tumor_Sample_Barcode`, and `Variant_Classification`.
+
+```{r oncoplot-data}
+mut <- bb_example_mutations()
+head(mut$mutations)
+```
+
+## Basic Oncoplot
+
+```{r oncoplot-basic, fig.cap = "Oncoplot showing the top 10 mutated genes.", fig.width = 7, fig.height = 5}
+bb_oncoplot(mut$mutations, n_genes = 10, show_barplot = FALSE)
+```
+
+---
+
+## Oncoplot with Clinical Annotations
+
+```{r oncoplot-clinical, fig.cap = "Oncoplot with clinical annotation tracks (Stage, Gender, Smoking).", fig.width = 7, fig.height = 5}
+bb_oncoplot(mut$mutations, n_genes = 8,
+            annotation_df = mut$clinical, show_barplot = FALSE)
+```
+
+## Selecting Specific Genes
+
+```{r oncoplot-genes, fig.cap = "Oncoplot showing five selected genes.", fig.width = 7, fig.height = 4}
+bb_oncoplot(mut$mutations, show_barplot = FALSE,
+            genes = c("TP53", "KRAS", "PIK3CA", "BRAF", "EGFR"))
+```
+
+## Custom Colors
+
+```{r oncoplot-colors, fig.cap = "Oncoplot with a custom color palette.", fig.width = 7, fig.height = 5}
+my_colors <- c(
+  "Missense_Mutation" = "#3182BD",
+  "Nonsense_Mutation" = "#E6550D",
+  "Frame_Shift_Del"   = "#31A354",
+  "Frame_Shift_Ins"   = "#756BB1",
+  "Splice_Site"       = "#DE2D26",
+  "In_Frame_Del"      = "#636363",
+  "In_Frame_Ins"      = "#FDAE6B",
+  "Translation_Start_Site" = "#BCBDDC",
+  "Multi_Hit"         = "#FDD0A2",
+  "Other"             = "#BDBDBD"
+)
+bb_oncoplot(mut$mutations, n_genes = 8,
+            mutation_colors = my_colors, show_barplot = FALSE)
+```
+
+---
+
+# FASTQ Import
+
+bambamR includes a small example FASTQ file (100 reads, 75 bp):
+
+```{r fastq-import}
+fq_path <- system.file("extdata", "example_reads.fastq",
+                        package = "bambamR")
+reads <- bb_read_fastq(fq_path, n = 5)
+reads
+```
+
+When `ShortRead` is available, `bb_read_fastq()` uses it automatically.
+Otherwise, a base-R parser handles plain and gzipped FASTQ files.
+
+# Quality Control
+
+```{r qc}
+qc <- bb_qc(fastq_path = fq_path)
+qc
+```
+
+```{r qc-summary}
+bb_qc_summary(qc)
+```
+
+```{r qc-plot, fig.cap = "QC visualization panel: per-position quality, GC content, and read length distribution.", fig.height = 8}
+bb_plot_qc(qc)
+```
+
+---
+
+# Differential Expression
+
+Three DE methods are supported, each requiring an optional Bioconductor
+package. All three return a standardized `data.frame` with columns
+`gene`, `log2fc`, `pvalue`, `padj`, and optionally `basemean`.
+
+```{r de-methods, eval = FALSE}
+# DESeq2 (requires DESeq2)
+de <- bb_deseq2(counts, metadata)
+
+# edgeR (requires edgeR)
+de <- bb_edger(counts, group = metadata$condition)
+
+# limma-voom (requires limma + edgeR)
+design <- model.matrix(~ condition, data = metadata)
+de <- bb_limma_voom(counts, design)
+```
+
+The standardized output ensures that `bb_volcano()`, `bb_ma_plot()`,
+`bb_heatmap()`, and `bb_export_csv()` work identically regardless of
+the DE method used.
+
+# Export
+
+```{r export, eval = FALSE}
+bb_export_csv(de_results, "de_results.csv")
+bb_export_tsv(de_results, "de_results.tsv")
+bb_export_rds(de_results, "de_results.rds")
+```
+
+---
+
+# Full Pipeline
+
+The `bb_pipeline()` function runs the entire analysis end-to-end.
+It accepts entry at three stages:
+
+```{r pipeline-diagram, eval = FALSE}
+# From FASTQ files
+result <- bb_pipeline(
+  fastq_dir    = "raw_reads/",
+  genome_index = "STAR_index/",
+  annotation   = "genes.gtf",
+  sample_info  = metadata,
+  aligner      = "STAR",
+  de_method    = "DESeq2",
+  threads      = 8
+)
+
+# From BAM files (skip alignment)
+result <- bb_pipeline(
+  bam_dir     = "aligned/",
+  annotation  = "genes.gtf",
+  sample_info = metadata
+)
+
+# From a count matrix (skip alignment + counting)
+result <- bb_pipeline(
+  count_matrix = my_counts,
+  sample_info  = metadata,
+  de_method    = "edgeR"
+)
+```
+
+The returned `bb_result` object bundles counts, metadata, DE results,
+and all generated plots:
+
+```{r pipeline-result, eval = FALSE}
+result$counts          # count matrix
+result$de_results      # standardized DE data.frame
+result$plots$pca       # ggplot object
+result$plots$volcano   # ggplot object
+result$plots$heatmap   # ggplot object
+```
+
+# Interactive Shiny App
+
+Launch a browser-based dashboard for interactive analysis:
+
+```{r shiny, eval = FALSE}
+bb_run_app()
+```
+
+The app provides:
+
+- Data upload (CSV, TSV, RDS) with live preview
+- Configurable normalization and DE parameters
+- Interactive plots (volcano, PCA, heatmap, MA, oncoplot)
+- One-click export (CSV, RDS, PDF)
+
+---
+
+# Function Reference
+
+### Import
+
+| Function | Description |
+|---|---|
+| `bb_read_fastq()` | Read FASTQ files |
+| `bb_read_bam()` | Read BAM files |
+| `bb_count_bam()` | Count reads in BAM |
+
+### Quality Control
+
+| Function | Description |
+|---|---|
+| `bb_qc()` | Compute QC metrics |
+| `bb_qc_summary()` | Tabular QC summary |
+| `bb_plot_qc()` | QC visualization panel |
+
+### Alignment & Counting
+
+| Function | Description |
+|---|---|
+| `bb_align()` | Align with STAR / HISAT2 / minimap2 |
+| `bb_count_reads()` | Count reads per gene |
+
+### Normalization
+
+| Function | Description |
+|---|---|
+| `bb_normalize()` | CPM, TPM, TMM, or RLE |
+
+### Differential Expression
+
+| Function | Description |
+|---|---|
+| `bb_deseq2()` | DESeq2 wrapper |
+| `bb_edger()` | edgeR quasi-likelihood wrapper |
+| `bb_limma_voom()` | limma-voom wrapper |
+
+### Visualization
+
+| Function | Description |
+|---|---|
+| `bb_oncoplot()` | Waterfall mutation plot |
+| `bb_volcano()` | Volcano plot |
+| `bb_heatmap()` | Clustered heatmap |
+| `bb_pca()` | PCA plot |
+| `bb_ma_plot()` | MA plot |
+
+### Pipeline & Export
+
+| Function | Description |
+|---|---|
+| `bb_pipeline()` | Full end-to-end pipeline |
+| `bb_export_csv()` | Export as CSV |
+| `bb_export_tsv()` | Export as TSV |
+| `bb_export_rds()` | Export as RDS |
+
+### Example Data & App
+
+| Function | Description |
+|---|---|
+| `bb_example_counts()` | Example count matrix |
+| `bb_example_mutations()` | Example mutation data |
+| `bb_example_de()` | Example DE results |
+| `bb_run_app()` | Launch Shiny dashboard |
+
+# Citation
+
+If you use bambamR in your research, please cite:
+
+> Heller R, Witte H, Steinestel K (2026). *bambamR: End-to-End RNA-Seq
+> Processing from FASTQ to Publication-Ready Plots.* R package version
+> 0.1.0. https://github.com/r-heller/bambamR
+
+# Session Info
+
+```{r session-info}
+sessionInfo()
+```

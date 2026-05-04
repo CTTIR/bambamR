@@ -1,0 +1,96 @@
+---
+title: "5-Minute Tutorial: RNA-Seq Analysis with bambamR"
+output: rmarkdown::html_vignette
+vignette: >
+  %\VignetteIndexEntry{5-Minute Tutorial: RNA-Seq Analysis with bambamR}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+---
+
+```{r setup, include = FALSE}
+knitr::opts_chunk$set(
+  collapse = TRUE,
+  comment = "#>",
+  fig.width = 7,
+  fig.height = 5
+)
+```
+
+```{r logo, echo = FALSE, out.width = "150px", fig.align = "right"}
+knitr::include_graphics("../man/figures/logo.png")
+```
+
+This tutorial walks through a complete RNA-seq analysis in under 5
+minutes using only bambamR's built-in example data. **No Bioconductor
+packages are required.**
+
+## Load the Package
+
+```{r}
+library(bambamR)
+```
+
+## 1. Load Data and Normalize
+
+```{r}
+# Bundled example: 200 genes x 10 samples (5 control, 5 treatment)
+ex <- bb_example_counts()
+cpm <- bb_normalize(ex$counts, method = "cpm")
+cat(nrow(cpm), "genes,", ncol(cpm), "samples\n")
+```
+
+## 2. PCA: Do the Groups Separate?
+
+```{r pca, fig.width=6, fig.height=4.5}
+bb_pca(cpm, ex$metadata, color_by = "condition", label = TRUE)
+```
+
+## 3. Volcano Plot: What Changed?
+
+Use the pre-computed DE results (no Bioconductor needed):
+
+```{r volcano, fig.width=7, fig.height=5}
+de <- bb_example_de()
+bb_volcano(de, fc_cutoff = 1, p_cutoff = 0.05, n_label = 6)
+```
+
+## 4. MA Plot: Effect vs. Expression
+
+```{r ma, fig.width=7, fig.height=4.5}
+bb_ma_plot(de)
+```
+
+## 5. Heatmap: Top DE Genes
+
+```{r heatmap, fig.width=7, fig.height=6}
+bb_heatmap(cpm, de_result = de, n_genes = 20)
+```
+
+## 6. Oncoplot: Mutation Landscape
+
+```{r oncoplot, fig.width=10, fig.height=6}
+mut <- bb_example_mutations()
+bb_oncoplot(mut$mutations, n_genes = 10, annotation_df = mut$clinical)
+```
+
+## 7. Export
+
+```{r export, eval = FALSE}
+bb_export_csv(de, "my_results.csv")
+```
+
+## Done!
+
+In 7 steps you went from a count matrix to publication-ready PCA,
+volcano, MA, heatmap, and onco plots -- all without Bioconductor.
+
+### What's next?
+
+- With Bioconductor: `bb_deseq2()`, `bb_edger()`, `bb_limma_voom()`
+  for real DE analysis
+- From raw data: `bb_pipeline()` handles FASTQ -> alignment -> counts -> DE -> plots
+- Interactive: `bb_run_app()` launches a Shiny dashboard
+- Customization: every plot returns a ggplot2 object, so add
+  `+ theme()`, `+ labs()`, `+ scale_*()` as needed
+- See `vignette("bambamR-quickstart")` for the full walkthrough and
+  `vignette("bambamR-oncoplot")` for oncoplot customization

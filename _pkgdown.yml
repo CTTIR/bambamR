@@ -1,0 +1,102 @@
+url: https://r-heller.github.io/bambamR/
+
+template:
+  bootstrap: 5
+  bootswatch: flatly
+
+navbar:
+  left:
+    - text: "Home"
+      href: index.html
+    - text: "Getting Started"
+      href: articles/bambamR-tutorial.html
+    - text: "Vignettes"
+      href: articles/index.html
+    - text: "Functions"
+      href: reference/index.html
+    - text: "News"
+      href: news/index.html
+  right:
+    - icon: fa-github
+      href: https://github.com/r-heller/bambamR
+
+articles:
+  - title: "Getting Started"
+    desc: >
+      Step-by-step guides for RNA-seq analysis with bambamR, from a
+      5-minute quickstart to the full package walkthrough.
+    contents:
+      - bambamR-tutorial
+      - bambamR-quickstart
+      - bambamR-guide
+  - title: "Specialized Topics"
+    desc: >
+      In-depth guides for specific bambamR features.
+    contents:
+      - bambamR-oncoplot
+
+reference:
+  - title: "Data Import"
+    desc: "Read FASTQ and BAM files into R."
+    contents:
+      - bb_read_fastq
+      - bb_read_bam
+      - bb_count_bam
+
+  - title: "Quality Control"
+    desc: "Compute and visualize QC metrics from sequencing data."
+    contents:
+      - bb_qc
+      - bb_qc_summary
+      - bb_plot_qc
+
+  - title: "Alignment & Counting"
+    desc: "Align reads to a reference genome and count per-gene overlaps."
+    contents:
+      - bb_align
+      - bb_count_reads
+
+  - title: "Normalization"
+    desc: "Normalize raw count matrices (CPM, TPM, TMM, RLE)."
+    contents:
+      - bb_normalize
+
+  - title: "Differential Expression"
+    desc: "Wrappers for DESeq2, edgeR, and limma-voom that return standardized results."
+    contents:
+      - bb_deseq2
+      - bb_edger
+      - bb_limma_voom
+
+  - title: "Visualization"
+    desc: "Publication-ready plots. Every function returns a ggplot2 object."
+    contents:
+      - bb_oncoplot
+      - bb_volcano
+      - bb_heatmap
+      - bb_pca
+      - bb_ma_plot
+
+  - title: "Pipeline & Export"
+    desc: "Run the full end-to-end pipeline and export results."
+    contents:
+      - bb_pipeline
+      - bb_export_rds
+      - bb_export_csv
+      - bb_export_tsv
+      - bb_run_app
+
+  - title: "Example Data"
+    desc: "Bundled datasets for exploring every feature without external files."
+    contents:
+      - bb_example_counts
+      - bb_example_mutations
+      - bb_example_de
+
+  - title: "Classes & Methods"
+    desc: "S3 classes for pipeline results and QC objects."
+    contents:
+      - print.bb_result
+      - print.bb_qc
+      - summary.bb_qc
+      - bambamR-package
