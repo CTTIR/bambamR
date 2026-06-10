@@ -28,7 +28,7 @@ example data – no external files required.
 install.packages("bambamR")
 
 # GitHub development version
-pak::pak("r-heller/bambamR")
+pak::pak("cttir/bambamR")
 
 # Optional Bioconductor packages for full mode
 BiocManager::install(c("DESeq2", "edgeR", "limma", "ShortRead", "Rsamtools"))
@@ -279,7 +279,7 @@ bb_ma_plot(de_results, p_cutoff = 0.05)
 ## Step 8: Heatmap of Top DE Genes
 
 Pass DE results to
-[`bb_heatmap()`](https://r-heller.github.io/bambamR/reference/bb_heatmap.md)
+[`bb_heatmap()`](https://cttir.github.io/bambamR/reference/bb_heatmap.md)
 to show the top differentially expressed genes instead of the most
 variable:
 
@@ -347,7 +347,7 @@ bb_oncoplot(mut$mutations,
 ![](bambamR-quickstart_files/figure-html/oncoplot-genes-1.png)
 
 See
-[`vignette("bambamR-oncoplot")`](https://r-heller.github.io/bambamR/articles/bambamR-oncoplot.md)
+[`vignette("bambamR-oncoplot")`](https://cttir.github.io/bambamR/articles/bambamR-oncoplot.md)
 for more customization options.
 
 ------------------------------------------------------------------------
@@ -503,11 +503,11 @@ You can export results as CSV, RDS, or PDF directly from the browser.
 
 ## What’s Next?
 
-- [`vignette("bambamR-oncoplot")`](https://r-heller.github.io/bambamR/articles/bambamR-oncoplot.md)
+- [`vignette("bambamR-oncoplot")`](https://cttir.github.io/bambamR/articles/bambamR-oncoplot.md)
   – detailed oncoplot customization
-- [`?bb_pipeline`](https://r-heller.github.io/bambamR/reference/bb_pipeline.md)
+- [`?bb_pipeline`](https://cttir.github.io/bambamR/reference/bb_pipeline.md)
   – full pipeline documentation
-- [`?bb_deseq2`](https://r-heller.github.io/bambamR/reference/bb_deseq2.md),
-  [`?bb_edger`](https://r-heller.github.io/bambamR/reference/bb_edger.md),
-  [`?bb_limma_voom`](https://r-heller.github.io/bambamR/reference/bb_limma_voom.md)
+- [`?bb_deseq2`](https://cttir.github.io/bambamR/reference/bb_deseq2.md),
+  [`?bb_edger`](https://cttir.github.io/bambamR/reference/bb_edger.md),
+  [`?bb_limma_voom`](https://cttir.github.io/bambamR/reference/bb_limma_voom.md)
   – DE method details

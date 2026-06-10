@@ -13,7 +13,7 @@ bb_qc_summary(qc_object)
 - qc_object:
 
   A `bb_qc` object from
-  [`bb_qc()`](https://r-heller.github.io/bambamR/reference/bb_qc.md).
+  [`bb_qc()`](https://cttir.github.io/bambamR/reference/bb_qc.md).
 
 ## Value
 
@@ -27,7 +27,7 @@ tmp <- tempfile(fileext = ".fastq")
 writeLines(c("@r1", "ACGT", "+", "IIII"), tmp)
 qc <- bb_qc(fastq_path = tmp)
 bb_qc_summary(qc)
-#>                     file total_reads median_gc mapping_rate
-#> 1 file32934c8fad87.fastq           1       0.5           NA
+#>                    file total_reads median_gc mapping_rate
+#> 1 file33836c533b2.fastq           1       0.5           NA
 # }
 ```

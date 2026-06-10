@@ -5,7 +5,7 @@
 ## Overview
 
 The
-[`bb_oncoplot()`](https://r-heller.github.io/bambamR/reference/bb_oncoplot.md)
+[`bb_oncoplot()`](https://cttir.github.io/bambamR/reference/bb_oncoplot.md)
 function creates publication-ready onco plots (waterfall plots) showing
 the mutation landscape across samples. It is built entirely with ggplot2
 and returns a modifiable ggplot object.
@@ -19,7 +19,7 @@ library(ggplot2)
 
 ## Input Data Format
 
-[`bb_oncoplot()`](https://r-heller.github.io/bambamR/reference/bb_oncoplot.md)
+[`bb_oncoplot()`](https://cttir.github.io/bambamR/reference/bb_oncoplot.md)
 accepts two input formats:
 
 ### Simple format
@@ -114,7 +114,7 @@ bb_oncoplot(mut_data, n_genes = 8, sort_by = "cluster")
 ## Customizing with ggplot2
 
 Since
-[`bb_oncoplot()`](https://r-heller.github.io/bambamR/reference/bb_oncoplot.md)
+[`bb_oncoplot()`](https://cttir.github.io/bambamR/reference/bb_oncoplot.md)
 returns a ggplot object, you can further customize:
 
 ``` r

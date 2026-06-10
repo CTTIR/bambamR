@@ -47,7 +47,7 @@ Install the development version from GitHub:
 
 ``` r
 
-pak::pak("r-heller/bambamR")
+pak::pak("cttir/bambamR")
 ```
 
 Optionally install Bioconductor packages for full-mode features:
@@ -75,9 +75,9 @@ functions:
 
 | Function | Contents |
 |----|----|
-| [`bb_example_counts()`](https://r-heller.github.io/bambamR/reference/bb_example_counts.md) | 200 genes x 10 samples + metadata |
-| [`bb_example_mutations()`](https://r-heller.github.io/bambamR/reference/bb_example_mutations.md) | 300 mutations, 50 samples, 20 genes + clinical data |
-| [`bb_example_de()`](https://r-heller.github.io/bambamR/reference/bb_example_de.md) | 500-gene pre-computed DE results |
+| [`bb_example_counts()`](https://cttir.github.io/bambamR/reference/bb_example_counts.md) | 200 genes x 10 samples + metadata |
+| [`bb_example_mutations()`](https://cttir.github.io/bambamR/reference/bb_example_mutations.md) | 300 mutations, 50 samples, 20 genes + clinical data |
+| [`bb_example_de()`](https://cttir.github.io/bambamR/reference/bb_example_de.md) | 500-gene pre-computed DE results |
 
 ``` r
 
@@ -267,7 +267,7 @@ Heatmap of the top 25 differentially expressed genes.
 ## Oncoplot
 
 The
-[`bb_oncoplot()`](https://r-heller.github.io/bambamR/reference/bb_oncoplot.md)
+[`bb_oncoplot()`](https://cttir.github.io/bambamR/reference/bb_oncoplot.md)
 function creates publication-ready waterfall-style mutation landscape
 plots.
 
@@ -388,7 +388,7 @@ reads
 ```
 
 When `ShortRead` is available,
-[`bb_read_fastq()`](https://r-heller.github.io/bambamR/reference/bb_read_fastq.md)
+[`bb_read_fastq()`](https://cttir.github.io/bambamR/reference/bb_read_fastq.md)
 uses it automatically. Otherwise, a base-R parser handles plain and
 gzipped FASTQ files.
 
@@ -444,11 +444,11 @@ de <- bb_limma_voom(counts, design)
 ```
 
 The standardized output ensures that
-[`bb_volcano()`](https://r-heller.github.io/bambamR/reference/bb_volcano.md),
-[`bb_ma_plot()`](https://r-heller.github.io/bambamR/reference/bb_ma_plot.md),
-[`bb_heatmap()`](https://r-heller.github.io/bambamR/reference/bb_heatmap.md),
+[`bb_volcano()`](https://cttir.github.io/bambamR/reference/bb_volcano.md),
+[`bb_ma_plot()`](https://cttir.github.io/bambamR/reference/bb_ma_plot.md),
+[`bb_heatmap()`](https://cttir.github.io/bambamR/reference/bb_heatmap.md),
 and
-[`bb_export_csv()`](https://r-heller.github.io/bambamR/reference/bb_export_csv.md)
+[`bb_export_csv()`](https://cttir.github.io/bambamR/reference/bb_export_csv.md)
 work identically regardless of the DE method used.
 
 ## Export
@@ -465,7 +465,7 @@ bb_export_rds(de_results, "de_results.rds")
 ## Full Pipeline
 
 The
-[`bb_pipeline()`](https://r-heller.github.io/bambamR/reference/bb_pipeline.md)
+[`bb_pipeline()`](https://cttir.github.io/bambamR/reference/bb_pipeline.md)
 function runs the entire analysis end-to-end. It accepts entry at three
 stages:
 
@@ -533,66 +533,66 @@ The app provides:
 
 | Function | Description |
 |----|----|
-| [`bb_read_fastq()`](https://r-heller.github.io/bambamR/reference/bb_read_fastq.md) | Read FASTQ files |
-| [`bb_read_bam()`](https://r-heller.github.io/bambamR/reference/bb_read_bam.md) | Read BAM files |
-| [`bb_count_bam()`](https://r-heller.github.io/bambamR/reference/bb_count_bam.md) | Count reads in BAM |
+| [`bb_read_fastq()`](https://cttir.github.io/bambamR/reference/bb_read_fastq.md) | Read FASTQ files |
+| [`bb_read_bam()`](https://cttir.github.io/bambamR/reference/bb_read_bam.md) | Read BAM files |
+| [`bb_count_bam()`](https://cttir.github.io/bambamR/reference/bb_count_bam.md) | Count reads in BAM |
 
 #### Quality Control
 
 | Function | Description |
 |----|----|
-| [`bb_qc()`](https://r-heller.github.io/bambamR/reference/bb_qc.md) | Compute QC metrics |
-| [`bb_qc_summary()`](https://r-heller.github.io/bambamR/reference/bb_qc_summary.md) | Tabular QC summary |
-| [`bb_plot_qc()`](https://r-heller.github.io/bambamR/reference/bb_plot_qc.md) | QC visualization panel |
+| [`bb_qc()`](https://cttir.github.io/bambamR/reference/bb_qc.md) | Compute QC metrics |
+| [`bb_qc_summary()`](https://cttir.github.io/bambamR/reference/bb_qc_summary.md) | Tabular QC summary |
+| [`bb_plot_qc()`](https://cttir.github.io/bambamR/reference/bb_plot_qc.md) | QC visualization panel |
 
 #### Alignment & Counting
 
 | Function | Description |
 |----|----|
-| [`bb_align()`](https://r-heller.github.io/bambamR/reference/bb_align.md) | Align with STAR / HISAT2 / minimap2 |
-| [`bb_count_reads()`](https://r-heller.github.io/bambamR/reference/bb_count_reads.md) | Count reads per gene |
+| [`bb_align()`](https://cttir.github.io/bambamR/reference/bb_align.md) | Align with STAR / HISAT2 / minimap2 |
+| [`bb_count_reads()`](https://cttir.github.io/bambamR/reference/bb_count_reads.md) | Count reads per gene |
 
 #### Normalization
 
 | Function | Description |
 |----|----|
-| [`bb_normalize()`](https://r-heller.github.io/bambamR/reference/bb_normalize.md) | CPM, TPM, TMM, or RLE |
+| [`bb_normalize()`](https://cttir.github.io/bambamR/reference/bb_normalize.md) | CPM, TPM, TMM, or RLE |
 
 #### Differential Expression
 
 | Function | Description |
 |----|----|
-| [`bb_deseq2()`](https://r-heller.github.io/bambamR/reference/bb_deseq2.md) | DESeq2 wrapper |
-| [`bb_edger()`](https://r-heller.github.io/bambamR/reference/bb_edger.md) | edgeR quasi-likelihood wrapper |
-| [`bb_limma_voom()`](https://r-heller.github.io/bambamR/reference/bb_limma_voom.md) | limma-voom wrapper |
+| [`bb_deseq2()`](https://cttir.github.io/bambamR/reference/bb_deseq2.md) | DESeq2 wrapper |
+| [`bb_edger()`](https://cttir.github.io/bambamR/reference/bb_edger.md) | edgeR quasi-likelihood wrapper |
+| [`bb_limma_voom()`](https://cttir.github.io/bambamR/reference/bb_limma_voom.md) | limma-voom wrapper |
 
 #### Visualization
 
 | Function | Description |
 |----|----|
-| [`bb_oncoplot()`](https://r-heller.github.io/bambamR/reference/bb_oncoplot.md) | Waterfall mutation plot |
-| [`bb_volcano()`](https://r-heller.github.io/bambamR/reference/bb_volcano.md) | Volcano plot |
-| [`bb_heatmap()`](https://r-heller.github.io/bambamR/reference/bb_heatmap.md) | Clustered heatmap |
-| [`bb_pca()`](https://r-heller.github.io/bambamR/reference/bb_pca.md) | PCA plot |
-| [`bb_ma_plot()`](https://r-heller.github.io/bambamR/reference/bb_ma_plot.md) | MA plot |
+| [`bb_oncoplot()`](https://cttir.github.io/bambamR/reference/bb_oncoplot.md) | Waterfall mutation plot |
+| [`bb_volcano()`](https://cttir.github.io/bambamR/reference/bb_volcano.md) | Volcano plot |
+| [`bb_heatmap()`](https://cttir.github.io/bambamR/reference/bb_heatmap.md) | Clustered heatmap |
+| [`bb_pca()`](https://cttir.github.io/bambamR/reference/bb_pca.md) | PCA plot |
+| [`bb_ma_plot()`](https://cttir.github.io/bambamR/reference/bb_ma_plot.md) | MA plot |
 
 #### Pipeline & Export
 
 | Function | Description |
 |----|----|
-| [`bb_pipeline()`](https://r-heller.github.io/bambamR/reference/bb_pipeline.md) | Full end-to-end pipeline |
-| [`bb_export_csv()`](https://r-heller.github.io/bambamR/reference/bb_export_csv.md) | Export as CSV |
-| [`bb_export_tsv()`](https://r-heller.github.io/bambamR/reference/bb_export_tsv.md) | Export as TSV |
-| [`bb_export_rds()`](https://r-heller.github.io/bambamR/reference/bb_export_rds.md) | Export as RDS |
+| [`bb_pipeline()`](https://cttir.github.io/bambamR/reference/bb_pipeline.md) | Full end-to-end pipeline |
+| [`bb_export_csv()`](https://cttir.github.io/bambamR/reference/bb_export_csv.md) | Export as CSV |
+| [`bb_export_tsv()`](https://cttir.github.io/bambamR/reference/bb_export_tsv.md) | Export as TSV |
+| [`bb_export_rds()`](https://cttir.github.io/bambamR/reference/bb_export_rds.md) | Export as RDS |
 
 #### Example Data & App
 
 | Function | Description |
 |----|----|
-| [`bb_example_counts()`](https://r-heller.github.io/bambamR/reference/bb_example_counts.md) | Example count matrix |
-| [`bb_example_mutations()`](https://r-heller.github.io/bambamR/reference/bb_example_mutations.md) | Example mutation data |
-| [`bb_example_de()`](https://r-heller.github.io/bambamR/reference/bb_example_de.md) | Example DE results |
-| [`bb_run_app()`](https://r-heller.github.io/bambamR/reference/bb_run_app.md) | Launch Shiny dashboard |
+| [`bb_example_counts()`](https://cttir.github.io/bambamR/reference/bb_example_counts.md) | Example count matrix |
+| [`bb_example_mutations()`](https://cttir.github.io/bambamR/reference/bb_example_mutations.md) | Example mutation data |
+| [`bb_example_de()`](https://cttir.github.io/bambamR/reference/bb_example_de.md) | Example DE results |
+| [`bb_run_app()`](https://cttir.github.io/bambamR/reference/bb_run_app.md) | Launch Shiny dashboard |
 
 ## Citation
 
@@ -600,7 +600,25 @@ If you use bambamR in your research, please cite:
 
 > Heller R, Witte H, Steinestel K (2026). *bambamR: End-to-End RNA-Seq
 > Processing from FASTQ to Publication-Ready Plots.* R package version
-> 0.1.0. <https://github.com/r-heller/bambamR>
+> 0.1.0. <https://github.com/cttir/bambamR>
+
+## Use of LLM tools
+
+Portions of this package were prepared with assistance from large
+language model tooling for narrowly defined, non-authorial tasks:
+copyediting, prose smoothing, Markdown/LaTeX formatting, scaffolding of
+boilerplate files (CI configs, build scripts), code refactoring. The
+tools used were [Chat
+AI](https://kisski.gwdg.de/leistungen/2-02-llm-service/), the LLM
+service of KISSKI (GWDG), and a self-hosted **Mistral Small (24B,
+Apache-2.0)** run locally via [Ollama](https://ollama.com/) and the
+`ollamar` R package — local inference only, with no data sent to third
+parties for the self-hosted model.
+
+All scientific claims, methodological choices, analyses,
+interpretations, and conclusions are the author’s own. No LLM-generated
+text was incorporated without review and revision, and every reference
+was verified against its DOI, arXiv ID, or ISBN.
 
 ## Session Info
 
@@ -631,24 +649,24 @@ sessionInfo()
 #> [1] bambamR_0.1.0
 #> 
 #> loaded via a namespace (and not attached):
-#>  [1] farver_2.1.2                Biostrings_2.80.0          
+#>  [1] farver_2.1.2                Biostrings_2.80.1          
 #>  [3] S7_0.2.2                    bitops_1.0-9               
 #>  [5] fastmap_1.2.0               GenomicAlignments_1.48.0   
 #>  [7] digest_0.6.39               lifecycle_1.0.5            
 #>  [9] pwalign_1.8.0               cluster_2.1.8.2            
-#> [11] statmod_1.5.1               compiler_4.6.0             
+#> [11] statmod_1.5.2               compiler_4.6.0             
 #> [13] rlang_1.2.0                 sass_0.4.10                
 #> [15] tools_4.6.0                 yaml_2.3.12                
 #> [17] knitr_1.51                  S4Arrays_1.12.0            
 #> [19] labeling_0.4.3              htmlwidgets_1.6.4          
-#> [21] interp_1.1-6                DelayedArray_0.38.1        
+#> [21] interp_1.1-6                DelayedArray_0.38.2        
 #> [23] RColorBrewer_1.1-3          ShortRead_1.70.0           
 #> [25] abind_1.4-8                 BiocParallel_1.46.0        
 #> [27] withr_3.0.2                 hwriter_1.3.2.1            
-#> [29] BiocGenerics_0.58.0         desc_1.4.3                 
+#> [29] BiocGenerics_0.58.1         desc_1.4.3                 
 #> [31] grid_4.6.0                  stats4_4.6.0               
 #> [33] latticeExtra_0.6-31         colorspace_2.1-2           
-#> [35] edgeR_4.10.0                ggplot2_4.0.3              
+#> [35] edgeR_4.10.1                ggplot2_4.0.3              
 #> [37] scales_1.4.0                iterators_1.0.14           
 #> [39] SummarizedExperiment_1.42.0 cli_3.6.6                  
 #> [41] rmarkdown_2.31              crayon_1.5.3               
@@ -659,10 +677,10 @@ sessionInfo()
 #> [51] vctrs_0.7.3                 Matrix_1.7-5               
 #> [53] jsonlite_2.0.0              IRanges_2.46.0             
 #> [55] GetoptLong_1.1.1            patchwork_1.3.2            
-#> [57] S4Vectors_0.50.0            ggrepel_0.9.8              
+#> [57] S4Vectors_0.50.1            ggrepel_0.9.8              
 #> [59] clue_0.3-68                 systemfonts_1.3.2          
 #> [61] jpeg_0.1-11                 locfit_1.5-9.12            
-#> [63] foreach_1.5.2               limma_3.68.1               
+#> [63] foreach_1.5.2               limma_3.68.4               
 #> [65] jquerylib_0.1.4             glue_1.8.1                 
 #> [67] pkgdown_2.2.0               codetools_0.2-20           
 #> [69] gtable_0.3.6                shape_1.4.6.1              
@@ -673,9 +691,9 @@ sessionInfo()
 #> [79] doParallel_1.0.17           evaluate_1.0.5             
 #> [81] lattice_0.22-9              Biobase_2.72.0             
 #> [83] png_0.1-9                   Rsamtools_2.28.0           
-#> [85] cigarillo_1.2.0             bslib_0.10.0               
+#> [85] cigarillo_1.2.0             bslib_0.11.0               
 #> [87] Rcpp_1.1.1-1.1              SparseArray_1.12.2         
-#> [89] DESeq2_1.52.0               xfun_0.57                  
+#> [89] DESeq2_1.52.0               xfun_0.58                  
 #> [91] fs_2.1.0                    MatrixGenerics_1.24.0      
 #> [93] GlobalOptions_0.1.4
 ```

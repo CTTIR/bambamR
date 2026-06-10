@@ -6,7 +6,7 @@ articles:
   bambamR-oncoplot: bambamR-oncoplot.html
   bambamR-quickstart: bambamR-quickstart.html
   bambamR-tutorial: bambamR-tutorial.html
-last_built: 2026-05-04T18:22Z
+last_built: 2026-06-10T11:23Z
 urls:
-  reference: https://r-heller.github.io/bambamR/reference
-  article: https://r-heller.github.io/bambamR/articles
+  reference: https://cttir.github.io/bambamR/reference
+  article: https://cttir.github.io/bambamR/articles

@@ -34,7 +34,7 @@ install.packages("bambamR")
 
 # Or install the development version from GitHub
 # install.packages("pak")
-pak::pak("r-heller/bambamR")
+pak::pak("cttir/bambamR")
 ```
 
 Optionally install Bioconductor packages for full-mode features:
@@ -58,9 +58,9 @@ feature without downloading external files or installing Bioconductor:
 
 | Function | Contents |
 |----|----|
-| [`bb_example_counts()`](https://r-heller.github.io/bambamR/reference/bb_example_counts.md) | RNA-seq count matrix (200 genes x 10 samples) with sample metadata (condition, batch, sex, age). First 20 genes have simulated DE between control and treatment. |
-| [`bb_example_mutations()`](https://r-heller.github.io/bambamR/reference/bb_example_mutations.md) | Mutation calls (300 mutations, 50 samples, 20 cancer genes) plus clinical annotations (Stage, Gender, Smoking) for oncoplot demos. |
-| [`bb_example_de()`](https://r-heller.github.io/bambamR/reference/bb_example_de.md) | Pre-computed DE results (500 genes) with log2FC, p-values, and base means – works without Bioconductor. |
+| [`bb_example_counts()`](https://cttir.github.io/bambamR/reference/bb_example_counts.md) | RNA-seq count matrix (200 genes x 10 samples) with sample metadata (condition, batch, sex, age). First 20 genes have simulated DE between control and treatment. |
+| [`bb_example_mutations()`](https://cttir.github.io/bambamR/reference/bb_example_mutations.md) | Mutation calls (300 mutations, 50 samples, 20 cancer genes) plus clinical annotations (Stage, Gender, Smoking) for oncoplot demos. |
+| [`bb_example_de()`](https://cttir.github.io/bambamR/reference/bb_example_de.md) | Pre-computed DE results (500 genes) with log2FC, p-values, and base means – works without Bioconductor. |
 
 A small FASTQ file (`example_reads.fastq`, 100 reads) and gene-length
 table are also included under `inst/extdata/`.
@@ -168,79 +168,79 @@ objects (data.frames, matrices, ggplot objects).
 
 ### Import
 
-- [`bb_read_fastq()`](https://r-heller.github.io/bambamR/reference/bb_read_fastq.md)
+- [`bb_read_fastq()`](https://cttir.github.io/bambamR/reference/bb_read_fastq.md)
   – read FASTQ files (ShortRead or base-R fallback)
-- [`bb_read_bam()`](https://r-heller.github.io/bambamR/reference/bb_read_bam.md)
+- [`bb_read_bam()`](https://cttir.github.io/bambamR/reference/bb_read_bam.md)
   – read BAM files (Rsamtools or system samtools)
-- [`bb_count_bam()`](https://r-heller.github.io/bambamR/reference/bb_count_bam.md)
+- [`bb_count_bam()`](https://cttir.github.io/bambamR/reference/bb_count_bam.md)
   – count reads in a BAM file
 
 ### Quality Control
 
-- [`bb_qc()`](https://r-heller.github.io/bambamR/reference/bb_qc.md) –
+- [`bb_qc()`](https://cttir.github.io/bambamR/reference/bb_qc.md) –
   compute QC metrics from FASTQ / BAM
-- [`bb_qc_summary()`](https://r-heller.github.io/bambamR/reference/bb_qc_summary.md)
+- [`bb_qc_summary()`](https://cttir.github.io/bambamR/reference/bb_qc_summary.md)
   – tabular QC summary
-- [`bb_plot_qc()`](https://r-heller.github.io/bambamR/reference/bb_plot_qc.md)
+- [`bb_plot_qc()`](https://cttir.github.io/bambamR/reference/bb_plot_qc.md)
   – per-position quality, GC, read-length plots
 
 ### Alignment & Counting
 
-- [`bb_align()`](https://r-heller.github.io/bambamR/reference/bb_align.md)
+- [`bb_align()`](https://cttir.github.io/bambamR/reference/bb_align.md)
   – align reads with STAR, HISAT2, or minimap2
-- [`bb_count_reads()`](https://r-heller.github.io/bambamR/reference/bb_count_reads.md)
+- [`bb_count_reads()`](https://cttir.github.io/bambamR/reference/bb_count_reads.md)
   – count reads per gene (GenomicAlignments or featureCounts)
 
 ### Normalization
 
-- [`bb_normalize()`](https://r-heller.github.io/bambamR/reference/bb_normalize.md)
+- [`bb_normalize()`](https://cttir.github.io/bambamR/reference/bb_normalize.md)
   – CPM, TPM, TMM, or RLE normalization
 
 ### Differential Expression
 
-- [`bb_deseq2()`](https://r-heller.github.io/bambamR/reference/bb_deseq2.md)
+- [`bb_deseq2()`](https://cttir.github.io/bambamR/reference/bb_deseq2.md)
   – DESeq2 wrapper (requires DESeq2)
-- [`bb_edger()`](https://r-heller.github.io/bambamR/reference/bb_edger.md)
+- [`bb_edger()`](https://cttir.github.io/bambamR/reference/bb_edger.md)
   – edgeR quasi-likelihood wrapper (requires edgeR)
-- [`bb_limma_voom()`](https://r-heller.github.io/bambamR/reference/bb_limma_voom.md)
+- [`bb_limma_voom()`](https://cttir.github.io/bambamR/reference/bb_limma_voom.md)
   – limma-voom wrapper (requires limma + edgeR)
 
 ### Visualization (all return ggplot objects)
 
-- [`bb_oncoplot()`](https://r-heller.github.io/bambamR/reference/bb_oncoplot.md)
+- [`bb_oncoplot()`](https://cttir.github.io/bambamR/reference/bb_oncoplot.md)
   – publication-ready waterfall mutation plot
-- [`bb_volcano()`](https://r-heller.github.io/bambamR/reference/bb_volcano.md)
+- [`bb_volcano()`](https://cttir.github.io/bambamR/reference/bb_volcano.md)
   – volcano plot with auto-labeling
-- [`bb_heatmap()`](https://r-heller.github.io/bambamR/reference/bb_heatmap.md)
+- [`bb_heatmap()`](https://cttir.github.io/bambamR/reference/bb_heatmap.md)
   – clustered heatmap of top genes
-- [`bb_pca()`](https://r-heller.github.io/bambamR/reference/bb_pca.md) –
+- [`bb_pca()`](https://cttir.github.io/bambamR/reference/bb_pca.md) –
   PCA with metadata coloring
-- [`bb_ma_plot()`](https://r-heller.github.io/bambamR/reference/bb_ma_plot.md)
+- [`bb_ma_plot()`](https://cttir.github.io/bambamR/reference/bb_ma_plot.md)
   – MA plot (mean expression vs. fold change)
 
 ### Pipeline & Export
 
-- [`bb_pipeline()`](https://r-heller.github.io/bambamR/reference/bb_pipeline.md)
+- [`bb_pipeline()`](https://cttir.github.io/bambamR/reference/bb_pipeline.md)
   – run the full pipeline end-to-end
-- [`bb_export_csv()`](https://r-heller.github.io/bambamR/reference/bb_export_csv.md)
+- [`bb_export_csv()`](https://cttir.github.io/bambamR/reference/bb_export_csv.md)
   /
-  [`bb_export_tsv()`](https://r-heller.github.io/bambamR/reference/bb_export_tsv.md)
+  [`bb_export_tsv()`](https://cttir.github.io/bambamR/reference/bb_export_tsv.md)
   /
-  [`bb_export_rds()`](https://r-heller.github.io/bambamR/reference/bb_export_rds.md)
+  [`bb_export_rds()`](https://cttir.github.io/bambamR/reference/bb_export_rds.md)
   – export results
 
 ### Example Data
 
-- [`bb_example_counts()`](https://r-heller.github.io/bambamR/reference/bb_example_counts.md)
+- [`bb_example_counts()`](https://cttir.github.io/bambamR/reference/bb_example_counts.md)
   – example count matrix + metadata
-- [`bb_example_mutations()`](https://r-heller.github.io/bambamR/reference/bb_example_mutations.md)
+- [`bb_example_mutations()`](https://cttir.github.io/bambamR/reference/bb_example_mutations.md)
   – example mutation data + clinical annotations
-- [`bb_example_de()`](https://r-heller.github.io/bambamR/reference/bb_example_de.md)
+- [`bb_example_de()`](https://cttir.github.io/bambamR/reference/bb_example_de.md)
   – pre-computed DE results
 
 ### Shiny App
 
-- [`bb_run_app()`](https://r-heller.github.io/bambamR/reference/bb_run_app.md)
+- [`bb_run_app()`](https://cttir.github.io/bambamR/reference/bb_run_app.md)
   – launch the interactive Shiny application
 
 ## Authors
@@ -255,7 +255,25 @@ If you use bambamR in your research, please cite:
 
     Heller R, Witte H, Steinestel K (2026). bambamR: End-to-End RNA-Seq
     Processing from FASTQ to Publication-Ready Plots. R package version 0.1.0.
-    https://github.com/r-heller/bambamR
+    https://github.com/cttir/bambamR
+
+## Use of LLM tools
+
+Portions of this package were prepared with assistance from large
+language model tooling for narrowly defined, non-authorial tasks:
+copyediting, prose smoothing, Markdown/LaTeX formatting, scaffolding of
+boilerplate files (CI configs, build scripts), code refactoring. The
+tools used were [Chat
+AI](https://kisski.gwdg.de/leistungen/2-02-llm-service/), the LLM
+service of KISSKI (GWDG), and a self-hosted **Mistral Small (24B,
+Apache-2.0)** run locally via [Ollama](https://ollama.com/) and the
+`ollamar` R package — local inference only, with no data sent to third
+parties for the self-hosted model.
+
+All scientific claims, methodological choices, analyses,
+interpretations, and conclusions are the author’s own. No LLM-generated
+text was incorporated without review and revision, and every reference
+was verified against its DOI, arXiv ID, or ISBN.
 
 ## License
 
@@ -267,38 +285,38 @@ MIT
 
 Read FASTQ and BAM files into R.
 
-- [`bb_read_fastq()`](https://r-heller.github.io/bambamR/reference/bb_read_fastq.md)
+- [`bb_read_fastq()`](https://cttir.github.io/bambamR/reference/bb_read_fastq.md)
   : Read FASTQ Files
-- [`bb_read_bam()`](https://r-heller.github.io/bambamR/reference/bb_read_bam.md)
+- [`bb_read_bam()`](https://cttir.github.io/bambamR/reference/bb_read_bam.md)
   : Read BAM Files
-- [`bb_count_bam()`](https://r-heller.github.io/bambamR/reference/bb_count_bam.md)
+- [`bb_count_bam()`](https://cttir.github.io/bambamR/reference/bb_count_bam.md)
   : Count Reads in BAM File
 
 ## Quality Control
 
 Compute and visualize QC metrics from sequencing data.
 
-- [`bb_qc()`](https://r-heller.github.io/bambamR/reference/bb_qc.md) :
+- [`bb_qc()`](https://cttir.github.io/bambamR/reference/bb_qc.md) :
   Generate QC Metrics
-- [`bb_qc_summary()`](https://r-heller.github.io/bambamR/reference/bb_qc_summary.md)
+- [`bb_qc_summary()`](https://cttir.github.io/bambamR/reference/bb_qc_summary.md)
   : QC Summary
-- [`bb_plot_qc()`](https://r-heller.github.io/bambamR/reference/bb_plot_qc.md)
+- [`bb_plot_qc()`](https://cttir.github.io/bambamR/reference/bb_plot_qc.md)
   : QC Visualization Panel
 
 ## Alignment & Counting
 
 Align reads to a reference genome and count per-gene overlaps.
 
-- [`bb_align()`](https://r-heller.github.io/bambamR/reference/bb_align.md)
+- [`bb_align()`](https://cttir.github.io/bambamR/reference/bb_align.md)
   : Align Reads to Reference Genome
-- [`bb_count_reads()`](https://r-heller.github.io/bambamR/reference/bb_count_reads.md)
+- [`bb_count_reads()`](https://cttir.github.io/bambamR/reference/bb_count_reads.md)
   : Count Reads per Gene/Feature
 
 ## Normalization
 
 Normalize raw count matrices (CPM, TPM, TMM, RLE).
 
-- [`bb_normalize()`](https://r-heller.github.io/bambamR/reference/bb_normalize.md)
+- [`bb_normalize()`](https://cttir.github.io/bambamR/reference/bb_normalize.md)
   : Normalize Count Matrix
 
 ## Differential Expression
@@ -306,66 +324,66 @@ Normalize raw count matrices (CPM, TPM, TMM, RLE).
 Wrappers for DESeq2, edgeR, and limma-voom that return standardized
 results.
 
-- [`bb_deseq2()`](https://r-heller.github.io/bambamR/reference/bb_deseq2.md)
+- [`bb_deseq2()`](https://cttir.github.io/bambamR/reference/bb_deseq2.md)
   : Differential Expression with DESeq2
-- [`bb_edger()`](https://r-heller.github.io/bambamR/reference/bb_edger.md)
+- [`bb_edger()`](https://cttir.github.io/bambamR/reference/bb_edger.md)
   : Differential Expression with edgeR
-- [`bb_limma_voom()`](https://r-heller.github.io/bambamR/reference/bb_limma_voom.md)
+- [`bb_limma_voom()`](https://cttir.github.io/bambamR/reference/bb_limma_voom.md)
   : Differential Expression with limma-voom
 
 ## Visualization
 
 Publication-ready plots. Every function returns a ggplot2 object.
 
-- [`bb_oncoplot()`](https://r-heller.github.io/bambamR/reference/bb_oncoplot.md)
+- [`bb_oncoplot()`](https://cttir.github.io/bambamR/reference/bb_oncoplot.md)
   : Create Publication-Ready Oncoplot
-- [`bb_volcano()`](https://r-heller.github.io/bambamR/reference/bb_volcano.md)
+- [`bb_volcano()`](https://cttir.github.io/bambamR/reference/bb_volcano.md)
   : Volcano Plot
-- [`bb_heatmap()`](https://r-heller.github.io/bambamR/reference/bb_heatmap.md)
+- [`bb_heatmap()`](https://cttir.github.io/bambamR/reference/bb_heatmap.md)
   : Heatmap of Top Differentially Expressed Genes
-- [`bb_pca()`](https://r-heller.github.io/bambamR/reference/bb_pca.md) :
+- [`bb_pca()`](https://cttir.github.io/bambamR/reference/bb_pca.md) :
   PCA Plot
-- [`bb_ma_plot()`](https://r-heller.github.io/bambamR/reference/bb_ma_plot.md)
+- [`bb_ma_plot()`](https://cttir.github.io/bambamR/reference/bb_ma_plot.md)
   : MA Plot
 
 ## Pipeline & Export
 
 Run the full end-to-end pipeline and export results.
 
-- [`bb_pipeline()`](https://r-heller.github.io/bambamR/reference/bb_pipeline.md)
+- [`bb_pipeline()`](https://cttir.github.io/bambamR/reference/bb_pipeline.md)
   : Run Full bambamR Pipeline
-- [`bb_export_rds()`](https://r-heller.github.io/bambamR/reference/bb_export_rds.md)
+- [`bb_export_rds()`](https://cttir.github.io/bambamR/reference/bb_export_rds.md)
   : Export Results to RDS
-- [`bb_export_csv()`](https://r-heller.github.io/bambamR/reference/bb_export_csv.md)
+- [`bb_export_csv()`](https://cttir.github.io/bambamR/reference/bb_export_csv.md)
   : Export DE Results to CSV
-- [`bb_export_tsv()`](https://r-heller.github.io/bambamR/reference/bb_export_tsv.md)
+- [`bb_export_tsv()`](https://cttir.github.io/bambamR/reference/bb_export_tsv.md)
   : Export DE Results to TSV
-- [`bb_run_app()`](https://r-heller.github.io/bambamR/reference/bb_run_app.md)
+- [`bb_run_app()`](https://cttir.github.io/bambamR/reference/bb_run_app.md)
   : Launch bambamR Shiny App
 
 ## Example Data
 
 Bundled datasets for exploring every feature without external files.
 
-- [`bb_example_counts()`](https://r-heller.github.io/bambamR/reference/bb_example_counts.md)
+- [`bb_example_counts()`](https://cttir.github.io/bambamR/reference/bb_example_counts.md)
   : Load Example Count Matrix
-- [`bb_example_mutations()`](https://r-heller.github.io/bambamR/reference/bb_example_mutations.md)
+- [`bb_example_mutations()`](https://cttir.github.io/bambamR/reference/bb_example_mutations.md)
   : Load Example Mutation Data
-- [`bb_example_de()`](https://r-heller.github.io/bambamR/reference/bb_example_de.md)
+- [`bb_example_de()`](https://cttir.github.io/bambamR/reference/bb_example_de.md)
   : Load Example DE Results
 
 ## Classes & Methods
 
 S3 classes for pipeline results and QC objects.
 
-- [`print(`*`<bb_result>`*`)`](https://r-heller.github.io/bambamR/reference/print.bb_result.md)
+- [`print(`*`<bb_result>`*`)`](https://cttir.github.io/bambamR/reference/print.bb_result.md)
   : Print method for bb_result
-- [`print(`*`<bb_qc>`*`)`](https://r-heller.github.io/bambamR/reference/print.bb_qc.md)
+- [`print(`*`<bb_qc>`*`)`](https://cttir.github.io/bambamR/reference/print.bb_qc.md)
   : Print method for bb_qc
-- [`summary(`*`<bb_qc>`*`)`](https://r-heller.github.io/bambamR/reference/summary.bb_qc.md)
+- [`summary(`*`<bb_qc>`*`)`](https://cttir.github.io/bambamR/reference/summary.bb_qc.md)
   : Summary method for bb_qc
-- [`bambamR`](https://r-heller.github.io/bambamR/reference/bambamR-package.md)
-  [`bambamR-package`](https://r-heller.github.io/bambamR/reference/bambamR-package.md)
+- [`bambamR`](https://cttir.github.io/bambamR/reference/bambamR-package.md)
+  [`bambamR-package`](https://cttir.github.io/bambamR/reference/bambamR-package.md)
   : bambamR: End-to-End RNA-Seq Processing from FASTQ to
   Publication-Ready Plots
 
@@ -377,16 +395,16 @@ Step-by-step guides for RNA-seq analysis with bambamR, from a 5-minute
 quickstart to the full package walkthrough.
 
 - [5-Minute Tutorial: RNA-Seq Analysis with
-  bambamR](https://r-heller.github.io/bambamR/articles/bambamR-tutorial.md):
+  bambamR](https://cttir.github.io/bambamR/articles/bambamR-tutorial.md):
 - [bambamR Quick Start
-  Guide](https://r-heller.github.io/bambamR/articles/bambamR-quickstart.md):
+  Guide](https://cttir.github.io/bambamR/articles/bambamR-quickstart.md):
 - [bambamR: End-to-End RNA-Seq Processing from FASTQ to
   Publication-Ready
-  Plots](https://r-heller.github.io/bambamR/articles/bambamR-guide.md):
+  Plots](https://cttir.github.io/bambamR/articles/bambamR-guide.md):
 
 ### Specialized Topics
 
 In-depth guides for specific bambamR features.
 
 - [Creating Onco Plots with
-  bambamR](https://r-heller.github.io/bambamR/articles/bambamR-oncoplot.md):
+  bambamR](https://cttir.github.io/bambamR/articles/bambamR-oncoplot.md):

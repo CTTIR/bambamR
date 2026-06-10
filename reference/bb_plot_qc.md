@@ -15,7 +15,7 @@ bb_plot_qc(qc_object, which = c("all", "quality", "gc", "length"))
 - qc_object:
 
   A `bb_qc` object from
-  [`bb_qc()`](https://r-heller.github.io/bambamR/reference/bb_qc.md).
+  [`bb_qc()`](https://cttir.github.io/bambamR/reference/bb_qc.md).
 
 - which:
 

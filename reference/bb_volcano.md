@@ -23,10 +23,10 @@ bb_volcano(
 
   A data.frame with columns `gene`, `log2fc`, `pvalue`, `padj`.
   Typically the output of
-  [`bb_deseq2()`](https://r-heller.github.io/bambamR/reference/bb_deseq2.md),
-  [`bb_edger()`](https://r-heller.github.io/bambamR/reference/bb_edger.md),
+  [`bb_deseq2()`](https://cttir.github.io/bambamR/reference/bb_deseq2.md),
+  [`bb_edger()`](https://cttir.github.io/bambamR/reference/bb_edger.md),
   or
-  [`bb_limma_voom()`](https://r-heller.github.io/bambamR/reference/bb_limma_voom.md).
+  [`bb_limma_voom()`](https://cttir.github.io/bambamR/reference/bb_limma_voom.md).
 
 - fc_cutoff:
 

@@ -91,20 +91,20 @@ volcano, MA, heatmap, and onco plots – all without Bioconductor.
 ### What’s next?
 
 - With Bioconductor:
-  [`bb_deseq2()`](https://r-heller.github.io/bambamR/reference/bb_deseq2.md),
-  [`bb_edger()`](https://r-heller.github.io/bambamR/reference/bb_edger.md),
-  [`bb_limma_voom()`](https://r-heller.github.io/bambamR/reference/bb_limma_voom.md)
+  [`bb_deseq2()`](https://cttir.github.io/bambamR/reference/bb_deseq2.md),
+  [`bb_edger()`](https://cttir.github.io/bambamR/reference/bb_edger.md),
+  [`bb_limma_voom()`](https://cttir.github.io/bambamR/reference/bb_limma_voom.md)
   for real DE analysis
 - From raw data:
-  [`bb_pipeline()`](https://r-heller.github.io/bambamR/reference/bb_pipeline.md)
+  [`bb_pipeline()`](https://cttir.github.io/bambamR/reference/bb_pipeline.md)
   handles FASTQ -\> alignment -\> counts -\> DE -\> plots
 - Interactive:
-  [`bb_run_app()`](https://r-heller.github.io/bambamR/reference/bb_run_app.md)
+  [`bb_run_app()`](https://cttir.github.io/bambamR/reference/bb_run_app.md)
   launches a Shiny dashboard
 - Customization: every plot returns a ggplot2 object, so add
   `+ theme()`, `+ labs()`, `+ scale_*()` as needed
 - See
-  [`vignette("bambamR-quickstart")`](https://r-heller.github.io/bambamR/articles/bambamR-quickstart.md)
+  [`vignette("bambamR-quickstart")`](https://cttir.github.io/bambamR/articles/bambamR-quickstart.md)
   for the full walkthrough and
-  [`vignette("bambamR-oncoplot")`](https://r-heller.github.io/bambamR/articles/bambamR-oncoplot.md)
+  [`vignette("bambamR-oncoplot")`](https://cttir.github.io/bambamR/articles/bambamR-oncoplot.md)
   for oncoplot customization

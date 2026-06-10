@@ -12,16 +12,16 @@
 ## Citation
 
 Source:
-[`DESCRIPTION`](https://github.com/r-heller/bambamR/blob/main/DESCRIPTION)
+[`DESCRIPTION`](https://github.com/cttir/bambamR/blob/main/DESCRIPTION)
 
 Heller R, Witte H, Steinestel K (2026). *bambamR: End-to-End RNA-Seq
 Processing from FASTQ to Publication-Ready Plots*. R package version
-0.1.0, <https://r-heller.github.io/bambamR/>.
+0.1.0, <https://cttir.github.io/bambamR/>.
 
     @Manual{,
       title = {bambamR: End-to-End RNA-Seq Processing from FASTQ to Publication-Ready Plots},
       author = {Raban Heller and Hanno Witte and Konrad Steinestel},
       year = {2026},
       note = {R package version 0.1.0},
-      url = {https://r-heller.github.io/bambamR/},
+      url = {https://cttir.github.io/bambamR/},
     }
