@@ -69,7 +69,7 @@ install.packages("bambamR")
 Install the development version from GitHub:
 
 ```{r install-github, eval = FALSE}
-pak::pak("r-heller/bambamR")
+pak::pak("cttir/bambamR")
 ```
 
 Optionally install Bioconductor packages for full-mode features:
@@ -471,7 +471,20 @@ If you use bambamR in your research, please cite:
 
 > Heller R, Witte H, Steinestel K (2026). *bambamR: End-to-End RNA-Seq
 > Processing from FASTQ to Publication-Ready Plots.* R package version
-> 0.1.0. https://github.com/r-heller/bambamR
+> 0.1.0. https://github.com/cttir/bambamR
+
+# Use of LLM tools
+
+Portions of this package were prepared with assistance from large language model tooling for
+narrowly defined, non-authorial tasks: copyediting, prose smoothing, Markdown/LaTeX formatting,
+scaffolding of boilerplate files (CI configs, build scripts), code refactoring. The tools used were [Chat AI](https://kisski.gwdg.de/leistungen/2-02-llm-service/),
+the LLM service of KISSKI (GWDG), and a self-hosted **Mistral Small (24B, Apache-2.0)** run locally via
+[Ollama](https://ollama.com/) and the `ollamar` R package — local inference only, with no data sent to
+third parties for the self-hosted model.
+
+All scientific claims, methodological choices, analyses, interpretations, and conclusions are the
+author's own. No LLM-generated text was incorporated without review and revision, and every reference
+was verified against its DOI, arXiv ID, or ISBN.
 
 # Session Info
 

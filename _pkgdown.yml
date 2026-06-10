@@ -1,9 +1,21 @@
-url: https://r-heller.github.io/bambamR/
+url: https://cttir.github.io/bambamR/
 
 template:
   bootstrap: 5
-  bootswatch: flatly
-
+  light-switch: true
+  theme: gruvbox-light
+  theme-dark: gruvbox-dark
+  bslib:
+    # Hugo Coder colour theme — light mode
+    bg: "#fafafa"
+    fg: "#212121"
+    primary: "#1565c0"
+    navbar-light-bg: "#fafafa"
+    # Hugo Coder colour theme — dark mode (Bootstrap 5 light-switch)
+    navbar-dark-bg: "#212121"
+    base_font: {google: "Inter"}
+    heading_font: {google: "Inter"}
+    code_font: {google: "JetBrains Mono"}
 navbar:
   left:
     - text: "Home"
@@ -18,7 +30,7 @@ navbar:
       href: news/index.html
   right:
     - icon: fa-github
-      href: https://github.com/r-heller/bambamR
+      href: https://github.com/cttir/bambamR
 
 articles:
   - title: "Getting Started"

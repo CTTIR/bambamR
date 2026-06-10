@@ -1,9 +1,9 @@
 # bambamR <img src="man/figures/logo.png" align="right" height="139" alt="bambamR logo" />
 
 <!-- badges: start -->
-[![R-CMD-check](https://github.com/r-heller/bambamR/actions/workflows/R-CMD-check.yaml/badge.svg)](https://github.com/r-heller/bambamR/actions/workflows/R-CMD-check.yaml)
-[![pkgdown](https://github.com/r-heller/bambamR/actions/workflows/pkgdown.yaml/badge.svg)](https://r-heller.github.io/bambamR/)
-[![Codecov test coverage](https://codecov.io/gh/r-heller/bambamR/graph/badge.svg)](https://codecov.io/gh/r-heller/bambamR)
+[![R-CMD-check](https://github.com/cttir/bambamR/actions/workflows/R-CMD-check.yaml/badge.svg)](https://github.com/cttir/bambamR/actions/workflows/R-CMD-check.yaml)
+[![pkgdown](https://github.com/cttir/bambamR/actions/workflows/pkgdown.yaml/badge.svg)](https://cttir.github.io/bambamR/)
+[![Codecov test coverage](https://codecov.io/gh/cttir/bambamR/graph/badge.svg)](https://codecov.io/gh/cttir/bambamR)
 [![CRAN status](https://www.r-pkg.org/badges/version/bambamR)](https://CRAN.R-project.org/package=bambamR)
 <!-- badges: end -->
 
@@ -40,7 +40,7 @@ install.packages("bambamR")
 
 # Or install the development version from GitHub
 # install.packages("pak")
-pak::pak("r-heller/bambamR")
+pak::pak("cttir/bambamR")
 ```
 
 Optionally install Bioconductor packages for full-mode features:
@@ -221,8 +221,21 @@ If you use bambamR in your research, please cite:
 ```
 Heller R, Witte H, Steinestel K (2026). bambamR: End-to-End RNA-Seq
 Processing from FASTQ to Publication-Ready Plots. R package version 0.1.0.
-https://github.com/r-heller/bambamR
+https://github.com/cttir/bambamR
 ```
+
+## Use of LLM tools
+
+Portions of this package were prepared with assistance from large language model tooling for
+narrowly defined, non-authorial tasks: copyediting, prose smoothing, Markdown/LaTeX formatting,
+scaffolding of boilerplate files (CI configs, build scripts), code refactoring. The tools used were [Chat AI](https://kisski.gwdg.de/leistungen/2-02-llm-service/),
+the LLM service of KISSKI (GWDG), and a self-hosted **Mistral Small (24B, Apache-2.0)** run locally via
+[Ollama](https://ollama.com/) and the `ollamar` R package — local inference only, with no data sent to
+third parties for the self-hosted model.
+
+All scientific claims, methodological choices, analyses, interpretations, and conclusions are the
+author's own. No LLM-generated text was incorporated without review and revision, and every reference
+was verified against its DOI, arXiv ID, or ISBN.
 
 ## License
 
