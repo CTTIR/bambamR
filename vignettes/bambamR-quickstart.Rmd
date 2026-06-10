@@ -43,7 +43,7 @@ example data -- no external files required.
 install.packages("bambamR")
 
 # GitHub development version
-pak::pak("r-heller/bambamR")
+pak::pak("cttir/bambamR")
 
 # Optional Bioconductor packages for full mode
 BiocManager::install(c("DESeq2", "edgeR", "limma", "ShortRead", "Rsamtools"))
