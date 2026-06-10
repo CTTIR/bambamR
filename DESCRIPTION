@@ -57,4 +57,4 @@ VignetteBuilder: knitr
 URL: https://cttir.github.io/bambamR/, https://github.com/cttir/bambamR
 BugReports: https://github.com/cttir/bambamR/issues
 Config/testthat/edition: 3
-Config/Needs/website: pkgdown
+Config/Needs/website: CTTIR/themakR, pkgdown
