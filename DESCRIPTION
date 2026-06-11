@@ -2,7 +2,7 @@ Package: bambamR
 Title: End-to-End RNA-Seq Processing from FASTQ to Publication-Ready Plots
 Version: 0.1.0
 Authors@R: c(
-    person("Raban", "Heller",
+    person("R.", "Heller",
            email = "raban.heller@uni-ulm.de",
            role = c("aut", "cre"),
            comment = c(ORCID = "0000-0001-8006-9742")),
