@@ -27,7 +27,7 @@ tmp <- tempfile(fileext = ".fastq")
 writeLines(c("@r1", "ACGT", "+", "IIII"), tmp)
 qc <- bb_qc(fastq_path = tmp)
 bb_qc_summary(qc)
-#>                    file total_reads median_gc mapping_rate
-#> 1 file1b962dcc462.fastq           1       0.5           NA
+#>                     file total_reads median_gc mapping_rate
+#> 1 file1a8e1fdd7879.fastq           1       0.5           NA
 # }
 ```
