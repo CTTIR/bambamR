@@ -110,11 +110,8 @@
 
   <!-- Hex border -->
   <polygon points="250,30 455,145 455,375 250,490 45,375 45,145"
-    fill="none" stroke="#854F0B" stroke-width="11" stroke-linejoin="round"/>
+    fill="none" stroke="#1A5C22" stroke-width="11" stroke-linejoin="round"/>
   <polygon points="250,44 441,153 441,367 250,476 59,367 59,153"
     fill="none" stroke="#633806" stroke-width="1.5" stroke-linejoin="round" opacity="0.7"/>
-
-  <!-- Package name -->
-  <text font-family="monospace" font-weight="700" font-size="27"
-    fill="#FAC775" text-anchor="middle" x="250" y="545" letter-spacing="1">bambamR</text>
+  
 </svg>
