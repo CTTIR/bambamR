@@ -11,3 +11,10 @@ inst/doc
 docs/
 *.tar.gz
 _build.R
+.DS_Store
+*.tmp
+*.log
+*~
+*.bak
+*.orig
+*.Rcheck/
