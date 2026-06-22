@@ -662,7 +662,7 @@ sessionInfo()
 #> [21] interp_1.1-6                DelayedArray_0.38.2        
 #> [23] RColorBrewer_1.1-3          ShortRead_1.70.0           
 #> [25] abind_1.4-8                 BiocParallel_1.46.0        
-#> [27] withr_3.0.2                 hwriter_1.3.2.1            
+#> [27] withr_3.0.3                 hwriter_1.3.2.1            
 #> [29] BiocGenerics_0.58.1         desc_1.4.3                 
 #> [31] grid_4.6.0                  stats4_4.6.0               
 #> [33] latticeExtra_0.6-31         colorspace_2.1-2           
@@ -693,7 +693,7 @@ sessionInfo()
 #> [83] png_0.1-9                   Rsamtools_2.28.0           
 #> [85] cigarillo_1.2.0             bslib_0.11.0               
 #> [87] Rcpp_1.1.1-1.1              SparseArray_1.12.2         
-#> [89] DESeq2_1.52.0               xfun_0.58                  
+#> [89] DESeq2_1.52.0               xfun_0.59                  
 #> [91] fs_2.1.0                    MatrixGenerics_1.24.0      
 #> [93] GlobalOptions_0.1.4
 ```
