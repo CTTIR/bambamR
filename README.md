@@ -1,10 +1,14 @@
 # bambamR <img src="man/figures/logo.png" align="right" height="139" alt="bambamR logo" />
 
 <!-- badges: start -->
-[![R-CMD-check](https://github.com/cttir/bambamR/actions/workflows/R-CMD-check.yaml/badge.svg)](https://github.com/cttir/bambamR/actions/workflows/R-CMD-check.yaml)
-[![pkgdown](https://github.com/cttir/bambamR/actions/workflows/pkgdown.yaml/badge.svg)](https://cttir.github.io/bambamR/)
-[![Codecov test coverage](https://codecov.io/gh/cttir/bambamR/graph/badge.svg)](https://codecov.io/gh/cttir/bambamR)
+[![R-CMD-check](https://github.com/CTTIR/bambamR/actions/workflows/R-CMD-check.yaml/badge.svg)](https://github.com/CTTIR/bambamR/actions/workflows/R-CMD-check.yaml)
+[![pkgdown](https://github.com/CTTIR/bambamR/actions/workflows/pkgdown.yaml/badge.svg)](https://cttir.github.io/bambamR/)
 [![CRAN status](https://www.r-pkg.org/badges/version/bambamR)](https://CRAN.R-project.org/package=bambamR)
+[![Codecov test coverage](https://codecov.io/gh/CTTIR/bambamR/branch/main/graph/badge.svg)](https://app.codecov.io/gh/CTTIR/bambamR?branch=main)
+[![CRAN downloads](https://cranlogs.r-pkg.org/badges/bambamR)](https://cran.r-project.org/package=bambamR)
+[![CRAN downloads total](https://cranlogs.r-pkg.org/badges/grand-total/bambamR)](https://cran.r-project.org/package=bambamR)
+[![License: MIT](https://img.shields.io/badge/license-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
+[![Lifecycle: experimental](https://img.shields.io/badge/lifecycle-experimental-orange.svg)](https://lifecycle.r-lib.org/articles/stages.html#experimental)
 <!-- badges: end -->
 
 **End-to-end RNA-seq processing from FASTQ to publication-ready plots.**

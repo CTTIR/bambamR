@@ -1,0 +1,36 @@
+bambamR test coverage summary
+=============================
+Baseline total coverage: 51.12%
+Final total coverage:    90.52%
+
+Per-file coverage (final):
+  alignment.R      94.4%
+  counting.R       62.7%   (Bioconductor counting / featureCounts internals
+                            require GenomicFeatures + Subread, unavailable in CI;
+                            see codecov.yml ignore rationale)
+  de_analysis.R    97.5%
+  example_data.R   75.0%
+  export.R         87.5%
+  import_bam.R     96.7%
+  import_fastq.R   92.9%
+  normalize.R     100.0%
+  oncoplot.R       93.3%
+  pipeline.R       82.0%
+  qc.R             84.2%
+  run_app.R        80.0%
+  utils.R          94.4%
+  viz_heatmap.R   100.0%
+  viz_ma.R        100.0%
+  viz_pca.R        94.1%
+  viz_qc.R         89.7%
+  viz_volcano.R   100.0%
+
+Notes
+-----
+- All additions are test-only. R/ source is byte-for-byte unchanged;
+  see fingerprint.R / fingerprint.txt (compare result: IDENTICAL).
+- External-tool branches (STAR/HISAT2/minimap2, featureCounts, system samtools)
+  are exercised by mocking the package-internal check_tool() guard and
+  base::system2 so no binaries are required.
+- Bioconductor paths use real tiny BAM fixtures built with Rsamtools::asBam
+  (see tests/testthat/helper-bam.R).
