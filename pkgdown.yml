@@ -1,12 +1,12 @@
 pandoc: 3.8.3
-pkgdown: 2.2.0
+pkgdown: 2.2.1
 pkgdown_sha: ~
 articles:
   bambamR-guide: bambamR-guide.html
   bambamR-oncoplot: bambamR-oncoplot.html
   bambamR-quickstart: bambamR-quickstart.html
   bambamR-tutorial: bambamR-tutorial.html
-last_built: 2026-06-24T08:57Z
+last_built: 2026-07-19T08:51Z
 urls:
   reference: https://cttir.github.io/bambamR/reference
   article: https://cttir.github.io/bambamR/articles
