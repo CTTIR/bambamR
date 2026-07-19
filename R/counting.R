@@ -81,12 +81,13 @@ bb_count_reads <- function(bam_paths, annotation,
                         paired) {
 
   check_pkg("GenomicFeatures", reason = "for GTF parsing")
+  check_pkg("txdbmaker", reason = "for GTF parsing")
   check_pkg("Rsamtools", reason = "for BAM reading")
 
   message("Counting reads with GenomicAlignments...")
 
   # Load annotation
-  txdb <- GenomicFeatures::makeTxDbFromGFF(annotation, format = "gtf")
+  txdb <- txdbmaker::makeTxDbFromGFF(annotation, format = "gtf")
   features <- GenomicFeatures::exonsBy(txdb, by = "gene")
 
   # BAM files
