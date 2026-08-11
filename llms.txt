@@ -1,5 +1,7 @@
 # bambamR
 
+[![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.21889924.svg)](https://doi.org/10.5281/zenodo.21889924)
+
 **End-to-end RNA-seq processing from FASTQ to publication-ready plots.**
 
 bambamR provides a streamlined toolkit for RNA-seq analysis covering

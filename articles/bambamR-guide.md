@@ -666,7 +666,7 @@ sessionInfo()
 #> loaded via a namespace (and not attached):
 #>  [1] tidyselect_1.2.1            dplyr_1.2.1                
 #>  [3] farver_2.1.2                Biostrings_2.80.1          
-#>  [5] S7_0.2.2                    bitops_1.0-9               
+#>  [5] S7_0.2.2                    bitops_1.1-0               
 #>  [7] fastmap_1.2.0               GenomicAlignments_1.48.0   
 #>  [9] digest_0.6.39               lifecycle_1.0.5            
 #> [11] cluster_2.1.8.2             pwalign_1.8.0              
@@ -709,7 +709,7 @@ sessionInfo()
 #> [85] evaluate_1.0.5              lattice_0.22-9             
 #> [87] Biobase_2.72.0              png_0.1-9                  
 #> [89] Rsamtools_2.28.0            cigarillo_1.2.1            
-#> [91] bslib_0.11.0                Rcpp_1.1.2                 
+#> [91] bslib_0.12.0                Rcpp_1.1.2                 
 #> [93] SparseArray_1.12.2          DESeq2_1.52.0              
 #> [95] xfun_0.60                   fs_2.1.0                   
 #> [97] MatrixGenerics_1.24.0       pkgconfig_2.0.3            
