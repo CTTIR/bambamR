@@ -1,0 +1,42 @@
+{
+  "upload_type": "software",
+  "title": "bambamR: End-to-end RNA-seq processing from FASTQ to publication-ready plots",
+  "version": "0.1.0",
+  "publication_date": "2026-08-11",
+  "description": "<p>bambamR is a toolkit that carries bulk RNA-sequencing data through a complete analysis path in a single environment. It covers FASTQ and BAM import, quality control, alignment, read counting, normalisation and differential expression testing, and finishes with publication-ready graphics including volcano plots, heatmaps, oncoplots and principal component plots. The package runs in a minimal mode that depends only on CRAN packages, or in a fuller mode when Bioconductor packages are present, so it can be used on restricted systems. It is intended for biologists and bioinformaticians who want a reproducible transcriptomics workflow without assembling a pipeline from separate tools.</p>",
+  "creators": [
+    {
+      "name": "Heller, Raban",
+      "orcid": "0000-0001-8006-9742"
+    },
+    {
+      "name": "Witte, Hanno"
+    },
+    {
+      "name": "Steinestel, Konrad"
+    }
+  ],
+  "contributors": [],
+  "license": "mit",
+  "access_right": "open",
+  "language": "eng",
+  "keywords": [
+    "rna-seq",
+    "transcriptomics",
+    "differential-expression",
+    "bioinformatics",
+    "genomics",
+    "bulk-rna-seq",
+    "r-package",
+    "rstats"
+  ],
+  "related_identifiers": [
+    {
+      "identifier": "https://github.com/CTTIR/bambamR",
+      "relation": "isSupplementTo",
+      "scheme": "url",
+      "resource_type": "software"
+    }
+  ],
+  "notes": "Prepared draft. Not yet published."
+}
