@@ -1,0 +1,17 @@
+cff-version: 1.2.0
+message: If you use this software, please cite it as below.
+type: software
+title: 'bambamR: End-to-end RNA-seq processing from FASTQ to publication-ready plots'
+version: 0.1.0
+date-released: '2026-08-11'
+doi: 10.5281/zenodo.21889924
+authors:
+- family-names: Heller
+  given-names: Raban
+  orcid: https://orcid.org/0000-0001-8006-9742
+- family-names: Witte
+  given-names: Hanno
+- family-names: Steinestel
+  given-names: Konrad
+repository-code: https://github.com/CTTIR/bambamR
+license: MIT
