@@ -682,7 +682,7 @@ sessionInfo()
 #> [31] hwriter_1.3.2.1             BiocGenerics_0.58.1        
 #> [33] desc_1.4.3                  grid_4.6.1                 
 #> [35] stats4_4.6.1                latticeExtra_0.6-31        
-#> [37] colorspace_2.1-3            edgeR_4.10.1               
+#> [37] colorspace_2.1-3            edgeR_4.10.3               
 #> [39] ggplot2_4.0.3               scales_1.4.0               
 #> [41] iterators_1.0.14            SummarizedExperiment_1.42.0
 #> [43] cli_3.6.6                   rmarkdown_2.31             
@@ -697,7 +697,7 @@ sessionInfo()
 #> [61] ggrepel_0.9.8               clue_0.3-68                
 #> [63] systemfonts_1.3.2           jpeg_0.1-11                
 #> [65] locfit_1.5-9.12             foreach_1.5.2              
-#> [67] limma_3.68.4                jquerylib_0.1.4            
+#> [67] limma_3.68.5                jquerylib_0.1.4            
 #> [69] glue_1.8.1                  pkgdown_2.2.1              
 #> [71] codetools_0.2-20            shape_1.4.6.1              
 #> [73] gtable_0.3.6                deldir_2.0-4               

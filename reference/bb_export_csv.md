@@ -34,5 +34,5 @@ de <- data.frame(
 )
 tmp <- tempfile(fileext = ".csv")
 bb_export_csv(de, tmp)
-#> Saved to: /tmp/RtmpzM8Az8/file334b4417fc96.csv
+#> Saved to: /tmp/RtmpbHA0dS/file334521571e00.csv
 ```
