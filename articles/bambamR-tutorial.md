@@ -26,6 +26,8 @@ packages are required.**
 ``` r
 
 library(bambamR)
+#> Warning: replacing previous import 'S4Arrays::makeNindexFromArrayViewport' by
+#> 'DelayedArray::makeNindexFromArrayViewport' when loading 'SummarizedExperiment'
 #> bambamR: Full mode (all Bioconductor packages available)
 ```
 

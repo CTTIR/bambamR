@@ -28,6 +28,8 @@ and returns a modifiable ggplot object.
 ``` r
 
 library(bambamR)
+#> Warning: replacing previous import 'S4Arrays::makeNindexFromArrayViewport' by
+#> 'DelayedArray::makeNindexFromArrayViewport' when loading 'SummarizedExperiment'
 #> bambamR: Full mode (all Bioconductor packages available)
 library(ggplot2)
 ```
