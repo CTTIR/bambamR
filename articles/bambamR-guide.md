@@ -617,24 +617,6 @@ If you use bambamR in your research, please cite:
 > Processing from FASTQ to Publication-Ready Plots.* R package version
 > 0.1.0. <https://github.com/cttir/bambamR>
 
-## Use of LLM tools
-
-Portions of this package were prepared with assistance from large
-language model tooling for narrowly defined, non-authorial tasks:
-copyediting, prose smoothing, Markdown/LaTeX formatting, scaffolding of
-boilerplate files (CI configs, build scripts), code refactoring. The
-tools used were [Chat
-AI](https://kisski.gwdg.de/leistungen/2-02-llm-service/), the LLM
-service of KISSKI (GWDG), and a self-hosted **Mistral Small (24B,
-Apache-2.0)** run locally via [Ollama](https://ollama.com/) and the
-`ollamar` R package — local inference only, with no data sent to third
-parties for the self-hosted model.
-
-All scientific claims, methodological choices, analyses,
-interpretations, and conclusions are the author’s own. No LLM-generated
-text was incorporated without review and revision, and every reference
-was verified against its DOI, arXiv ID, or ISBN.
-
 ## Session Info
 
 ``` r
@@ -642,7 +624,7 @@ was verified against its DOI, arXiv ID, or ISBN.
 sessionInfo()
 #> R version 4.6.1 (2026-06-24)
 #> Platform: x86_64-pc-linux-gnu
-#> Running under: Ubuntu 24.04.4 LTS
+#> Running under: Ubuntu 24.04.5 LTS
 #> 
 #> Matrix products: default
 #> BLAS:   /usr/lib/x86_64-linux-gnu/openblas-pthread/libblas.so.3 
@@ -665,7 +647,7 @@ sessionInfo()
 #> 
 #> loaded via a namespace (and not attached):
 #>  [1] tidyselect_1.2.1            dplyr_1.2.1                
-#>  [3] farver_2.1.2                Biostrings_2.80.1          
+#>  [3] farver_2.1.2                Biostrings_2.80.2          
 #>  [5] S7_0.2.2                    bitops_1.1-0               
 #>  [7] fastmap_1.2.0               GenomicAlignments_1.48.0   
 #>  [9] digest_0.6.39               lifecycle_1.0.5            
@@ -673,8 +655,8 @@ sessionInfo()
 #> [13] statmod_1.5.2               magrittr_2.0.5             
 #> [15] compiler_4.6.1              rlang_1.3.0                
 #> [17] sass_0.4.10                 tools_4.6.1                
-#> [19] yaml_2.3.12                 knitr_1.51                 
-#> [21] labeling_0.4.3              S4Arrays_1.12.0            
+#> [19] yaml_2.3.12                 knitr_1.52                 
+#> [21] labeling_0.4.3              S4Arrays_1.12.1            
 #> [23] htmlwidgets_1.6.4           interp_1.1-6               
 #> [25] DelayedArray_0.38.2         RColorBrewer_1.1-3         
 #> [27] ShortRead_1.70.0            abind_1.4-8                
@@ -682,10 +664,10 @@ sessionInfo()
 #> [31] hwriter_1.3.2.1             BiocGenerics_0.58.1        
 #> [33] desc_1.4.3                  grid_4.6.1                 
 #> [35] stats4_4.6.1                latticeExtra_0.6-31        
-#> [37] colorspace_2.1-3            edgeR_4.10.3               
+#> [37] colorspace_2.1-4            edgeR_4.10.5               
 #> [39] ggplot2_4.0.3               scales_1.4.0               
 #> [41] iterators_1.0.14            SummarizedExperiment_1.42.0
-#> [43] cli_3.6.6                   rmarkdown_2.31             
+#> [43] cli_3.6.6                   rmarkdown_2.32             
 #> [45] crayon_1.5.3                ragg_1.5.2                 
 #> [47] generics_0.1.4              otel_0.2.0                 
 #> [49] rjson_0.2.23                cachem_1.1.0               
@@ -693,7 +675,7 @@ sessionInfo()
 #> [53] matrixStats_1.5.0           vctrs_0.7.3                
 #> [55] Matrix_1.7-5                jsonlite_2.0.0             
 #> [57] patchwork_1.3.2             IRanges_2.46.0             
-#> [59] GetoptLong_1.1.1            S4Vectors_0.50.1           
+#> [59] GetoptLong_1.1.1            S4Vectors_0.50.3           
 #> [61] ggrepel_0.9.8               clue_0.3-68                
 #> [63] systemfonts_1.3.2           jpeg_0.1-11                
 #> [65] locfit_1.5-9.12             foreach_1.5.2              
@@ -710,8 +692,8 @@ sessionInfo()
 #> [87] Biobase_2.72.0              png_0.1-9                  
 #> [89] Rsamtools_2.28.0            cigarillo_1.2.1            
 #> [91] bslib_0.12.0                Rcpp_1.1.2                 
-#> [93] SparseArray_1.12.2          DESeq2_1.52.0              
-#> [95] xfun_0.60                   fs_2.1.0                   
+#> [93] SparseArray_1.12.3          DESeq2_1.52.0              
+#> [95] xfun_0.61                   fs_2.1.0                   
 #> [97] MatrixGenerics_1.24.0       pkgconfig_2.0.3            
 #> [99] GlobalOptions_0.1.4
 ```
