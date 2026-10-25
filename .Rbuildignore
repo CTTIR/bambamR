@@ -17,3 +17,4 @@
 ^\.lintr$
 ^\.claude$
 ^_coverage$
+^tools/branding$

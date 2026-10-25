@@ -1,0 +1,16 @@
+identity,rendered,destination
+bambamR,logo-symbol.svg,bambamR_icon.svg
+bambamR,icon-128.png,man/figures/icon-128.png
+bambamR,icon-256.png,man/figures/icon-256.png
+bambamR,icon-32.png,man/figures/icon-32.png
+bambamR,icon-48.png,man/figures/icon-48.png
+bambamR,icon-64.png,man/figures/icon-64.png
+bambamR,logo-light.png,man/figures/logo-light.png
+bambamR,logo-light.svg,man/figures/logo-light.svg
+bambamR,logo-mono.png,man/figures/logo-mono.png
+bambamR,logo-mono.svg,man/figures/logo-mono.svg
+bambamR,logo-symbol.svg,man/figures/logo-symbol.svg
+bambamR,logo.pdf,man/figures/logo.pdf
+bambamR,logo.png,man/figures/logo.png
+bambamR,logo.svg,man/figures/logo.svg
+bambamR,icon-48.png,pkgdown/favicon/favicon-48x48.png
