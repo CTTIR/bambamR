@@ -1,4 +1,4 @@
-# bambamR <img src="man/figures/logo.png" align="right" height="139" alt="bambamR logo" />
+# bambamR <img src="man/figures/logo.png" align="right" width="120" height="139" alt="bambamR hex logo" />
 
 [![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.21889924.svg)](https://doi.org/10.5281/zenodo.21889924)
 
@@ -251,3 +251,7 @@ must be reviewed and revised before inclusion, and references must be verified
 against their DOI, arXiv ID or ISBN.
 
 Local software setup: vLLM with Python/PyTorch, plus R and RStudio.
+
+## Branding
+
+Editable R artwork and regeneration instructions are in [tools/branding](https://github.com/CTTIR/bambamR/blob/main/tools/branding/README.md).
