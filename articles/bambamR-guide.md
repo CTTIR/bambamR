@@ -624,11 +624,11 @@ If you use bambamR in your research, please cite:
 sessionInfo()
 #> R version 4.6.1 (2026-06-24)
 #> Platform: x86_64-pc-linux-gnu
-#> Running under: Ubuntu 24.04.5 LTS
+#> Running under: Ubuntu 26.04.1 LTS
 #> 
 #> Matrix products: default
 #> BLAS:   /usr/lib/x86_64-linux-gnu/openblas-pthread/libblas.so.3 
-#> LAPACK: /usr/lib/x86_64-linux-gnu/openblas-pthread/libopenblasp-r0.3.26.so;  LAPACK version 3.12.0
+#> LAPACK: /usr/lib/x86_64-linux-gnu/openblas-pthread/libopenblasp-r0.3.32.so;  LAPACK version 3.12.0
 #> 
 #> locale:
 #>  [1] LC_CTYPE=C.UTF-8       LC_NUMERIC=C           LC_TIME=C.UTF-8       
@@ -664,7 +664,7 @@ sessionInfo()
 #> [31] hwriter_1.3.2.1             BiocGenerics_0.58.1        
 #> [33] desc_1.4.3                  grid_4.6.1                 
 #> [35] stats4_4.6.1                latticeExtra_0.6-31        
-#> [37] colorspace_2.1-4            edgeR_4.10.5               
+#> [37] colorspace_2.1-4            edgeR_4.10.7               
 #> [39] ggplot2_4.0.3               scales_1.4.0               
 #> [41] iterators_1.0.14            SummarizedExperiment_1.42.0
 #> [43] cli_3.6.6                   rmarkdown_2.32             
@@ -693,7 +693,7 @@ sessionInfo()
 #> [89] Rsamtools_2.28.0            cigarillo_1.2.1            
 #> [91] bslib_0.12.0                Rcpp_1.1.2                 
 #> [93] SparseArray_1.12.3          DESeq2_1.52.0              
-#> [95] xfun_0.61                   fs_2.1.0                   
+#> [95] xfun_0.62                   fs_2.1.0                   
 #> [97] MatrixGenerics_1.24.0       pkgconfig_2.0.3            
 #> [99] GlobalOptions_0.1.4
 ```
