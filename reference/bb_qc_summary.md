@@ -28,6 +28,6 @@ writeLines(c("@r1", "ACGT", "+", "IIII"), tmp)
 qc <- bb_qc(fastq_path = tmp)
 bb_qc_summary(qc)
 #>                     file total_reads median_gc mapping_rate
-#> 1 file33e06c37747b.fastq           1       0.5           NA
+#> 1 file198d33d6b786.fastq           1       0.5           NA
 # }
 ```
