@@ -27,3 +27,9 @@ bambamR,hex.pdf,man/figures/logo.pdf
 bambamR,hex.png,man/figures/logo.png
 bambamR,hex.svg,man/figures/logo.svg
 bambamR,icon-48.png,pkgdown/favicon/favicon-48x48.png
+bambamR,hex-dark.svg,pkgdown/favicon/favicon.svg
+bambamR,favicon.ico,pkgdown/favicon/favicon.ico
+bambamR,icon-96.png,pkgdown/favicon/favicon-96x96.png
+bambamR,icon-180.png,pkgdown/favicon/apple-touch-icon.png
+bambamR,icon-192.png,pkgdown/favicon/web-app-manifest-192x192.png
+bambamR,icon-512.png,pkgdown/favicon/web-app-manifest-512x512.png
