@@ -13,7 +13,8 @@ use_dt <- requireNamespace("DT", quietly = TRUE)
 # --- UI ---
 if (use_bslib) {
   ui <- bslib::page_navbar(
-    title = "bambamR",
+    window_title = "bambamR",
+    title = shiny::tagList(utils::getFromNamespace(".cttir_brand_logo", "bambamR")(), "bambamR"),
     theme = bslib::bs_theme(
       version = 5,
       bootswatch = "flatly",
@@ -132,7 +133,8 @@ if (use_bslib) {
 } else {
   # Fallback: basic shiny UI
   ui <- shiny::fluidPage(
-    shiny::titlePanel("bambamR - RNA-Seq Analysis"),
+    shiny::titlePanel(shiny::tagList(utils::getFromNamespace(".cttir_brand_logo", "bambamR")(), "bambamR - RNA-Seq Analysis"),
+      windowTitle = "bambamR"),
     shiny::tabsetPanel(
       shiny::tabPanel("Home",
         shiny::h3("Welcome to bambamR"),
