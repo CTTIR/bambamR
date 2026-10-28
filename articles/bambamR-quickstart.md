@@ -1,5 +1,7 @@
 # bambamR Quick Start Guide
 
+![bambamR logo](figures/logo.svg)![bambamR logo](figures/logo-dark.svg)
+
 [![R-CMD-check](https://github.com/CTTIR/bambamR/actions/workflows/R-CMD-check.yaml/badge.svg)](https://github.com/CTTIR/bambamR/actions/workflows/R-CMD-check.yaml)
 [![pkgdown](https://github.com/CTTIR/bambamR/actions/workflows/pkgdown.yaml/badge.svg)](https://cttir.github.io/bambamR/)
 [![CRAN
@@ -14,8 +16,6 @@ total](https://cranlogs.r-pkg.org/badges/grand-total/bambamR)](https://cran.r-pr
 MIT](https://img.shields.io/badge/license-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 [![Lifecycle:
 experimental](https://img.shields.io/badge/lifecycle-experimental-orange.svg)](https://lifecycle.r-lib.org/articles/stages.html#experimental)
-
-![](../reference/figures/logo.png)
 
 ## Overview
 
