@@ -40,6 +40,7 @@ bb_normalize <- function(counts, method = c("cpm", "tpm", "tmm", "rle"),
 
   method <- match.arg(method)
   counts <- validate_counts(counts)
+  .validate_libraries(counts)
 
   switch(method,
     cpm = .normalize_cpm(counts),
@@ -70,10 +71,27 @@ bb_normalize <- function(counts, method = c("cpm", "tpm", "tmm", "rle"),
     stop("Length of 'gene_lengths' must match number of rows in 'counts'.",
          call. = FALSE)
   }
+  if (!is.numeric(gene_lengths) || any(!is.finite(gene_lengths)) ||
+        any(gene_lengths <= 0)) {
+    stop("'gene_lengths' must contain finite, positive lengths.", call. = FALSE)
+  }
+  if (!is.null(names(gene_lengths))) {
+    if (anyDuplicated(names(gene_lengths)) ||
+          !setequal(names(gene_lengths), rownames(counts))) {
+      stop("Named 'gene_lengths' must match all gene identifiers exactly.", call. = FALSE)
+    }
+    gene_lengths <- gene_lengths[rownames(counts)]
+  }
   # Reads per kilobase
   rpk <- counts / (gene_lengths / 1000)
+  if (any(!is.finite(rpk))) {
+    stop("Gene lengths and counts exceed the finite range for TPM calculation.", call. = FALSE)
+  }
   # Per-million scaling factor
   scaling <- colSums(rpk) / 1e6
+  if (any(!is.finite(scaling) | scaling <= 0)) {
+    stop("TPM library scaling must be finite and positive.", call. = FALSE)
+  }
   t(t(rpk) / scaling)
 }
 

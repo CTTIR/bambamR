@@ -11,17 +11,18 @@
 #'   the top `n_genes` most frequently mutated genes are shown.
 #' @param n_genes Integer. Number of top mutated genes if `genes` is `NULL`.
 #'   Default `20`.
-#' @param sort_by Character. How to sort samples: `"frequency"` (by mutation
-#'   burden) or `"cluster"` (by co-occurrence clustering). Default `"frequency"`.
+#' @param sort_by Character. How to sort samples: `"frequency"` (by number of
+#'   mutated genes shown) or `"cluster"` (by co-occurrence clustering).
+#'   Default `"frequency"`.
 #' @param annotation_df A data.frame for sample annotations (bottom tracks).
 #'   Rownames must be sample identifiers. Each column becomes an annotation
-#'   track.
+#'   track. Annotation tracks require `patchwork`.
 #' @param mutation_colors Named character vector mapping mutation types to
 #'   colors. If `NULL`, a default nature-style palette is used.
 #' @param show_pct Logical. Show mutation percentage per gene on the right
 #'   margin. Default `TRUE`.
-#' @param show_barplot Logical. Show top (sample burden) and side (gene count)
-#'   barplots. Default `TRUE`.
+#' @param show_barplot Logical. Show top (mutated genes per sample) and side
+#'   (mutated samples per gene) barplots. Default `TRUE`.
 #' @param title Character or NULL. Plot title.
 #' @param border_color Character or NULL. Color of tile borders. Default
 #'   `"white"`.
@@ -36,9 +37,11 @@
 #' `"Multi_Hit"`.
 #'
 #' When `show_barplot = TRUE` and the `patchwork` package is available,
-#' the plot is composed of three panels: top barplot (mutation burden per
-#' sample), main tile plot, and right barplot (mutations per gene).
-#' Without patchwork, only the main tile plot is returned.
+#' the plot is composed of three panels: top barplot (mutated genes per
+#' sample), main tile plot, and right barplot (mutated samples per gene).
+#' Without patchwork, the main tile plot is returned unless annotations were
+#' requested. Percentages use all samples represented in `data` before gene
+#' selection; samples with no recorded mutations cannot be inferred.
 #'
 #' @examples
 #' set.seed(42)
@@ -52,7 +55,7 @@
 #' bb_oncoplot(mut_data, n_genes = 10)
 #'
 #' @importFrom ggplot2 ggplot aes geom_tile scale_fill_manual labs theme
-#'   theme_minimal element_blank element_text geom_bar geom_text
+#' @importFrom ggplot2 theme_minimal element_blank element_text geom_bar geom_text
 #' @export
 bb_oncoplot <- function(data,
                         genes = NULL,
@@ -86,6 +89,8 @@ bb_oncoplot <- function(data,
 
   # 1. Standardize input -----------------------------------------------
   df <- .standardize_onco_input(data)
+  all_samples <- unique(df$sample)
+  n_samples <- length(all_samples)
 
   # 2. Handle multi-hit ------------------------------------------------
   df <- .handle_multi_hit(df)
@@ -105,11 +110,9 @@ bb_oncoplot <- function(data,
   }
 
   # All samples and genes
-  all_samples <- unique(df$sample)
-  n_samples <- length(all_samples)
-
   # 4. Sort samples ----------------------------------------------------
   sample_order <- .sort_onco_samples(df, gene_list, sort_by)
+  sample_order <- c(sample_order, setdiff(all_samples, sample_order))
 
   # 5. Gene order by frequency -----------------------------------------
   gene_counts <- table(factor(df$gene, levels = gene_list))
@@ -129,8 +132,9 @@ bb_oncoplot <- function(data,
 
   # 7. Build main tile plot --------------------------------------------
   p_main <- ggplot2::ggplot(df, ggplot2::aes(x = sample, y = gene,
-                                              fill = mutation_type)) +
+                                             fill = mutation_type)) +
     ggplot2::geom_tile(color = border_color, linewidth = 0.5) +
+    ggplot2::scale_x_discrete(limits = sample_order, drop = FALSE) +
     ggplot2::scale_fill_manual(
       values = mutation_colors,
       name = "Mutation Type",
@@ -156,13 +160,13 @@ bb_oncoplot <- function(data,
     gene_pct$gene <- factor(gene_pct$gene, levels = gene_order)
 
     p_pct <- ggplot2::ggplot(gene_pct, ggplot2::aes(x = 1, y = gene,
-                                                      label = pct_label)) +
+                                                    label = pct_label)) +
       ggplot2::geom_text(size = 3, hjust = 0.5) +
       ggplot2::theme_void() +
       ggplot2::theme(plot.margin = ggplot2::margin(5, 2, 5, 2))
   }
 
-  # 9. Top barplot (sample mutation burden) ----------------------------
+  # 9. Top barplot (mutated genes shown per sample) --------------------
   if (show_barplot) {
     sample_burden <- as.data.frame(
       table(factor(df$sample, levels = sample_order)),
@@ -172,9 +176,9 @@ bb_oncoplot <- function(data,
     sample_burden$sample <- factor(sample_burden$sample, levels = sample_order)
 
     p_top <- ggplot2::ggplot(sample_burden,
-                              ggplot2::aes(x = sample, y = n_mutations)) +
+                             ggplot2::aes(x = sample, y = n_mutations)) +
       ggplot2::geom_bar(stat = "identity", fill = "#636363", width = 0.8) +
-      ggplot2::labs(y = "# Mutations") +
+      ggplot2::labs(y = "Mutated genes") +
       ggplot2::theme_minimal(base_size = 10) +
       ggplot2::theme(
         axis.text.x = ggplot2::element_blank(),
@@ -191,9 +195,9 @@ bb_oncoplot <- function(data,
     gene_bar$gene <- factor(gene_bar$gene, levels = gene_order)
 
     p_right <- ggplot2::ggplot(gene_bar,
-                                ggplot2::aes(x = gene_count, y = gene)) +
+                               ggplot2::aes(x = gene_count, y = gene)) +
       ggplot2::geom_bar(stat = "identity", fill = "#636363", width = 0.8) +
-      ggplot2::labs(x = "# Mutations") +
+      ggplot2::labs(x = "Samples") +
       ggplot2::theme_minimal(base_size = 10) +
       ggplot2::theme(
         axis.text.y = ggplot2::element_blank(),
@@ -212,14 +216,14 @@ bb_oncoplot <- function(data,
       anno_long <- .melt_annotation(annotation_df, anno_samples, sample_order)
 
       p_anno <- ggplot2::ggplot(anno_long,
-                                 ggplot2::aes(x = sample, y = variable,
-                                              fill = annotation_value)) +
+                                ggplot2::aes(x = sample, y = variable,
+                                             fill = annotation_value)) +
         ggplot2::geom_tile(color = border_color, linewidth = 0.5) +
         ggplot2::labs(fill = "Annotation") +
         ggplot2::theme_minimal(base_size = 10) +
         ggplot2::theme(
           axis.text.x = ggplot2::element_text(angle = 90, hjust = 1,
-                                               vjust = 0.5, size = 6),
+                                              vjust = 0.5, size = 6),
           axis.title = ggplot2::element_blank(),
           panel.grid = ggplot2::element_blank(),
           legend.position = "bottom",
@@ -230,47 +234,22 @@ bb_oncoplot <- function(data,
     }
   }
 
-  # 11. Compose with patchwork -----------------------------------------
+  # 11. Compose all panels on one grid so sample columns remain aligned.
   if (show_barplot && requireNamespace("patchwork", quietly = TRUE)) {
-    # Build layout
-    empty <- ggplot2::ggplot() + ggplot2::theme_void()
-
-    if (show_pct) {
-      # Top row: empty + top barplot + empty + empty
-      # Mid row: empty + main tile + pct + right barplot
-      layout <- (
-        (empty | p_top | empty | empty) /
-        (empty | p_main | p_pct | p_right)
-      ) +
-        patchwork::plot_layout(
-          widths = c(0.02, 1, 0.08, 0.15),
-          heights = c(0.2, 1)
-        )
-    } else {
-      layout <- (
-        (empty | p_top | empty) /
-        (empty | p_main | p_right)
-      ) +
-        patchwork::plot_layout(
-          widths = c(0.02, 1, 0.15),
-          heights = c(0.2, 1)
-        )
-    }
-
+    p_top <- p_top + ggplot2::scale_x_discrete(limits = sample_order, drop = FALSE)
+    panels <- list(T = p_top, M = p_main, R = p_right)
+    design <- if (show_pct) "T##\nMPR" else "T#\nMR"
+    widths <- if (show_pct) c(1, 0.12, 0.25) else c(1, 0.25)
+    heights <- c(0.25, 1)
+    if (show_pct) panels$P <- p_pct
     if (!is.null(annotation_df)) {
-      if (show_pct) {
-        layout <- layout / (empty | p_anno | empty | empty) +
-          patchwork::plot_layout(heights = c(0.2, 1, 0.15))
-      } else {
-        layout <- layout / (empty | p_anno | empty) +
-          patchwork::plot_layout(heights = c(0.2, 1, 0.15))
-      }
+      panels$A <- p_anno + ggplot2::scale_x_discrete(limits = sample_order, drop = FALSE)
+      design <- paste0(design, if (show_pct) "\nA##" else "\nA#")
+      heights <- c(heights, 0.25)
     }
-
-    if (!is.null(title)) {
-      layout <- layout + patchwork::plot_annotation(title = title)
-    }
-
+    layout <- patchwork::wrap_plots(panels, design = design,
+                                    widths = widths, heights = heights)
+    if (!is.null(title)) layout <- layout + patchwork::plot_annotation(title = title)
     return(layout)
   }
 
@@ -279,8 +258,16 @@ bb_oncoplot <- function(data,
     p_main <- p_main + ggplot2::labs(title = title)
   }
   if (show_pct) {
+    labels <- stats::setNames(paste0(gene_pct$gene, " (", gene_pct$pct_label, ")"),
+                              gene_pct$gene)
     p_main <- p_main +
+      ggplot2::scale_y_discrete(labels = labels) +
       ggplot2::theme(axis.text.y = ggplot2::element_text(size = 8))
+  }
+  if (!is.null(annotation_df)) {
+    check_pkg("patchwork", reason = "for oncoplot annotation tracks")
+    p_anno <- p_anno + ggplot2::scale_x_discrete(limits = sample_order, drop = FALSE)
+    return(p_main / p_anno + patchwork::plot_layout(heights = c(4, 1)))
   }
 
   p_main
@@ -324,7 +311,11 @@ bb_oncoplot <- function(data,
   }
 
   # Remove empty rows
-  df <- df[nchar(df$gene) > 0L & nchar(df$sample) > 0L, , drop = FALSE]
+  df <- df[!is.na(df$gene) & !is.na(df$sample) &
+             nchar(df$gene) > 0L & nchar(df$sample) > 0L, , drop = FALSE]
+  if (anyNA(df$mutation_type)) {
+    stop("Mutation types must not be missing.", call. = FALSE)
+  }
   df
 }
 
@@ -333,11 +324,10 @@ bb_oncoplot <- function(data,
 #' @noRd
 .handle_multi_hit <- function(df) {
   # Find duplicated sample-gene pairs
-  sg <- paste(df$sample, df$gene, sep = "___")
-  dup_sg <- unique(sg[duplicated(sg)])
+  pairs <- df[, c("sample", "gene"), drop = FALSE]
+  is_dup <- duplicated(pairs) | duplicated(pairs, fromLast = TRUE)
 
-  if (length(dup_sg) > 0L) {
-    is_dup <- sg %in% dup_sg
+  if (any(is_dup)) {
     # Keep one row per duplicate, mark as Multi_Hit
     df_unique <- df[!is_dup, , drop = FALSE]
     df_multi <- unique(df[is_dup, c("sample", "gene"), drop = FALSE])
@@ -355,7 +345,7 @@ bb_oncoplot <- function(data,
   all_samples <- unique(df$sample)
 
   if (sort_by == "frequency") {
-    # Sort by total mutation burden (descending)
+    # Sort by number of mutated genes shown (descending)
     burden <- table(df$sample)
     sample_order <- names(sort(burden, decreasing = TRUE))
   } else {

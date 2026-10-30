@@ -38,13 +38,8 @@ bb_pca <- function(counts, metadata, color_by, shape_by = NULL,
   }
 
   # Match sample order
-  shared <- intersect(colnames(counts), rownames(metadata))
-  if (length(shared) == 0L) {
-    stop("No matching sample names between counts colnames and metadata rownames.",
-         call. = FALSE)
-  }
-  counts <- counts[, shared, drop = FALSE]
-  metadata <- metadata[shared, , drop = FALSE]
+  metadata <- .match_metadata(counts, metadata)
+  if (ncol(counts) < 2L) stop("PCA needs at least two samples.", call. = FALSE)
 
   # Select top variable genes
   gene_vars <- apply(counts, 1, stats::var)

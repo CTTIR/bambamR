@@ -31,7 +31,7 @@ test_that("bb_pca errors when no sample names overlap", {
                    dimnames = list(paste0("g", 1:20), paste0("s", 1:10)))
   meta <- data.frame(condition = rep("A", 10),
                      row.names = paste0("x", 1:10))
-  expect_error(bb_pca(counts, meta, color_by = "condition"), "No matching")
+  expect_error(bb_pca(counts, meta, color_by = "condition"), "match all count sample names")
 })
 
 test_that("bb_heatmap honours scale = 'none' and 'column'", {

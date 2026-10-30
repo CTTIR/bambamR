@@ -30,7 +30,11 @@ bb_read_bam <- function(path, index = TRUE,
     .read_bam_rsamtools(path, index, what)
   } else {
     message("Rsamtools not available. Trying system samtools.")
-    .read_bam_system(path)
+    supported <- c("qname", "flag", "rname", "pos", "mapq", "cigar")
+    if (any(!what %in% supported)) {
+      stop("System BAM reader supports: ", paste(supported, collapse = ", "), call. = FALSE)
+    }
+    .read_bam_system(path)[, what, drop = FALSE]
   }
 }
 
@@ -42,7 +46,7 @@ bb_read_bam <- function(path, index = TRUE,
 #'
 #' @param path Character. Path to a BAM file.
 #'
-#' @return An integer: total number of reads.
+#' @return A numeric value: total number of reads.
 #'
 #' @examples
 #' \donttest{
@@ -61,9 +65,11 @@ bb_count_bam <- function(path) {
     cnt$records
   } else {
     check_tool("samtools")
-    out <- system2("samtools", args = c("view", "-c", path),
-                   stdout = TRUE, stderr = FALSE)
-    as.integer(trimws(out))
+    out <- .run_tool("samtools", c("view", "-c", path))
+    if (length(out) != 1L || !grepl("^[0-9]+$", trimws(out))) {
+      stop("Invalid read count returned by samtools.", call. = FALSE)
+    }
+    as.numeric(trimws(out))
   }
 }
 
@@ -93,8 +99,7 @@ bb_count_bam <- function(path) {
 .read_bam_system <- function(path) {
   check_tool("samtools")
 
-  out <- system2("samtools", args = c("view", path),
-                 stdout = TRUE, stderr = FALSE)
+  out <- .run_tool("samtools", c("view", path))
 
   if (length(out) == 0L) {
     return(data.frame(
@@ -106,6 +111,9 @@ bb_count_bam <- function(path) {
 
   # Parse SAM text output (tab-delimited)
   fields <- strsplit(out, "\t", fixed = TRUE)
+  if (any(lengths(fields) < 11L)) {
+    stop("Invalid SAM record returned by samtools.", call. = FALSE)
+  }
 
   data.frame(
     qname = vapply(fields, `[`, character(1), 1L),

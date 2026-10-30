@@ -313,7 +313,7 @@ bambamR includes a small example FASTQ file (100 reads, 75 bp):
 
 ```{r fastq-import}
 fq_path <- system.file("extdata", "example_reads.fastq",
-                        package = "bambamR")
+                       package = "bambamR")
 reads <- bb_read_fastq(fq_path, n = 5)
 reads
 ```
@@ -371,6 +371,13 @@ bb_export_rds(de_results, "de_results.rds")
 ---
 
 # Full Pipeline
+
+FASTQ entry treats each file as one single-end sample. Use explicit paired
+paths with `bb_align(paired = TRUE)` for paired reads. Metadata must match
+all samples exactly; use a fresh output directory for every run. A requested
+DE failure stops the pipeline. For CRAN-only counts processing use
+`skip = "de"`. Annotation tracks in plots require `patchwork`.
+
 
 The `bb_pipeline()` function runs the entire analysis end-to-end.
 It accepts entry at three stages:

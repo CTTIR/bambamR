@@ -33,8 +33,8 @@ test_that("TPM errors without gene lengths", {
 test_that("normalize validates count matrix", {
   expect_error(bb_normalize("not a matrix", method = "cpm"))
   expect_error(bb_normalize(matrix(c("a", "b"), nrow = 1,
-                                    dimnames = list("g1", c("s1", "s2"))),
-                             method = "cpm"),
+                                   dimnames = list("g1", c("s1", "s2"))),
+                            method = "cpm"),
                "numeric")
 })
 

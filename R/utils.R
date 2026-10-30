@@ -37,15 +37,15 @@ utils::globalVariables(c(
 
   bioc_pkgs <- c("DESeq2", "edgeR", "limma", "ShortRead", "Rsamtools",
                  "GenomicAlignments", "GenomicRanges", "SummarizedExperiment",
-                 "ComplexHeatmap")
-  available <- vapply(bioc_pkgs, requireNamespace, logical(1), quietly = TRUE)
+                 "GenomicFeatures", "txdbmaker", "ComplexHeatmap")
+  available <- vapply(bioc_pkgs, function(pkg) nzchar(system.file(package = pkg)), logical(1))
 
   if (all(available)) {
-    packageStartupMessage("bambamR: Full mode (all Bioconductor packages available)")
+    packageStartupMessage("bambamR: Optional Bioconductor engines are installed")
   } else {
     missing <- bioc_pkgs[!available]
     packageStartupMessage(
-      "bambamR: Minimal mode (CRAN-only). ",
+      "bambamR: Some optional engines are not installed. ",
       "Optional packages not found: ", paste(missing, collapse = ", "), "\n",
       "Install with: BiocManager::install(c(",
       paste0("'", missing, "'", collapse = ", "), "))"
@@ -78,7 +78,7 @@ check_pkg <- function(pkg, reason = NULL, install_cmd = NULL) {
     # Guess installation method
     bioc_pkgs <- c("DESeq2", "edgeR", "limma", "ShortRead", "Rsamtools",
                    "GenomicAlignments", "GenomicRanges", "SummarizedExperiment",
-                   "Biobase", "ComplexHeatmap")
+                   "Biobase", "ComplexHeatmap", "GenomicFeatures", "txdbmaker")
     if (pkg %in% bioc_pkgs) {
       install_cmd <- paste0("BiocManager::install('", pkg, "')")
     } else {
@@ -121,7 +121,86 @@ validate_counts <- function(counts) {
   if (is.null(colnames(counts))) {
     stop("'counts' must have colnames (sample identifiers).", call. = FALSE)
   }
+  if (any(dim(counts) == 0L) || any(!is.finite(counts)) || any(counts < 0)) {
+    stop("'counts' must be non-empty, finite and non-negative.", call. = FALSE)
+  }
+  for (ids in dimnames(counts)) {
+    if (anyNA(ids) || any(!nzchar(ids)) || anyDuplicated(ids)) {
+      stop("Gene and sample identifiers must be non-empty and unique.", call. = FALSE)
+    }
+  }
   counts
+}
+
+#' @noRd
+.match_metadata <- function(counts, metadata) {
+  if (!is.data.frame(metadata) || is.null(rownames(metadata)) ||
+        anyDuplicated(rownames(metadata)) ||
+        !setequal(colnames(counts), rownames(metadata))) {
+    stop("Metadata rownames must match all count sample names exactly.", call. = FALSE)
+  }
+  metadata[colnames(counts), , drop = FALSE]
+}
+
+#' @noRd
+.validate_libraries <- function(counts) {
+  totals <- colSums(counts)
+  if (any(!is.finite(totals) | totals <= 0)) {
+    stop("Every sample library must have a finite, positive total count.", call. = FALSE)
+  }
+  invisible(counts)
+}
+
+#' @noRd
+.validate_design <- function(design, counts) {
+  if (!is.matrix(design) || !is.numeric(design) ||
+        nrow(design) != ncol(counts) || ncol(design) < 1L ||
+        any(!is.finite(design))) {
+    stop("'design' must be a finite numeric matrix with one row per sample.", call. = FALSE)
+  }
+  ids <- rownames(design)
+  if (!is.null(ids) && !identical(ids, as.character(seq_len(nrow(design))))) {
+    if (anyDuplicated(ids) || !setequal(ids, colnames(counts))) {
+      stop("Design rownames must match count sample names.", call. = FALSE)
+    }
+    design <- design[colnames(counts), , drop = FALSE]
+  }
+  if (qr(design)$rank < ncol(design) || nrow(design) <= ncol(design)) {
+    stop("Design must have full rank and residual degrees of freedom.", call. = FALSE)
+  }
+  design
+}
+
+#' @noRd
+.validate_threads <- function(threads) {
+  if (!is.numeric(threads) || length(threads) != 1L || !is.finite(threads) ||
+        threads < 1 || threads != floor(threads)) {
+    stop("'threads' must be a positive integer.", call. = FALSE)
+  }
+}
+
+#' @noRd
+.run_tool <- function(tool, args, stdout = TRUE) {
+  check_tool(tool)
+  diagnostics <- tempfile("bambamR-stderr-")
+  on.exit(unlink(diagnostics), add = TRUE)
+  result <- suppressWarnings(system2(tool, args = shQuote(as.character(args)),
+                                     stdout = stdout, stderr = diagnostics))
+  status <- if (is.character(result)) attr(result, "status") else result
+  if (is.null(status)) status <- 0L
+  if (length(status) != 1L || is.na(status) || status != 0L) {
+    detail <- if (file.exists(diagnostics)) readLines(diagnostics, warn = FALSE) else character()
+    stop(tool, " failed (exit ", status, "): ",
+         paste(utils::tail(detail, 20L), collapse = "\n"), call. = FALSE)
+  }
+  result
+}
+
+#' @noRd
+.require_product <- function(path) {
+  if (!file.exists(path) || is.na(file.info(path)$size) || file.info(path)$size == 0) {
+    stop("External command did not produce a non-empty output: ", path, call. = FALSE)
+  }
 }
 
 

@@ -4,6 +4,19 @@
 # (so the tool "exists") and base::system2 (so nothing is actually executed),
 # which lets us exercise command construction and output parsing deterministically.
 
+# These products are synthetic; native-tool qualification is separate.
+fake_alignment_tool <- function(tool, args, stdout = TRUE) {
+  if (tool == "STAR") {
+    prefix <- args[match("--outFileNamePrefix", args) + 1L]
+    writeLines("synthetic BAM", paste0(prefix, "Aligned.sortedByCoord.out.bam"))
+  } else if (tool == "samtools") {
+    writeLines("synthetic BAM", args[match("-o", args) + 1L])
+  } else {
+    writeLines("synthetic SAM", stdout)
+  }
+  character()
+}
+
 test_that(".read_bam_system parses tab-delimited SAM output", {
   sam_lines <- c(
     paste("r1", "0", "chr1", "100", "60", "50M",
@@ -53,8 +66,10 @@ test_that("bb_read_bam routes to the system fallback without Rsamtools", {
   local_mocked_bindings(check_tool = function(tool) invisible("samtools"),
                         .package = "bambamR")
   local_mocked_bindings(
-    system2 = function(...) paste("r1", "0", "chr1", "100", "60", "50M",
-                                  "*", "0", "0", "ACGT", "IIII", sep = "\t"),
+    system2 = function(...) {
+      paste("r1", "0", "chr1", "100", "60", "50M",
+            "*", "0", "0", "ACGT", "IIII", sep = "\t")
+    },
     .package = "base"
   )
   bam <- withr::local_tempfile(fileext = ".bam")
@@ -75,7 +90,7 @@ test_that(".align_star builds a command and parses the STAR log", {
 
   local_mocked_bindings(check_tool = function(tool) invisible(tool),
                         .package = "bambamR")
-  local_mocked_bindings(system2 = function(...) "ok", .package = "base")
+  local_mocked_bindings(.run_tool = fake_alignment_tool, .package = "bambamR")
 
   res <- bambamR:::.align_star(fq, "idx", out_dir, threads = 2L,
                                paired = FALSE, extra_args = NULL)
@@ -87,13 +102,14 @@ test_that(".align_star builds a command and parses the STAR log", {
 
 test_that(".align_star adds zcat for gzipped input and extra_args", {
   fq <- withr::local_tempfile(fileext = ".fastq.gz")
-  con <- gzfile(fq, "w"); writeLines(c("@r1", "ACGT", "+", "IIII"), con)
+  con <- gzfile(fq, "w")
+  writeLines(c("@r1", "ACGT", "+", "IIII"), con)
   close(con)
   out_dir <- withr::local_tempdir()
 
   local_mocked_bindings(check_tool = function(tool) invisible(tool),
                         .package = "bambamR")
-  local_mocked_bindings(system2 = function(...) "ok", .package = "base")
+  local_mocked_bindings(.run_tool = fake_alignment_tool, .package = "bambamR")
 
   res <- bambamR:::.align_star(fq, "idx", out_dir, threads = 1L,
                                paired = FALSE, extra_args = c("--quantMode",
@@ -111,7 +127,7 @@ test_that(".align_hisat2 builds a paired-end command", {
 
   local_mocked_bindings(check_tool = function(tool) invisible(tool),
                         .package = "bambamR")
-  local_mocked_bindings(system2 = function(...) "ok", .package = "base")
+  local_mocked_bindings(.run_tool = fake_alignment_tool, .package = "bambamR")
 
   res <- bambamR:::.align_hisat2(c(fq1, fq2), "idx", out_dir, threads = 2L,
                                  paired = TRUE, extra_args = NULL)
@@ -127,10 +143,10 @@ test_that(".align_minimap2 builds a command and reports completion", {
 
   local_mocked_bindings(check_tool = function(tool) invisible(tool),
                         .package = "bambamR")
-  local_mocked_bindings(system2 = function(...) invisible(0L), .package = "base")
+  local_mocked_bindings(.run_tool = fake_alignment_tool, .package = "bambamR")
 
   res <- bambamR:::.align_minimap2(fq, "idx", out_dir, threads = 4L,
-                                   paired = FALSE, extra_args = "-x sr")
+                                   paired = FALSE, extra_args = c("-x", "sr"))
   expect_match(res$command, "minimap2")
   expect_match(res$bam, "minimap2_aligned.bam$")
 })
@@ -151,7 +167,7 @@ test_that(".count_featurecounts parses a featureCounts table", {
   local_mocked_bindings(check_tool = function(tool) invisible(tool),
                         .package = "bambamR")
   local_mocked_bindings(
-    system2 = function(command, args, ...) {
+    .run_tool = function(tool, args, ...) {
       # locate the -o output path and write the featureCounts table there
       o_idx <- which(args == "-o")
       out_file <- args[o_idx + 1L]
@@ -162,7 +178,7 @@ test_that(".count_featurecounts parses a featureCounts table", {
       close(con)
       invisible(0L)
     },
-    .package = "base"
+    .package = "bambamR"
   )
 
   counts <- bambamR:::.count_featurecounts(c(bam1, bam2), "ann.gtf",

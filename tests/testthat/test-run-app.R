@@ -18,8 +18,8 @@ test_that("bb_run_app dispatches to shiny::runApp when shiny is present", {
   called <- new.env()
   called$dir <- NULL
   local_mocked_bindings(
-    runApp = function(appDir, ...) {
-      called$dir <- appDir
+    runApp = function(app_dir, ...) {
+      called$dir <- app_dir
       invisible(NULL)
     },
     .package = "shiny"

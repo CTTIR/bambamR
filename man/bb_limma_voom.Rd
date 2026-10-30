@@ -11,8 +11,8 @@ bb_limma_voom(counts, design, contrast = NULL)
 
 \item{design}{A design matrix (e.g., from \code{\link[stats:model.matrix]{stats::model.matrix()}}).}
 
-\item{contrast}{A contrast vector or matrix. If \code{NULL}, the last
-coefficient is tested.}
+\item{contrast}{A contrast vector or one-column matrix. If \code{NULL}, the last
+design coefficient is tested. One contrast is returned per call.}
 }
 \value{
 A data.frame with columns \code{gene}, \code{log2fc}, \code{pvalue}, \code{padj}.

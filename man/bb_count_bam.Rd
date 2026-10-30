@@ -10,7 +10,7 @@ bb_count_bam(path)
 \item{path}{Character. Path to a BAM file.}
 }
 \value{
-An integer: total number of reads.
+A numeric value: total number of reads.
 }
 \description{
 Returns the total number of reads in a BAM file using Rsamtools or

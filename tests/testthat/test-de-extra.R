@@ -1,13 +1,13 @@
 # Extra tests for R/de_analysis.R: validation branches and limma-voom /
 # DESeq2 contrast paths when the packages are available.
 
-test_that("bb_deseq2 errors with fewer than 2 matching samples", {
+test_that("bb_deseq2 rejects unmatched sample metadata", {
   skip_if_not_installed("DESeq2")
   counts <- matrix(rpois(20, 100), nrow = 10,
                    dimnames = list(paste0("g", 1:10), c("s1", "s2")))
   coldata <- data.frame(condition = factor(c("a", "b")),
                         row.names = c("x1", "x2"))  # no overlap
-  expect_error(bb_deseq2(counts, coldata), "at least 2 matching samples")
+  expect_error(bb_deseq2(counts, coldata), "match all count sample names")
 })
 
 test_that("bb_edger errors when group length mismatches columns", {

@@ -1,3 +1,23 @@
+# Development changes
+
+* Preserve separate FASTQ alignment products and sample names; reject ambiguous
+  pipeline entry points, incompatible skipped steps and output replacement.
+* Check external command status/products and quote argument tokens. HISAT2 SAM
+  output no longer contains diagnostics. Paired featureCounts requests fragments.
+* Match named TPM lengths and metadata by identifier, reject invalid counts and
+  empty libraries, preserve edgeR adjustment variables, and repair limma contrasts.
+* Fail requested DE explicitly; retain plot warnings in the saved result.
+* Validate FASTQ records and limit reads when a sample size is requested.
+* Clear stale Shiny results, implement previews and normalization selection, and
+  provide a normalization-only mode. TPM remains available through the R API.
+* Preserve the oncoplot cohort denominator, display requested annotation tracks,
+  and label unscaled heatmaps as expression rather than Z-scores.
+
+Compatibility: use a fresh output directory for each alignment/pipeline run.
+Metadata must now match all samples. Supply external-tool options as separate
+argument tokens. limma returns one contrast per call. See MAINTENANCE.md for
+validation evidence and remaining release gates.
+
 # bambamR 0.1.0
 
 * Standardize the named v5 package logo across README, documentation pages

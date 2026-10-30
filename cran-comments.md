@@ -1,23 +1,35 @@
-## R CMD check results
+## Local R CMD check results (30 October 2026)
 
-0 errors | 0 warnings | 0 notes
+0 errors | 0 warnings | 1 note
 
-## Test environments
+The note is CRAN incoming feasibility: "New submission".
+The full check includes examples, donttest examples, tests, vignette rebuilding,
+HTML help validation and the indexed PDF manual.
 
-* local: Windows 11, R 4.5.2
-* GitHub Actions: ubuntu-latest (R release, devel, oldrel)
-* GitHub Actions: macOS-latest (R release)
-* GitHub Actions: windows-latest (R release)
+## Verified environment
 
-## Bioconductor dependencies
+* macOS 27.0.1 (Apple Silicon), R 4.6.1.
+* CRAN-only first use from a separate package library.
+* Optional Bioconductor engines, including DESeq2, edgeR, limma,
+  ShortRead, Rsamtools and GenomicAlignments.
+* Native synthetic-read integration with minimap2 2.31, samtools 1.25 and
+  featureCounts 2.0.2; counts checked against known expected values.
 
-Several packages in `Suggests` are from Bioconductor (DESeq2, edgeR, limma,
-ShortRead, Rsamtools, GenomicAlignments, etc.). All Bioconductor dependencies
-are optional. The package operates in "minimal mode" with CRAN-only
-dependencies and gracefully degrades when Bioconductor packages are not
-available. Every function that uses a Bioconductor package checks availability
-with `requireNamespace()` first.
+The new revision has not run on hosted GitHub Actions, Windows or Linux.
+Native STAR/HISAT2 integration is prepared in CI but was not run on this Mac.
+These must be qualified before claiming the complete supported-platform matrix.
 
-## Downstream dependencies
+## Publication status
 
-This is a new package with no downstream dependencies.
+No CRAN submission or GitHub release was performed. The previously recorded
+Zenodo identifier does not currently resolve; its provenance is preserved in
+CITATION.cff comments and MAINTENANCE.md. Confirm publisher metadata before release.
+
+## Optional dependencies
+
+Statistical engines and read-processing backends are optional. Requested missing
+engines fail with installation guidance. CRAN-only pipeline use explicitly skips
+DE; it does not report a failed DE analysis as complete.
+
+See MAINTENANCE.md for the audit, migration notes, exact local validation commands,
+and remaining qualification work.
