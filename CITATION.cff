@@ -3,8 +3,8 @@ message: If you use this software, please cite it as below.
 type: software
 title: 'bambamR: End-to-end RNA-seq processing from FASTQ to publication-ready plots'
 version: 0.1.0
-date-released: '2026-08-11'
-doi: 10.5281/zenodo.21889924
+# Previously recorded date-released: '2026-08-11'; publication is unverified.
+# Previously recorded DOI: 10.5281/zenodo.21889924; returns 404 as of 2026-10-30.
 authors:
 - family-names: Heller
   given-names: Raban

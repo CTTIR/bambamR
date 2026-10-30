@@ -15,7 +15,8 @@ bb_count_reads(
 )
 }
 \arguments{
-\item{bam_paths}{Character vector. Paths to BAM files.}
+\item{bam_paths}{Character vector. Paths to BAM files. Optional vector names
+supply unique sample IDs when BAM basenames are not unique.}
 
 \item{annotation}{Character. Path to GTF/GFF annotation file.}
 
@@ -30,7 +31,8 @@ Default \code{"exon"}.}
 
 \item{attr_type}{Character. Attribute to group by. Default \code{"gene_id"}.}
 
-\item{paired}{Logical. Paired-end data. Default \code{FALSE}.}
+\item{paired}{Logical. Count paired-end fragments. Default \code{FALSE}.
+The featureCounts backend requires Subread 2.0.2 or later in paired mode.}
 }
 \value{
 A numeric matrix of counts (genes x samples). Rownames are gene

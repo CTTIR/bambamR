@@ -4,7 +4,8 @@
 #' `GenomicAlignments::summarizeOverlaps()` if available, otherwise shells out
 #' to `featureCounts` from the Subread package.
 #'
-#' @param bam_paths Character vector. Paths to BAM files.
+#' @param bam_paths Character vector. Paths to BAM files. Optional vector names
+#'   supply unique sample IDs when BAM basenames are not unique.
 #' @param annotation Character. Path to GTF/GFF annotation file.
 #' @param method Character. `"auto"` tries GenomicAlignments first, then
 #'   featureCounts; `"internal"` forces GenomicAlignments; `"featureCounts"`
@@ -13,7 +14,8 @@
 #' @param feature_type Character. Feature type to count (GTF column 3).
 #'   Default `"exon"`.
 #' @param attr_type Character. Attribute to group by. Default `"gene_id"`.
-#' @param paired Logical. Paired-end data. Default `FALSE`.
+#' @param paired Logical. Count paired-end fragments. Default `FALSE`.
+#'   The featureCounts backend requires Subread 2.0.2 or later in paired mode.
 #'
 #' @return A numeric matrix of counts (genes x samples). Rownames are gene
 #'   IDs, colnames are derived from BAM file names.
@@ -33,6 +35,11 @@ bb_count_reads <- function(bam_paths, annotation,
                            paired = FALSE) {
 
   method <- match.arg(method)
+  .validate_threads(threads)
+  if (!is.character(bam_paths) || !length(bam_paths) || anyNA(bam_paths)) {
+    stop("'bam_paths' must contain at least one BAM path.", call. = FALSE)
+  }
+  .clean_sample_names(bam_paths)
 
   # Validate BAM paths
   missing_bams <- bam_paths[!file.exists(bam_paths)]
@@ -45,8 +52,10 @@ bb_count_reads <- function(bam_paths, annotation,
   }
 
   if (method == "auto") {
-    if (requireNamespace("GenomicAlignments", quietly = TRUE) &&
-        requireNamespace("GenomicRanges", quietly = TRUE)) {
+    bioc_packages <- c("GenomicAlignments", "GenomicRanges", "GenomicFeatures",
+                       "txdbmaker", "Rsamtools", "SummarizedExperiment")
+    if (feature_type == "exon" && attr_type == "gene_id" &&
+          all(vapply(bioc_packages, requireNamespace, logical(1), quietly = TRUE))) {
       return(.count_bioc(bam_paths, annotation, feature_type, attr_type,
                          paired))
     }
@@ -66,11 +75,8 @@ bb_count_reads <- function(bam_paths, annotation,
     return(.count_bioc(bam_paths, annotation, feature_type, attr_type, paired))
   }
 
-  if (method == "featureCounts") {
-    check_tool("featureCounts")
-    return(.count_featurecounts(bam_paths, annotation, threads,
-                                feature_type, attr_type, paired))
-  }
+  check_tool("featureCounts")
+  .count_featurecounts(bam_paths, annotation, threads, feature_type, attr_type, paired)
 }
 
 
@@ -79,6 +85,10 @@ bb_count_reads <- function(bam_paths, annotation,
 #' @noRd
 .count_bioc <- function(bam_paths, annotation, feature_type, attr_type,
                         paired) {
+  if (feature_type != "exon" || attr_type != "gene_id") {
+    stop("Internal counting supports exon/gene_id only; use featureCounts for other settings.",
+         call. = FALSE)
+  }
 
   check_pkg("GenomicFeatures", reason = "for GTF parsing")
   check_pkg("txdbmaker", reason = "for GTF parsing")
@@ -87,7 +97,7 @@ bb_count_reads <- function(bam_paths, annotation,
   message("Counting reads with GenomicAlignments...")
 
   # Load annotation
-  txdb <- txdbmaker::makeTxDbFromGFF(annotation, format = "gtf")
+  txdb <- txdbmaker::makeTxDbFromGFF(annotation)
   features <- GenomicFeatures::exonsBy(txdb, by = "gene")
 
   # BAM files
@@ -119,6 +129,7 @@ bb_count_reads <- function(bam_paths, annotation,
   message("Counting reads with featureCounts...")
 
   out_file <- tempfile(fileext = ".txt")
+  on.exit(unlink(c(out_file, paste0(out_file, ".summary"))), add = TRUE)
 
   args <- c(
     "-a", annotation,
@@ -127,10 +138,10 @@ bb_count_reads <- function(bam_paths, annotation,
     "-g", attr_type,
     "-T", threads
   )
-  if (paired) args <- c(args, "-p")
+  if (paired) args <- c(args, "-p", "--countReadPairs")
   args <- c(args, bam_paths)
 
-  system2("featureCounts", args = args, stdout = FALSE, stderr = FALSE)
+  .run_tool("featureCounts", args)
 
   if (!file.exists(out_file)) {
     stop("featureCounts failed to produce output.", call. = FALSE)
@@ -138,23 +149,28 @@ bb_count_reads <- function(bam_paths, annotation,
 
   # Parse output
   result <- data.table::fread(out_file, skip = 1, header = TRUE,
-                               data.table = FALSE)
+                              data.table = FALSE)
+  if (ncol(result) != 6L + length(bam_paths) || !nrow(result) ||
+        !identical(names(result)[1], "Geneid")) {
+    stop("Invalid featureCounts table: expected gene data and one column per BAM.", call. = FALSE)
+  }
   gene_ids <- result[[1]]  # Geneid column
-  count_cols <- seq(7, ncol(result))  # Count columns start at column 7
+  count_cols <- seq.int(7L, ncol(result))
   counts <- as.matrix(result[, count_cols, drop = FALSE])
   rownames(counts) <- gene_ids
   colnames(counts) <- .clean_sample_names(bam_paths)
 
-  unlink(out_file)
-  unlink(paste0(out_file, ".summary"))
-
-  counts
+  validate_counts(counts)
 }
 
 
 #' Clean sample names from BAM paths
 #' @noRd
 .clean_sample_names <- function(bam_paths) {
-  nms <- basename(bam_paths)
-  sub("\\.[Bb][Aa][Mm]$", "", nms)
+  nms <- names(bam_paths)
+  if (is.null(nms)) nms <- sub("\\.[Bb][Aa][Mm]$", "", basename(bam_paths))
+  if (anyNA(nms) || any(!nzchar(nms)) || anyDuplicated(nms)) {
+    stop("BAM sample names must be non-empty and unique; supply named paths.", call. = FALSE)
+  }
+  nms
 }

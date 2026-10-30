@@ -26,8 +26,8 @@ test_that("pipeline validates inputs correctly", {
 
   expect_error(
     bb_pipeline(count_matrix = matrix(1:4, 2, 2,
-                                       dimnames = list(c("g1", "g2"),
-                                                       c("s1", "s2")))),
+                                      dimnames = list(c("g1", "g2"),
+                                                      c("s1", "s2")))),
     "sample_info.*required"
   )
 

@@ -31,19 +31,13 @@
 #'
 #' @export
 bb_deseq2 <- function(counts, coldata, design = ~ condition,
-                       contrast = NULL, alpha = 0.05) {
+                      contrast = NULL, alpha = 0.05) {
 
   check_pkg("DESeq2", reason = "for DESeq2 differential expression")
   counts <- validate_counts(counts)
 
-  # Ensure matching samples
-  shared <- intersect(colnames(counts), rownames(coldata))
-  if (length(shared) < 2L) {
-    stop("Need at least 2 matching samples between counts and coldata.",
-         call. = FALSE)
-  }
-  counts <- counts[, shared, drop = FALSE]
-  coldata <- coldata[shared, , drop = FALSE]
+  coldata <- .match_metadata(counts, coldata)
+  .validate_libraries(counts)
 
   dds <- DESeq2::DESeqDataSetFromMatrix(
     countData = counts,
@@ -104,6 +98,7 @@ bb_edger <- function(counts, group, design = NULL) {
 
   check_pkg("edgeR", reason = "for edgeR differential expression")
   counts <- validate_counts(counts)
+  .validate_libraries(counts)
 
   if (length(group) != ncol(counts)) {
     stop("Length of 'group' must equal number of columns in 'counts'.",
@@ -117,6 +112,7 @@ bb_edger <- function(counts, group, design = NULL) {
   if (is.null(design)) {
     design <- stats::model.matrix(~ group)
   }
+  design <- .validate_design(design, counts)
 
   dge <- edgeR::estimateDisp(dge, design)
   fit <- edgeR::glmQLFit(dge, design)
@@ -142,8 +138,8 @@ bb_edger <- function(counts, group, design = NULL) {
 #'
 #' @param counts Numeric matrix. Raw count matrix.
 #' @param design A design matrix (e.g., from [stats::model.matrix()]).
-#' @param contrast A contrast vector or matrix. If `NULL`, the last
-#'   coefficient is tested.
+#' @param contrast A contrast vector or one-column matrix. If `NULL`, the last
+#'   design coefficient is tested. One contrast is returned per call.
 #'
 #' @return A data.frame with columns `gene`, `log2fc`, `pvalue`, `padj`.
 #'
@@ -166,6 +162,8 @@ bb_limma_voom <- function(counts, design, contrast = NULL) {
   check_pkg("limma", reason = "for limma-voom analysis")
   check_pkg("edgeR", reason = "for voom normalization")
   counts <- validate_counts(counts)
+  .validate_libraries(counts)
+  design <- .validate_design(design, counts)
 
   dge <- edgeR::DGEList(counts = counts)
   dge <- edgeR::calcNormFactors(dge)
@@ -174,11 +172,14 @@ bb_limma_voom <- function(counts, design, contrast = NULL) {
   fit <- limma::lmFit(v, design)
 
   if (!is.null(contrast)) {
+    if (is.matrix(contrast) && ncol(contrast) != 1L) {
+      stop("Supply one contrast per call.", call. = FALSE)
+    }
     fit <- limma::contrasts.fit(fit, contrasts = contrast)
   }
 
   fit <- limma::eBayes(fit)
-  tt <- limma::topTable(fit, coef = ncol(design), number = nrow(counts),
+  tt <- limma::topTable(fit, coef = ncol(fit$coefficients), number = nrow(counts),
                         sort.by = "none")
 
   standardize_de_result(

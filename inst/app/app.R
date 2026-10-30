@@ -9,6 +9,7 @@ if (!requireNamespace("shiny", quietly = TRUE)) {
 # Use bslib if available, otherwise shinydashboard
 use_bslib <- requireNamespace("bslib", quietly = TRUE)
 use_dt <- requireNamespace("DT", quietly = TRUE)
+de_choices <- c("Normalization only" = "none", "DESeq2", "edgeR", "limma")
 
 # --- UI ---
 if (use_bslib) {
@@ -35,7 +36,7 @@ if (use_bslib) {
             shiny::hr(),
             shiny::h5("Quick Start"),
             shiny::tags$ol(
-              shiny::tags$li("Upload your count matrix or BAM files in the Data Input tab"),
+              shiny::tags$li("Upload a count matrix and sample metadata in the Data Input tab"),
               shiny::tags$li("Configure pipeline parameters"),
               shiny::tags$li("Run the analysis"),
               shiny::tags$li("Explore interactive results and export")
@@ -56,7 +57,7 @@ if (use_bslib) {
                            accept = ".csv"),
           shiny::hr(),
           shiny::actionButton("load_example", "Load Example Data",
-                               class = "btn-primary")
+                              class = "btn-primary")
         ),
         bslib::card(
           bslib::card_header("Data Preview"),
@@ -75,16 +76,16 @@ if (use_bslib) {
         sidebar = bslib::sidebar(
           shiny::h4("Configuration"),
           shiny::selectInput("de_method", "DE Method",
-                              choices = c("DESeq2", "edgeR", "limma")),
+                             choices = de_choices),
           shiny::selectInput("norm_method", "Normalization",
-                              choices = c("cpm", "tpm", "tmm", "rle")),
+                             choices = c("cpm", "tmm", "rle")),
           shiny::numericInput("p_cutoff", "P-value Cutoff", 0.05,
-                               min = 0, max = 1, step = 0.01),
+                              min = 0, max = 1, step = 0.01),
           shiny::numericInput("fc_cutoff", "Log2FC Cutoff", 1,
-                               min = 0, step = 0.5),
+                              min = 0, step = 0.5),
           shiny::hr(),
           shiny::actionButton("run_pipeline", "Run Analysis",
-                               class = "btn-success btn-lg")
+                              class = "btn-success btn-lg")
         ),
         bslib::card(
           bslib::card_header("Analysis Log"),
@@ -133,8 +134,11 @@ if (use_bslib) {
 } else {
   # Fallback: basic shiny UI
   ui <- shiny::fluidPage(
-    shiny::titlePanel(shiny::tagList(utils::getFromNamespace(".cttir_brand_logo", "bambamR")(), "bambamR - RNA-Seq Analysis"),
-      windowTitle = "bambamR"),
+    shiny::titlePanel(
+      shiny::tagList(utils::getFromNamespace(".cttir_brand_logo", "bambamR")(),
+                     "bambamR - RNA-Seq Analysis"),
+      windowTitle = "bambamR"
+    ),
     shiny::tabsetPanel(
       shiny::tabPanel("Home",
         shiny::h3("Welcome to bambamR"),
@@ -156,7 +160,8 @@ if (use_bslib) {
         shiny::sidebarLayout(
           shiny::sidebarPanel(
             shiny::selectInput("de_method", "DE Method",
-                                c("DESeq2", "edgeR", "limma")),
+                               de_choices),
+            shiny::selectInput("norm_method", "Normalization", c("cpm", "tmm", "rle")),
             shiny::numericInput("p_cutoff", "P-value Cutoff", 0.05),
             shiny::numericInput("fc_cutoff", "Log2FC Cutoff", 1),
             shiny::actionButton("run_pipeline", "Run Analysis")
@@ -190,6 +195,12 @@ server <- function(input, output, session) {
     log_text = ""
   )
 
+  invalidate_results <- function() {
+    rv$norm_counts <- NULL
+    rv$de_results <- NULL
+    rv$status <- "inputs_changed"
+  }
+
   # Helper to append log
   log_msg <- function(msg) {
     rv$log_text <- paste0(rv$log_text, "\n", format(Sys.time(), "%H:%M:%S"),
@@ -198,8 +209,9 @@ server <- function(input, output, session) {
 
   # Load example data
   shiny::observeEvent(input$load_example, {
+    invalidate_results()
     example_path <- system.file("extdata", "example_counts.rds",
-                                 package = "bambamR")
+                                package = "bambamR")
     if (file.exists(example_path)) {
       example_data <- readRDS(example_path)
       rv$counts <- example_data$counts
@@ -225,22 +237,27 @@ server <- function(input, output, session) {
   shiny::observeEvent(input$count_file, {
     req <- shiny::req
     req(input$count_file)
-    ext <- tools::file_ext(input$count_file$name)
+    invalidate_results()
+    rv$counts <- NULL
+    ext <- tolower(tools::file_ext(input$count_file$name))
     tryCatch({
       if (ext == "rds") {
-        rv$counts <- readRDS(input$count_file$datapath)
+        counts <- readRDS(input$count_file$datapath)
       } else if (ext == "csv") {
         df <- data.table::fread(input$count_file$datapath, data.table = FALSE)
         rownames(df) <- df[[1]]
-        rv$counts <- as.matrix(df[, -1])
+        counts <- as.matrix(df[, -1, drop = FALSE])
       } else if (ext == "tsv") {
         df <- data.table::fread(input$count_file$datapath, sep = "\t",
-                                 data.table = FALSE)
+                                data.table = FALSE)
         rownames(df) <- df[[1]]
-        rv$counts <- as.matrix(df[, -1])
+        counts <- as.matrix(df[, -1, drop = FALSE])
+      } else {
+        stop("Supported count files: CSV, TSV or RDS.")
       }
+      rv$counts <- utils::getFromNamespace("validate_counts", "bambamR")(counts)
       log_msg(paste("Loaded count matrix:", nrow(rv$counts), "genes x",
-                     ncol(rv$counts), "samples"))
+                    ncol(rv$counts), "samples"))
     }, error = function(e) {
       log_msg(paste("Error loading counts:", e$message))
     })
@@ -250,6 +267,8 @@ server <- function(input, output, session) {
   shiny::observeEvent(input$metadata_file, {
     req <- shiny::req
     req(input$metadata_file)
+    invalidate_results()
+    rv$metadata <- NULL
     tryCatch({
       df <- data.table::fread(input$metadata_file$datapath, data.table = FALSE)
       rownames(df) <- df[[1]]
@@ -274,8 +293,23 @@ server <- function(input, output, session) {
     }
   })
 
+  if (use_dt) {
+    output$count_preview <- DT::renderDT({
+      shiny::req(rv$counts)
+      DT::datatable(utils::head(rv$counts, 20L), options = list(pageLength = 10))
+    })
+  } else {
+    output$count_preview_basic <- shiny::renderTable({
+      shiny::req(rv$counts)
+      utils::head(rv$counts, 20L)
+    }, rownames = TRUE)
+  }
+
   # Pipeline log
   output$pipeline_log <- shiny::renderText(rv$log_text)
+  shiny::observeEvent(list(input$de_method, input$norm_method), {
+    invalidate_results()
+  }, ignoreInit = TRUE)
 
   # Run pipeline
   shiny::observeEvent(input$run_pipeline, {
@@ -285,28 +319,27 @@ server <- function(input, output, session) {
     log_msg("Starting analysis...")
 
     tryCatch({
-      # Normalize
-      rv$norm_counts <- bambamR::bb_normalize(rv$counts, method = "cpm")
-      log_msg("Normalization complete (CPM)")
-
-      # DE analysis
-      if (!is.null(rv$metadata)) {
-        rv$de_results <- tryCatch(
-          .run_de_app(rv$counts, rv$metadata, input$de_method),
-          error = function(e) {
-            log_msg(paste("DE failed:", e$message))
-            NULL
-          }
-        )
-        if (!is.null(rv$de_results)) {
-          n_sig <- sum(rv$de_results$padj < input$p_cutoff, na.rm = TRUE)
-          log_msg(paste("DE complete:", n_sig, "significant genes"))
-        }
+      invalidate_results()
+      metadata <- rv$metadata
+      if (!is.null(metadata)) {
+        metadata <- utils::getFromNamespace(".match_metadata", "bambamR")(rv$counts, metadata)
       }
-
-      log_msg("Analysis complete!")
+      norm_method <- if (is.null(input$norm_method)) "cpm" else input$norm_method
+      norm_counts <- bambamR::bb_normalize(rv$counts, method = norm_method)
+      de_results <- NULL
+      if (!identical(input$de_method, "none")) {
+        if (is.null(metadata)) stop("Upload sample metadata for differential expression.")
+        de_results <- .run_de_app(rv$counts, metadata, input$de_method)
+      }
+      rv$norm_counts <- norm_counts
+      rv$de_results <- de_results
+      rv$metadata <- metadata
+      rv$status <- "complete"
+      log_msg(if (is.null(de_results)) "Normalization complete; DE was not requested."
+              else "Normalization and differential expression complete.")
     }, error = function(e) {
-      log_msg(paste("Pipeline error:", e$message))
+      rv$status <- "failed"
+      log_msg(paste("Analysis failed:", e$message))
     })
   })
 
@@ -315,13 +348,13 @@ server <- function(input, output, session) {
     req <- shiny::req
     req(rv$de_results)
     bambamR::bb_volcano(rv$de_results, fc_cutoff = input$fc_cutoff,
-                         p_cutoff = input$p_cutoff)
+                        p_cutoff = input$p_cutoff)
   })
 
   output$pca_plot <- shiny::renderPlot({
     req <- shiny::req
     req(rv$norm_counts, rv$metadata)
-    if ("condition" %in% colnames(rv$metadata)) {
+    if ("condition" %in% colnames(rv$metadata) && ncol(rv$norm_counts) >= 2L) {
       bambamR::bb_pca(rv$norm_counts, rv$metadata, color_by = "condition")
     }
   })
@@ -362,7 +395,9 @@ server <- function(input, output, session) {
   output$dl_result_rds <- shiny::downloadHandler(
     filename = function() paste0("bambamR_result_", Sys.Date(), ".rds"),
     content = function(file) {
+      shiny::req(identical(rv$status, "complete"))
       saveRDS(list(
+        status = rv$status,
         counts = rv$counts,
         metadata = rv$metadata,
         de_results = rv$de_results,
@@ -394,27 +429,7 @@ server <- function(input, output, session) {
 
 # Helper for DE in app context
 .run_de_app <- function(counts, metadata, method) {
-  shared <- intersect(colnames(counts), rownames(metadata))
-  if (length(shared) < 2) return(NULL)
-  counts <- counts[, shared, drop = FALSE]
-  metadata <- metadata[shared, , drop = FALSE]
-
-  switch(method,
-    DESeq2 = {
-      if (!requireNamespace("DESeq2", quietly = TRUE)) return(NULL)
-      bambamR::bb_deseq2(counts, metadata)
-    },
-    edgeR = {
-      if (!requireNamespace("edgeR", quietly = TRUE)) return(NULL)
-      bambamR::bb_edger(counts, metadata$condition)
-    },
-    limma = {
-      if (!requireNamespace("limma", quietly = TRUE)) return(NULL)
-      if (!requireNamespace("edgeR", quietly = TRUE)) return(NULL)
-      dm <- stats::model.matrix(~ condition, data = metadata)
-      bambamR::bb_limma_voom(counts, dm)
-    }
-  )
+  utils::getFromNamespace(".run_de", "bambamR")(counts, metadata, method, ~ condition)
 }
 
 shiny::shinyApp(ui = ui, server = server)

@@ -21,7 +21,7 @@ a character vector of length 2.}
 \item{genome_index}{Character. Path to genome index directory (STAR) or
 index prefix (HISAT2, minimap2).}
 
-\item{output_dir}{Character. Output directory for BAM files.}
+\item{output_dir}{Character. New or empty output directory for BAM files.}
 
 \item{aligner}{Character. One of \code{"STAR"}, \code{"HISAT2"}, \code{"minimap2"}.}
 
@@ -31,7 +31,7 @@ index prefix (HISAT2, minimap2).}
 elements. Default \code{FALSE}.}
 
 \item{extra_args}{Character or NULL. Additional arguments to pass to the
-aligner.}
+aligner, one argument per element (for example \code{c("-x", "sr")}).}
 }
 \value{
 A list with components:

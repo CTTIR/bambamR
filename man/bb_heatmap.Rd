@@ -24,7 +24,8 @@ bb_heatmap(
 \item{n_genes}{Integer. Number of top genes to display. Default \code{50}.}
 
 \item{annotation_col}{A data.frame for column (sample) annotations.
-Rownames must match column names of \code{counts}.}
+Rownames must match column names of \code{counts}. Annotation tracks require
+the optional \code{patchwork} package.}
 
 \item{scale}{Character. Scale rows (\code{"row"}), columns (\code{"column"}),
 or neither (\code{"none"}). Default \code{"row"}.}

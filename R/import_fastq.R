@@ -4,7 +4,8 @@
 #' base-R parser as fallback. Supports `.gz` compressed files.
 #'
 #' @param path Character. Path to a FASTQ or FASTQ.gz file.
-#' @param n Integer or NULL. Number of reads to sample. `NULL` reads all.
+#' @param n Integer or NULL. Number of initial reads to read. `NULL` reads all.
+#'   A finite limit uses the four-line base parser without reading the full file.
 #'
 #' @return A data.frame with columns:
 #' \describe{
@@ -27,15 +28,16 @@
 #'
 #' @export
 bb_read_fastq <- function(path, n = NULL) {
+  .validate_fastq_n(n)
 
   if (!file.exists(path)) {
     stop("File not found: ", path, call. = FALSE)
   }
 
-  if (requireNamespace("ShortRead", quietly = TRUE)) {
+  if (is.null(n) && requireNamespace("ShortRead", quietly = TRUE)) {
     .read_fastq_shortread(path, n)
   } else {
-    message("ShortRead not available. Using base-R FASTQ parser.")
+    message("Using base-R FASTQ parser.")
     .read_fastq_base(path, n)
   }
 }
@@ -65,13 +67,13 @@ bb_read_fastq <- function(path, n = NULL) {
 #' Read FASTQ with base R (fallback)
 #' @noRd
 .read_fastq_base <- function(path, n) {
+  .validate_fastq_n(n)
   # Handle gzipped files
-  if (grepl("\\.gz$", path)) {
-    con <- gzfile(path, "r")
-    on.exit(close(con))
-    lines <- readLines(con)
-  } else {
-    lines <- readLines(path)
+  con <- if (grepl("\\.gz$", path)) gzfile(path, "r") else file(path, "r")
+  on.exit(close(con), add = TRUE)
+  lines <- readLines(con, n = if (is.null(n)) -1L else as.integer(4 * n))
+  if (length(lines) %% 4L != 0L) {
+    stop("Incomplete FASTQ record; expected four lines per record.", call. = FALSE)
   }
 
   # FASTQ has 4 lines per record
@@ -89,6 +91,11 @@ bb_read_fastq <- function(path, n = NULL) {
   line1 <- (idx - 1L) * 4L + 1L  # ID lines
   line2 <- line1 + 1L             # Sequence lines
   line4 <- line1 + 3L             # Quality lines
+  if (any(!grepl("^@.+", lines[line1])) || any(!grepl("^\\+", lines[line1 + 2L])) ||
+        any(!nzchar(lines[line2])) || any(nchar(lines[line2]) != nchar(lines[line4]))) {
+    stop("Invalid FASTQ record: check headers, separators and sequence/quality lengths.",
+         call. = FALSE)
+  }
 
   data.frame(
     id       = sub("^@", "", lines[line1]),
@@ -96,4 +103,12 @@ bb_read_fastq <- function(path, n = NULL) {
     quality  = lines[line4],
     stringsAsFactors = FALSE
   )
+}
+
+#' @noRd
+.validate_fastq_n <- function(n) {
+  if (!is.null(n) && (!is.numeric(n) || length(n) != 1L || !is.finite(n) ||
+                        n < 0 || n != floor(n) || n > .Machine$integer.max / 4)) {
+    stop("'n' must be NULL or a non-negative integer within the parser limit.", call. = FALSE)
+  }
 }

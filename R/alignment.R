@@ -7,13 +7,13 @@
 #'   a character vector of length 2.
 #' @param genome_index Character. Path to genome index directory (STAR) or
 #'   index prefix (HISAT2, minimap2).
-#' @param output_dir Character. Output directory for BAM files.
+#' @param output_dir Character. New or empty output directory for BAM files.
 #' @param aligner Character. One of `"STAR"`, `"HISAT2"`, `"minimap2"`.
 #' @param threads Integer. Number of threads. Default `4`.
 #' @param paired Logical. Paired-end mode. If `TRUE`, `fastq` must have 2
 #'   elements. Default `FALSE`.
 #' @param extra_args Character or NULL. Additional arguments to pass to the
-#'   aligner.
+#'   aligner, one argument per element (for example `c("-x", "sr")`).
 #'
 #' @return A list with components:
 #' \describe{
@@ -35,11 +35,18 @@ bb_align <- function(fastq, genome_index, output_dir,
                      extra_args = NULL) {
 
   aligner <- match.arg(aligner)
+  .validate_threads(threads)
+  if (!is.logical(paired) || length(paired) != 1L || is.na(paired)) {
+    stop("'paired' must be TRUE or FALSE.", call. = FALSE)
+  }
 
   # Validate inputs
   if (paired && length(fastq) != 2L) {
     stop("For paired-end mode, 'fastq' must be a character vector of length 2.",
          call. = FALSE)
+  }
+  if (!is.character(fastq) || anyNA(fastq) || (!paired && length(fastq) != 1L)) {
+    stop("Single-end mode requires one FASTQ path.", call. = FALSE)
   }
   for (fq in fastq) {
     if (!file.exists(fq)) {
@@ -47,7 +54,11 @@ bb_align <- function(fastq, genome_index, output_dir,
     }
   }
   if (!dir.exists(output_dir)) {
-    dir.create(output_dir, recursive = TRUE)
+    if (!dir.create(output_dir, recursive = TRUE)) {
+      stop("Cannot create output directory: ", output_dir, call. = FALSE)
+    }
+  } else if (length(list.files(output_dir, all.files = TRUE, no.. = TRUE))) {
+    stop("Alignment output directory must be empty: ", output_dir, call. = FALSE)
   }
 
   switch(aligner,
@@ -89,10 +100,11 @@ bb_align <- function(fastq, genome_index, output_dir,
     args <- c(args, extra_args)
   }
 
-  cmd <- paste("STAR", paste(args, collapse = " "))
+  cmd <- paste("STAR", paste(shQuote(as.character(args)), collapse = " "))
   message("Running: ", cmd)
 
-  ret <- system2("STAR", args = args, stdout = TRUE, stderr = TRUE)
+  .run_tool("STAR", args)
+  .require_product(bam_out)
 
   # Parse STAR Log.final.out
   log_file <- paste0(prefix, "Log.final.out")
@@ -155,18 +167,15 @@ bb_align <- function(fastq, genome_index, output_dir,
     args <- c(args, extra_args)
   }
 
-  cmd <- paste("hisat2", paste(args, collapse = " "),
-               "| samtools sort -o", bam_out)
-  message("Running: ", cmd)
-
-  # Run hisat2, pipe to samtools sort
-  hisat_out <- system2("hisat2", args = args, stdout = TRUE, stderr = TRUE)
-
-  # Write SAM to temp, convert to sorted BAM
   sam_tmp <- tempfile(fileext = ".sam")
-  writeLines(hisat_out, sam_tmp)
-  system2("samtools", args = c("sort", "-o", bam_out, sam_tmp))
-  unlink(sam_tmp)
+  on.exit(unlink(sam_tmp), add = TRUE)
+  cmd <- paste("hisat2", paste(shQuote(as.character(args)), collapse = " "),
+               ">", shQuote(sam_tmp), "&& samtools sort -o", shQuote(bam_out), shQuote(sam_tmp))
+  message("Running: ", cmd)
+  .run_tool("hisat2", args, stdout = sam_tmp)
+  .require_product(sam_tmp)
+  .run_tool("samtools", c("sort", "-o", bam_out, sam_tmp))
+  .require_product(bam_out)
 
   # Parse summary from stderr
   stats <- data.frame(
@@ -194,14 +203,15 @@ bb_align <- function(fastq, genome_index, output_dir,
     args <- c(args, extra_args)
   }
 
-  cmd <- paste("minimap2", paste(args, collapse = " "),
-               "| samtools sort -o", bam_out)
-  message("Running: ", cmd)
-
   sam_tmp <- tempfile(fileext = ".sam")
-  system2("minimap2", args = args, stdout = sam_tmp, stderr = FALSE)
-  system2("samtools", args = c("sort", "-o", bam_out, sam_tmp))
-  unlink(sam_tmp)
+  on.exit(unlink(sam_tmp), add = TRUE)
+  cmd <- paste("minimap2", paste(shQuote(as.character(args)), collapse = " "),
+               ">", shQuote(sam_tmp), "&& samtools sort -o", shQuote(bam_out), shQuote(sam_tmp))
+  message("Running: ", cmd)
+  .run_tool("minimap2", args, stdout = sam_tmp)
+  .require_product(sam_tmp)
+  .run_tool("samtools", c("sort", "-o", bam_out, sam_tmp))
+  .require_product(bam_out)
 
   stats <- data.frame(
     metric = "alignment_complete",

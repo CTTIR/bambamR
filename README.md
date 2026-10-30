@@ -1,6 +1,7 @@
 # bambamR <picture class="cttir-readme-logo"><source class="cttir-logo-dark-source" media="(prefers-color-scheme: dark)" srcset="man/figures/logo-with-name-dark.png" /><img src="man/figures/logo-with-name.png" align="right" alt="bambamR logo" width="120" height="139" /></picture>
 
-[![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.21889924.svg)](https://doi.org/10.5281/zenodo.21889924)
+Development version. A published release DOI has not been verified; see
+[release status](MAINTENANCE.md).
 
 <!-- badges: start -->
 [![R-CMD-check](https://github.com/CTTIR/bambamR/actions/workflows/R-CMD-check.yaml/badge.svg)](https://github.com/CTTIR/bambamR/actions/workflows/R-CMD-check.yaml)
@@ -22,9 +23,9 @@ visualizations including onco plots, volcano plots, heatmaps, and PCA.
 
 ## Two Operating Modes
 
-bambamR never breaks if Bioconductor is missing. Every function that
-needs an optional package checks first and either falls back gracefully
-or gives a clear install instruction.
+CPM/TPM normalization and basic plots work with CRAN dependencies.
+Differential expression needs the selected Bioconductor engine. Missing
+engines produce an error; use `skip = "de"` for a normalization-only pipeline.
 
 | Feature | Minimal (CRAN-only) | Full (+ Bioconductor) |
 |---|:---:|:---:|
@@ -33,7 +34,7 @@ or gives a clear install instruction.
 | Differential expression | -- | Yes (DESeq2, edgeR, limma-voom) |
 | PCA, volcano, heatmap, MA | Yes | Yes |
 | **Onco plots** | **Yes** | **Yes** |
-| FASTQ / BAM import | Base-R fallback | ShortRead / Rsamtools |
+| FASTQ / BAM import | Base-R FASTQ / external samtools for BAM | ShortRead / Rsamtools |
 | Alignment wrappers | STAR / HISAT2 / minimap2 | STAR / HISAT2 / minimap2 |
 | Read counting | featureCounts CLI | GenomicAlignments |
 | Shiny interactive app | Yes | Yes |
@@ -58,14 +59,33 @@ if (!requireNamespace("BiocManager", quietly = TRUE))
 BiocManager::install(c(
   "DESeq2", "edgeR", "limma",
   "ShortRead", "Rsamtools",
-  "GenomicAlignments", "GenomicRanges"
+  "GenomicAlignments", "GenomicRanges", "GenomicFeatures", "txdbmaker",
+  "SummarizedExperiment"
 ))
 ```
 
+## First use from this checkout
+
+Prerequisites: R >= 4.1 and an internet connection to install CRAN dependencies.
+From the repository directory:
+
+```sh
+Rscript --vanilla -e 'install.packages(c("ggplot2", "data.table"), repos="https://cloud.r-project.org")'
+R CMD INSTALL .
+Rscript --vanilla -e 'library(bambamR); ex <- bb_example_counts(); result <- bb_pipeline(count_matrix=ex$counts, sample_info=ex$metadata, output_dir=tempfile("bambamR-"), skip="de"); stopifnot(result$status == "complete"); print(result)'
+```
+
+For the app, install `shiny` and optionally `bslib` and `DT`, then run
+`bambamR::bb_run_app(host = "127.0.0.1")`. Load the example data, select
+**Normalization only**, and run the analysis. External aligners, samtools,
+featureCounts and optional statistical engines are separate prerequisites.
+See [the maintenance record](MAINTENANCE.md) for tested versions and release gates.
+
 ## Bundled Example Datasets
 
-bambamR ships with ready-to-use example data so you can explore every
-feature without downloading external files or installing Bioconductor:
+bambamR ships with ready-to-use example data so you can explore
+normalization and plotting without downloading external files. New DE
+analyses still require Bioconductor; annotation tracks require `patchwork`:
 
 | Function | Contents |
 |---|---|
@@ -98,9 +118,11 @@ bb_pca(cpm, ex$metadata, color_by = "condition")
 bb_heatmap(cpm, n_genes = 30)
 
 # ── 5. Differential expression (requires DESeq2) ──────────
-de <- bb_deseq2(ex$counts, ex$metadata)
-bb_volcano(de)
-bb_ma_plot(de)
+if (requireNamespace("DESeq2", quietly = TRUE)) {
+  de <- bb_deseq2(ex$counts, ex$metadata)
+  bb_volcano(de)
+  bb_ma_plot(de)
+}
 
 # ... or use the pre-computed DE results (no Bioconductor!) ─
 de <- bb_example_de()
@@ -112,7 +134,9 @@ bb_heatmap(cpm, de_result = de, n_genes = 30)
 
 # ── 7. Oncoplot ───────────────────────────────────────────
 mut <- bb_example_mutations()
-bb_oncoplot(mut$mutations, n_genes = 15, annotation_df = mut$clinical)
+bb_oncoplot(mut$mutations, n_genes = 15)
+# With annotation tracks: install.packages("patchwork")
+# bb_oncoplot(mut$mutations, n_genes = 15, annotation_df = mut$clinical)
 
 # ── 8. Read a FASTQ file ─────────────────────────────────
 fq <- system.file("extdata", "example_reads.fastq", package = "bambamR")
@@ -126,7 +150,11 @@ bb_export_csv(de, "de_results.csv")
 ## Full Pipeline (FASTQ to Results)
 
 When you have FASTQ files, a genome index, and a GTF annotation, run the
-entire pipeline in one call:
+single-end pipeline in one call. Each FASTQ file is one sample; metadata
+rownames must equal filenames without `.fastq`, `.fq` or their `.gz` suffix.
+The pipeline does not infer paired-end mates. For pairs, call `bb_align()`
+with two explicit paths and `paired = TRUE`, then `bb_count_reads(paired = TRUE)`.
+Use a new output directory for each run:
 
 ```r
 result <- bb_pipeline(
@@ -165,8 +193,13 @@ bb_run_app()
 
 Upload your count matrix and metadata through the browser, configure
 normalization and DE parameters, run the analysis, and explore
-interactive plots. Export results as CSV, RDS, or publication-quality
-PDF.
+plots. Choose **Normalization only** for CRAN-only use. TPM is available
+through the R API with gene lengths; the app offers CPM, TMM and RLE.
+CSV/TSV counts need a first column of unique gene IDs and numeric sample
+columns; metadata need a first column of sample IDs matching all samples.
+Uploads and analysis-setting changes clear derived results. A failed run
+cannot export results from an earlier run. Export successful results as CSV,
+RDS or PDF. The app is intended for local use (`host = "127.0.0.1"`).
 
 ## Function Reference
 
@@ -255,3 +288,25 @@ Local software setup: vLLM with Python/PyTorch, plus R and RStudio.
 ## Branding
 
 Editable R artwork and regeneration instructions are in [tools/branding](https://github.com/CTTIR/bambamR/blob/main/tools/branding/README.md).
+
+## Input and analysis guarantees
+
+Counts must be finite and non-negative with unique gene/sample identifiers.
+Normalization rejects empty libraries. Named TPM lengths are matched by gene ID;
+all lengths must be finite and positive. Metadata must match every sample exactly
+and are reordered to the count columns. Deliberately subset both inputs before
+analysis if only a subset is intended.
+
+The edgeR pipeline uses the supplied design; its last coefficient is tested.
+limma accepts one contrast per call. A requested DE failure stops the pipeline;
+plot failures emit warnings and are recorded in `result$warnings` and `result$status`.
+Existing alignment directories and pipeline result files are protected from reuse.
+
+Oncoplot percentages use all samples represented in the input mutation table,
+even after selecting genes. Samples with no recorded mutations cannot be inferred
+from that table. These percentages are not a population prevalence estimate.
+Internal read counting supports exon/gene_id annotations; choose featureCounts
+for other features or grouping attributes. The two counting backends have distinct
+overlap/paired-read policies and should not be exchanged in an ongoing study
+without validating the resulting counts. Neither backend currently exposes
+strand-specific counting through this API.

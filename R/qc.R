@@ -204,14 +204,16 @@ summary.bb_qc <- function(object, ...) {
 
   # Fallback: system samtools
   if (nchar(Sys.which("samtools")) > 0L) {
-    out <- system2("samtools", args = c("flagstat", bam_path),
-                   stdout = TRUE, stderr = FALSE)
+    out <- .run_tool("samtools", c("flagstat", bam_path))
     # Parse first line: "N + N mapped"
-    mapped_line <- grep("mapped", out, value = TRUE)[1]
+    mapped_line <- grep("^[0-9]+ \\+ [0-9]+ mapped ", out, value = TRUE)[1]
     if (is.na(mapped_line)) return(NA_real_)
     total_line <- out[1]
-    total <- as.numeric(sub(" \\+.*", "", total_line))
-    mapped <- as.numeric(sub(" \\+.*", "", mapped_line))
+    total <- sum(as.numeric(strsplit(total_line, " +")[[1]][c(1L, 3L)]))
+    mapped <- sum(as.numeric(strsplit(mapped_line, " +")[[1]][c(1L, 3L)]))
+    if (!is.finite(total) || !is.finite(mapped) || mapped > total) {
+      stop("Invalid samtools flagstat counts.", call. = FALSE)
+    }
     if (total == 0) return(0)
     return(mapped / total)
   }

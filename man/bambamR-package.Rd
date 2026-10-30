@@ -6,24 +6,25 @@
 \alias{bambamR-package}
 \title{bambamR: End-to-End RNA-Seq Processing from FASTQ to Publication-Ready Plots}
 \description{
-\if{html}{\figure{logo.png}{options: style='float: right' alt='logo' width='120'}}
+\if{html}{\figure{logo.svg}{options: style='float: right' alt='logo' width='120'}}
 
 A streamlined toolkit for RNA-seq analysis covering FASTQ/BAM import, quality control, alignment, read counting, normalization, differential expression analysis, and publication-ready visualizations including onco plots, volcano plots, heatmaps, and PCA. Operates in minimal mode with CRAN-only dependencies or in full mode when Bioconductor packages are available.
 }
 \seealso{
 Useful links:
 \itemize{
-  \item \url{https://r-heller.github.io/bambamR/}
-  \item \url{https://github.com/r-heller/bambamR}
-  \item Report bugs at \url{https://github.com/r-heller/bambamR/issues}
+  \item \url{https://cttir.github.io/bambamR/}
+  \item \url{https://github.com/cttir/bambamR}
+  \item Report bugs at \url{https://github.com/cttir/bambamR/issues}
 }
 
 }
 \author{
-\strong{Maintainer}: Raban Heller \email{raban.heller@uni-ulm.de} (\href{https://orcid.org/0000-0001-8006-9742}{ORCID})
+\strong{Maintainer}: R. Heller \email{raban.heller@uni-ulm.de} (\href{https://orcid.org/0000-0001-8006-9742}{ORCID})
 
 Authors:
 \itemize{
+  \item R. Heller \email{raban.heller@uni-ulm.de} (\href{https://orcid.org/0000-0001-8006-9742}{ORCID})
   \item Hanno Witte
   \item Konrad Steinestel
 }

@@ -18,3 +18,7 @@
 ^\.claude$
 ^_coverage$
 ^tools/branding$
+^MAINTENANCE\.md$
+^\.git$
+^\.zenodo\.json$
+^CITATION\.cff$

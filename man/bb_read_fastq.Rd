@@ -9,7 +9,8 @@ bb_read_fastq(path, n = NULL)
 \arguments{
 \item{path}{Character. Path to a FASTQ or FASTQ.gz file.}
 
-\item{n}{Integer or NULL. Number of reads to sample. \code{NULL} reads all.}
+\item{n}{Integer or NULL. Number of initial reads to read. \code{NULL} reads all.
+A finite limit uses the four-line base parser without reading the full file.}
 }
 \value{
 A data.frame with columns:

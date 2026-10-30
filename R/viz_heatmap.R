@@ -8,7 +8,8 @@
 #'   `n_genes` by adjusted p-value are shown.
 #' @param n_genes Integer. Number of top genes to display. Default `50`.
 #' @param annotation_col A data.frame for column (sample) annotations.
-#'   Rownames must match column names of `counts`.
+#'   Rownames must match column names of `counts`. Annotation tracks require
+#'   the optional `patchwork` package.
 #' @param scale Character. Scale rows (`"row"`), columns (`"column"`),
 #'   or neither (`"none"`). Default `"row"`.
 #' @param cluster_rows Logical. Cluster rows. Default `TRUE`.
@@ -96,9 +97,10 @@ bb_heatmap <- function(counts, de_result = NULL, n_genes = 50L,
   fill_gradient <- grDevices::colorRampPalette(color_palette)(100)
 
   p <- ggplot2::ggplot(df, ggplot2::aes(x = col_sample, y = row_gene,
-                                         fill = value)) +
+                                        fill = value)) +
     ggplot2::geom_tile(color = NA) +
-    ggplot2::scale_fill_gradientn(colors = fill_gradient, name = "Z-score") +
+    ggplot2::scale_fill_gradientn(colors = fill_gradient,
+                                  name = if (scale == "none") "Expression" else "Z-score") +
     ggplot2::labs(x = NULL, y = NULL, title = "Heatmap") +
     ggplot2::theme_minimal(base_size = 10) +
     ggplot2::theme(
@@ -108,5 +110,17 @@ bb_heatmap <- function(counts, de_result = NULL, n_genes = 50L,
       panel.grid = ggplot2::element_blank()
     )
 
+  if (!is.null(annotation_col)) {
+    check_pkg("patchwork", reason = "for heatmap annotation tracks")
+    annotation_col <- .match_metadata(counts, annotation_col)
+    anno <- .melt_annotation(annotation_col, col_samples, col_samples)
+    p_anno <- ggplot2::ggplot(anno, ggplot2::aes(x = sample, y = variable,
+                                                 fill = annotation_value)) +
+      ggplot2::geom_tile() +
+      ggplot2::scale_x_discrete(limits = col_samples, drop = FALSE) +
+      ggplot2::labs(x = NULL, y = NULL, fill = "Annotation") +
+      ggplot2::theme_minimal()
+    return(p / p_anno + patchwork::plot_layout(heights = c(4, 1)))
+  }
   p
 }

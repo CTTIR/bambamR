@@ -21,7 +21,9 @@ bb_pipeline(
 }
 \arguments{
 \item{fastq_dir}{Character or NULL. Directory containing FASTQ files.
-If provided, the pipeline starts from alignment.}
+If provided, the pipeline starts from alignment. Each file is one
+single-end sample, named by removing its FASTQ extension. For paired-end
+reads use \code{\link[=bb_align]{bb_align()}} with explicit pairs, then \code{\link[=bb_count_reads]{bb_count_reads()}}.}
 
 \item{bam_dir}{Character or NULL. Directory containing BAM files.
 If provided, the pipeline starts from read counting.}
@@ -30,7 +32,7 @@ If provided, the pipeline starts from read counting.}
 If provided, the pipeline starts from normalization/DE.}
 
 \item{output_dir}{Character. Output directory for results.
-Default \code{"bambamR_output"}.}
+Default \code{"bambamR_output"}. Existing result files are never overwritten.}
 
 \item{genome_index}{Character or NULL. Path to genome index. Required if
 starting from FASTQ.}

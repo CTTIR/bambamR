@@ -28,7 +28,7 @@
 #' bb_volcano(de)
 #'
 #' @importFrom ggplot2 ggplot aes geom_point geom_hline geom_vline labs
-#'   scale_color_manual theme_minimal theme element_text
+#' @importFrom ggplot2 scale_color_manual theme_minimal theme element_text
 #' @export
 bb_volcano <- function(de_result,
                        fc_cutoff = 1,

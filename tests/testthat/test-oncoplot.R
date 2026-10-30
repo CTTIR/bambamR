@@ -18,7 +18,7 @@ test_that("bb_oncoplot works with MAF-format data", {
     Hugo_Symbol = c("TP53", "KRAS", "PIK3CA"),
     Tumor_Sample_Barcode = c("S1", "S2", "S3"),
     Variant_Classification = c("Missense_Mutation", "Nonsense_Mutation",
-                                "Splice_Site"),
+                               "Splice_Site"),
     stringsAsFactors = FALSE
   )
 
@@ -54,7 +54,7 @@ test_that("bb_oncoplot with annotation tracks", {
   )
 
   p <- bb_oncoplot(mut_data, n_genes = 3, annotation_df = anno,
-                    show_barplot = FALSE)
+                   show_barplot = FALSE)
   expect_true(inherits(p, "gg") || inherits(p, "patchwork"))
 })
 
