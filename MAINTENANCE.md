@@ -198,3 +198,15 @@ synthetic products and exact source identities are under
 `hosted-followup/bambamR/runtime` in the external maintenance evidence.
 Hosted checks for the follow-up commit must still be observed
 separately.
+
+The first hosted follow-up exposed a Windows-specific path regression:
+native backslash separators entered the Unix shell-punctuation staging
+path. The helper now converts those separators only on Windows, before
+testing whether staging is necessary; the returned original
+`input_paths` remain unchanged. Regressions cover drive-prefixed Windows
+paths and preservation of literal backslashes in Unix filenames, while
+retaining the original paired-command and native punctuation fixtures.
+The experimental Ubuntu oldrel-3 dependency job separately cannot
+resolve optional `txdbmaker` from Bioconductor3.18; that availability
+limit is retained, not treated as a successful full-Bioconductor
+qualification.
