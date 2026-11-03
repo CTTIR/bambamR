@@ -61,3 +61,35 @@ test_that("HISAT2 removes aliases after tool failure and refuses unsafe optional
       extra_args = c("--rg-id", value)), "optional arguments cannot safely")
   }
 })
+
+
+test_that("Windows drive paths use safe separators without index staging", {
+  helper <- .hisat2_inputs
+  lookup <- new.env(parent = environment(helper))
+  lookup$.Platform <- list(OS.type = "windows")
+  environment(helper) <- lookup
+  reads <- c("C:\\reads\\mate1.fastq", "C:\\reads\\mate2.fastq")
+  prefix <- "D:\\indexes\\hg38"
+  x <- helper(reads, prefix)
+  expect_identical(x$fastq, c("C:/reads/mate1.fastq", "C:/reads/mate2.fastq"))
+  expect_identical(x$genome_index, "D:/indexes/hg38")
+  expect_null(x$directory)
+  expect_identical(reads, c("C:\\reads\\mate1.fastq", "C:\\reads\\mate2.fastq"))
+})
+
+test_that("Unix literal backslashes remain filename bytes and are staged", {
+  skip_on_os("windows")
+  root <- withr::local_tempdir()
+  reads <- file.path(root, "literal\\backslash.fastq")
+  writeLines(c("@read", "ACGT", "+", "IIII"), reads)
+  prefix <- file.path(root, "index")
+  parts <- paste0(prefix, ".", seq_len(8L), ".ht2")
+  for (part in parts) writeLines("index", part)
+  before <- tools::md5sum(c(reads, parts))
+  x <- .hisat2_inputs(reads, prefix)
+  withr::defer(unlink(x$directory, recursive = TRUE))
+  expect_true(dir.exists(x$directory))
+  expect_identical(readLines(x$fastq), readLines(reads))
+  expect_identical(Sys.readlink(x$fastq), normalizePath(reads))
+  expect_identical(tools::md5sum(c(reads, parts)), before)
+})
