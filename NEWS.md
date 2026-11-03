@@ -1,5 +1,8 @@
 # Development changes
 
+* Expand existing Windows short read-path aliases before HISAT2 admission;
+  preserve bare index names and the caller's original path provenance.
+
 * Normalize Windows path separators before HISAT2 alias admission while
   preserving literal backslashes in Unix filenames and original input paths.
 * Preserve HISAT2 FASTQ/index paths containing spaces or shell punctuation with

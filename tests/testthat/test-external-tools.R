@@ -124,16 +124,22 @@ test_that(".align_hisat2 builds a paired-end command", {
   writeLines(c("@r1", "ACGT", "+", "IIII"), fq1)
   writeLines(c("@r1", "ACGT", "+", "IIII"), fq2)
   out_dir <- withr::local_tempdir()
+  index <- file.path(out_dir, "index")
+  parts <- paste0(index, ".", seq_len(8L), ".ht2")
+  for (part in parts) writeLines("synthetic index part", part)
+  original_hashes <- tools::md5sum(c(fq1, fq2, parts))
 
   local_mocked_bindings(check_tool = function(tool) invisible(tool),
                         .package = "bambamR")
   local_mocked_bindings(.run_tool = fake_alignment_tool, .package = "bambamR")
 
-  res <- bambamR:::.align_hisat2(c(fq1, fq2), "idx", out_dir, threads = 2L,
+  res <- bambamR:::.align_hisat2(c(fq1, fq2), index, out_dir, threads = 2L,
                                  paired = TRUE, extra_args = NULL)
   expect_match(res$command, "hisat2")
   expect_match(res$command, "samtools sort")
   expect_equal(res$stats$metric, "alignment_complete")
+  expect_identical(res$input_paths, list(fastq = c(fq1, fq2), genome_index = index))
+  expect_identical(tools::md5sum(c(fq1, fq2, parts)), original_hashes)
 })
 
 test_that(".align_minimap2 builds a command and reports completion", {
