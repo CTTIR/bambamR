@@ -69,7 +69,8 @@ to <code>featureCounts</code> from the Subread package.</p>
 
 
 <dl><dt id="arg-bam-paths">bam_paths<a class="anchor" aria-label="anchor" href="#arg-bam-paths"></a></dt>
-<dd><p>Character vector. Paths to BAM files.</p></dd>
+<dd><p>Character vector. Paths to BAM files. Optional vector names
+supply unique sample IDs when BAM basenames are not unique.</p></dd>
 
 
 <dt id="arg-annotation">annotation<a class="anchor" aria-label="anchor" href="#arg-annotation"></a></dt>
@@ -96,7 +97,8 @@ Default <code>"exon"</code>.</p></dd>
 
 
 <dt id="arg-paired">paired<a class="anchor" aria-label="anchor" href="#arg-paired"></a></dt>
-<dd><p>Logical. Paired-end data. Default <code>FALSE</code>.</p></dd>
+<dd><p>Logical. Count paired-end fragments. Default <code>FALSE</code>.
+The featureCounts backend requires Subread 2.0.2 or later in paired mode.</p></dd>
 
 </dl></div>
     <div class="section level2">

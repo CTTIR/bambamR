@@ -11,18 +11,21 @@ available.
 
 Useful links:
 
-- <https://r-heller.github.io/bambamR/>
+- <https://cttir.github.io/bambamR/>
 
-- <https://github.com/r-heller/bambamR>
+- <https://github.com/cttir/bambamR>
 
-- Report bugs at <https://github.com/r-heller/bambamR/issues>
+- Report bugs at <https://github.com/cttir/bambamR/issues>
 
 ## Author
 
-**Maintainer**: Raban Heller <raban.heller@uni-ulm.de>
+**Maintainer**: R. Heller <raban.heller@uni-ulm.de>
 ([ORCID](https://orcid.org/0000-0001-8006-9742))
 
 Authors:
+
+- R. Heller <raban.heller@uni-ulm.de>
+  ([ORCID](https://orcid.org/0000-0001-8006-9742))
 
 - Hanno Witte
 

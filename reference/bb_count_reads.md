@@ -23,7 +23,8 @@ bb_count_reads(
 
 - bam_paths:
 
-  Character vector. Paths to BAM files.
+  Character vector. Paths to BAM files. Optional vector names supply
+  unique sample IDs when BAM basenames are not unique.
 
 - annotation:
 
@@ -49,7 +50,8 @@ bb_count_reads(
 
 - paired:
 
-  Logical. Paired-end data. Default `FALSE`.
+  Logical. Count paired-end fragments. Default `FALSE`. The
+  featureCounts backend requires Subread 2.0.2 or later in paired mode.
 
 ## Value
 

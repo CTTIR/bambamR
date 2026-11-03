@@ -68,7 +68,7 @@
 <img src="logo.svg" class="logo" alt=""><h1 id="bambamr-">bambamR <picture class="cttir-readme-logo"><source class="cttir-logo-dark-source" media="(prefers-color-scheme: dark)" srcset="reference/figures/logo-with-name-dark.png"><img src="reference/figures/logo-with-name.png" align="right" alt="bambamR logo" width="120" height="139"></picture><a class="anchor" aria-label="anchor" href="#bambamr-"></a>
 </h1>
 </div>
-<p><a href="https://doi.org/10.5281/zenodo.21889924" class="external-link"><img src="https://zenodo.org/badge/DOI/10.5281/zenodo.21889924.svg" alt="DOI"></a></p>
+<p>Development version. A published release DOI has not been verified; see <a href="MAINTENANCE.html">release status</a>.</p>
 <!-- badges: start -->
 
 <p><strong>End-to-end RNA-seq processing from FASTQ to publication-ready plots.</strong></p>
@@ -76,7 +76,7 @@
 <div class="section level2">
 <h2 id="two-operating-modes">Two Operating Modes<a class="anchor" aria-label="anchor" href="#two-operating-modes"></a>
 </h2>
-<p>bambamR never breaks if Bioconductor is missing. Every function that needs an optional package checks first and either falls back gracefully or gives a clear install instruction.</p>
+<p>CPM/TPM normalization and basic plots work with CRAN dependencies. Differential expression needs the selected Bioconductor engine. Missing engines produce an error; use <code>skip = "de"</code> for a normalization-only pipeline.</p>
 <table class="table">
 <colgroup>
 <col width="23%">
@@ -116,7 +116,7 @@
 </tr>
 <tr>
 <td>FASTQ / BAM import</td>
-<td align="center">Base-R fallback</td>
+<td align="center">Base-R FASTQ / external samtools for BAM</td>
 <td align="center">ShortRead / Rsamtools</td>
 </tr>
 <tr>
@@ -155,13 +155,23 @@
 <span><span class="fu">BiocManager</span><span class="fu">::</span><span class="fu"><a href="https://bioconductor.github.io/BiocManager/reference/install.html" class="external-link">install</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span></span>
 <span>  <span class="st">"DESeq2"</span>, <span class="st">"edgeR"</span>, <span class="st">"limma"</span>,</span>
 <span>  <span class="st">"ShortRead"</span>, <span class="st">"Rsamtools"</span>,</span>
-<span>  <span class="st">"GenomicAlignments"</span>, <span class="st">"GenomicRanges"</span></span>
+<span>  <span class="st">"GenomicAlignments"</span>, <span class="st">"GenomicRanges"</span>, <span class="st">"GenomicFeatures"</span>, <span class="st">"txdbmaker"</span>,</span>
+<span>  <span class="st">"SummarizedExperiment"</span></span>
 <span><span class="op">)</span><span class="op">)</span></span></code></pre></div>
+</div>
+<div class="section level2">
+<h2 id="first-use-from-this-checkout">First use from this checkout<a class="anchor" aria-label="anchor" href="#first-use-from-this-checkout"></a>
+</h2>
+<p>Prerequisites: R &gt;= 4.1 and an internet connection to install CRAN dependencies. From the repository directory:</p>
+<div class="sourceCode" id="cb3"><pre class="sourceCode sh"><code class="sourceCode bash"><span id="cb3-1"><a href="#cb3-1" tabindex="-1"></a><span class="ex">Rscript</span> <span class="at">--vanilla</span> <span class="at">-e</span> <span class="st">'install.packages(c("ggplot2", "data.table"), repos="https://cloud.r-project.org")'</span></span>
+<span id="cb3-2"><a href="#cb3-2" tabindex="-1"></a><span class="ex">R</span> CMD INSTALL .</span>
+<span id="cb3-3"><a href="#cb3-3" tabindex="-1"></a><span class="ex">Rscript</span> <span class="at">--vanilla</span> <span class="at">-e</span> <span class="st">'library(bambamR); ex &lt;- bb_example_counts(); result &lt;- bb_pipeline(count_matrix=ex$counts, sample_info=ex$metadata, output_dir=tempfile("bambamR-"), skip="de"); stopifnot(result$status == "complete"); print(result)'</span></span></code></pre></div>
+<p>For the app, install <code>shiny</code> and optionally <code>bslib</code> and <code>DT</code>, then run <code>bambamR::bb_run_app(host = "127.0.0.1")</code>. Load the example data, select <strong>Normalization only</strong>, and run the analysis. External aligners, samtools, featureCounts and optional statistical engines are separate prerequisites. See <a href="MAINTENANCE.html">the maintenance record</a> for tested versions and release gates.</p>
 </div>
 <div class="section level2">
 <h2 id="bundled-example-datasets">Bundled Example Datasets<a class="anchor" aria-label="anchor" href="#bundled-example-datasets"></a>
 </h2>
-<p>bambamR ships with ready-to-use example data so you can explore every feature without downloading external files or installing Bioconductor:</p>
+<p>bambamR ships with ready-to-use example data so you can explore normalization and plotting without downloading external files. New DE analyses still require Bioconductor; annotation tracks require <code>patchwork</code>:</p>
 <table class="table">
 <colgroup>
 <col width="50%">
@@ -191,7 +201,7 @@
 <div class="section level2">
 <h2 id="quick-start">Quick Start<a class="anchor" aria-label="anchor" href="#quick-start"></a>
 </h2>
-<div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://cttir.github.io/bambamR/">bambamR</a></span><span class="op">)</span></span>
 <span></span>
 <span><span class="co"># ── 1. Load example data ───────────────────────────────────</span></span>
@@ -211,9 +221,11 @@
 <span><span class="fu"><a href="reference/bb_heatmap.html">bb_heatmap</a></span><span class="op">(</span><span class="va">cpm</span>, n_genes <span class="op">=</span> <span class="fl">30</span><span class="op">)</span></span>
 <span></span>
 <span><span class="co"># ── 5. Differential expression (requires DESeq2) ──────────</span></span>
-<span><span class="va">de</span> <span class="op">&lt;-</span> <span class="fu"><a href="reference/bb_deseq2.html">bb_deseq2</a></span><span class="op">(</span><span class="va">ex</span><span class="op">$</span><span class="va">counts</span>, <span class="va">ex</span><span class="op">$</span><span class="va">metadata</span><span class="op">)</span></span>
-<span><span class="fu"><a href="reference/bb_volcano.html">bb_volcano</a></span><span class="op">(</span><span class="va">de</span><span class="op">)</span></span>
-<span><span class="fu"><a href="reference/bb_ma_plot.html">bb_ma_plot</a></span><span class="op">(</span><span class="va">de</span><span class="op">)</span></span>
+<span><span class="kw">if</span> <span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/ns-load.html" class="external-link">requireNamespace</a></span><span class="op">(</span><span class="st">"DESeq2"</span>, quietly <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span><span class="op">)</span> <span class="op">{</span></span>
+<span>  <span class="va">de</span> <span class="op">&lt;-</span> <span class="fu"><a href="reference/bb_deseq2.html">bb_deseq2</a></span><span class="op">(</span><span class="va">ex</span><span class="op">$</span><span class="va">counts</span>, <span class="va">ex</span><span class="op">$</span><span class="va">metadata</span><span class="op">)</span></span>
+<span>  <span class="fu"><a href="reference/bb_volcano.html">bb_volcano</a></span><span class="op">(</span><span class="va">de</span><span class="op">)</span></span>
+<span>  <span class="fu"><a href="reference/bb_ma_plot.html">bb_ma_plot</a></span><span class="op">(</span><span class="va">de</span><span class="op">)</span></span>
+<span><span class="op">}</span></span>
 <span></span>
 <span><span class="co"># ... or use the pre-computed DE results (no Bioconductor!) ─</span></span>
 <span><span class="va">de</span> <span class="op">&lt;-</span> <span class="fu"><a href="reference/bb_example_de.html">bb_example_de</a></span><span class="op">(</span><span class="op">)</span></span>
@@ -225,7 +237,9 @@
 <span></span>
 <span><span class="co"># ── 7. Oncoplot ───────────────────────────────────────────</span></span>
 <span><span class="va">mut</span> <span class="op">&lt;-</span> <span class="fu"><a href="reference/bb_example_mutations.html">bb_example_mutations</a></span><span class="op">(</span><span class="op">)</span></span>
-<span><span class="fu"><a href="reference/bb_oncoplot.html">bb_oncoplot</a></span><span class="op">(</span><span class="va">mut</span><span class="op">$</span><span class="va">mutations</span>, n_genes <span class="op">=</span> <span class="fl">15</span>, annotation_df <span class="op">=</span> <span class="va">mut</span><span class="op">$</span><span class="va">clinical</span><span class="op">)</span></span>
+<span><span class="fu"><a href="reference/bb_oncoplot.html">bb_oncoplot</a></span><span class="op">(</span><span class="va">mut</span><span class="op">$</span><span class="va">mutations</span>, n_genes <span class="op">=</span> <span class="fl">15</span><span class="op">)</span></span>
+<span><span class="co"># With annotation tracks: install.packages("patchwork")</span></span>
+<span><span class="co"># bb_oncoplot(mut$mutations, n_genes = 15, annotation_df = mut$clinical)</span></span>
 <span></span>
 <span><span class="co"># ── 8. Read a FASTQ file ─────────────────────────────────</span></span>
 <span><span class="va">fq</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/system.file.html" class="external-link">system.file</a></span><span class="op">(</span><span class="st">"extdata"</span>, <span class="st">"example_reads.fastq"</span>, package <span class="op">=</span> <span class="st">"bambamR"</span><span class="op">)</span></span>
@@ -238,8 +252,8 @@
 <div class="section level2">
 <h2 id="full-pipeline-fastq-to-results">Full Pipeline (FASTQ to Results)<a class="anchor" aria-label="anchor" href="#full-pipeline-fastq-to-results"></a>
 </h2>
-<p>When you have FASTQ files, a genome index, and a GTF annotation, run the entire pipeline in one call:</p>
-<div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
+<p>When you have FASTQ files, a genome index, and a GTF annotation, run the single-end pipeline in one call. Each FASTQ file is one sample; metadata rownames must equal filenames without <code>.fastq</code>, <code>.fq</code> or their <code>.gz</code> suffix. The pipeline does not infer paired-end mates. For pairs, call <code><a href="reference/bb_align.html">bb_align()</a></code> with two explicit paths and <code>paired = TRUE</code>, then <code>bb_count_reads(paired = TRUE)</code>. Use a new output directory for each run:</p>
+<div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">result</span> <span class="op">&lt;-</span> <span class="fu"><a href="reference/bb_pipeline.html">bb_pipeline</a></span><span class="op">(</span></span>
 <span>  fastq_dir    <span class="op">=</span> <span class="st">"raw_reads/"</span>,</span>
 <span>  genome_index <span class="op">=</span> <span class="st">"STAR_index/"</span>,</span>
@@ -256,7 +270,7 @@
 <span><span class="va">result</span><span class="op">$</span><span class="va">plots</span><span class="op">$</span><span class="va">pca</span>    <span class="co"># ggplot object</span></span>
 <span><span class="va">result</span><span class="op">$</span><span class="va">plots</span><span class="op">$</span><span class="va">volcano</span></span></code></pre></div>
 <p>You can also enter the pipeline at any stage:</p>
-<div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb6"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># From BAM files (skip alignment)</span></span>
 <span><span class="va">result</span> <span class="op">&lt;-</span> <span class="fu"><a href="reference/bb_pipeline.html">bb_pipeline</a></span><span class="op">(</span>bam_dir <span class="op">=</span> <span class="st">"aligned/"</span>, annotation <span class="op">=</span> <span class="st">"genes.gtf"</span>,</span>
 <span>                      sample_info <span class="op">=</span> <span class="va">meta</span><span class="op">)</span></span>
@@ -267,9 +281,9 @@
 <div class="section level2">
 <h2 id="interactive-shiny-app">Interactive Shiny App<a class="anchor" aria-label="anchor" href="#interactive-shiny-app"></a>
 </h2>
-<div class="sourceCode" id="cb6"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb7"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="reference/bb_run_app.html">bb_run_app</a></span><span class="op">(</span><span class="op">)</span></span></code></pre></div>
-<p>Upload your count matrix and metadata through the browser, configure normalization and DE parameters, run the analysis, and explore interactive plots. Export results as CSV, RDS, or publication-quality PDF.</p>
+<p>Upload your count matrix and metadata through the browser, configure normalization and DE parameters, run the analysis, and explore plots. Choose <strong>Normalization only</strong> for CRAN-only use. TPM is available through the R API with gene lengths; the app offers CPM, TMM and RLE. CSV/TSV counts need a first column of unique gene IDs and numeric sample columns; metadata need a first column of sample IDs matching all samples. Uploads and analysis-setting changes clear derived results. A failed run cannot export results from an earlier run. Export successful results as CSV, RDS or PDF. The app is intended for local use (<code>host = "127.0.0.1"</code>).</p>
 </div>
 <div class="section level2">
 <h2 id="function-reference">Function Reference<a class="anchor" aria-label="anchor" href="#function-reference"></a>
@@ -412,6 +426,13 @@ https://github.com/cttir/bambamR</code></pre>
 <h2 id="branding">Branding<a class="anchor" aria-label="anchor" href="#branding"></a>
 </h2>
 <p>Editable R artwork and regeneration instructions are in <a href="https://github.com/CTTIR/bambamR/blob/main/tools/branding/README.md" class="external-link">tools/branding</a>.</p>
+</div>
+<div class="section level2">
+<h2 id="input-and-analysis-guarantees">Input and analysis guarantees<a class="anchor" aria-label="anchor" href="#input-and-analysis-guarantees"></a>
+</h2>
+<p>Counts must be finite and non-negative with unique gene/sample identifiers. Normalization rejects empty libraries. Named TPM lengths are matched by gene ID; all lengths must be finite and positive. Metadata must match every sample exactly and are reordered to the count columns. Deliberately subset both inputs before analysis if only a subset is intended.</p>
+<p>The edgeR pipeline uses the supplied design; its last coefficient is tested. limma accepts one contrast per call. A requested DE failure stops the pipeline; plot failures emit warnings and are recorded in <code>result$warnings</code> and <code>result$status</code>. Existing alignment directories and pipeline result files are protected from reuse.</p>
+<p>Oncoplot percentages use all samples represented in the input mutation table, even after selecting genes. Samples with no recorded mutations cannot be inferred from that table. These percentages are not a population prevalence estimate. Internal read counting supports exon/gene_id annotations; choose featureCounts for other features or grouping attributes. The two counting backends have distinct overlap/paired-read policies and should not be exchanged in an ongoing study without validating the resulting counts. Neither backend currently exposes strand-specific counting through this API.</p>
 </div>
 </div>
   </main><aside class="col-md-3"><div class="links">

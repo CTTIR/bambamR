@@ -28,7 +28,7 @@ and returns a modifiable ggplot object.
 ``` r
 
 library(bambamR)
-#> bambamR: Full mode (all Bioconductor packages available)
+#> bambamR: Optional Bioconductor engines are installed
 library(ggplot2)
 ```
 
@@ -135,7 +135,7 @@ returns a ggplot object, you can further customize:
 ``` r
 
 p <- bb_oncoplot(mut_data, n_genes = 8, show_barplot = FALSE,
-                  title = "Mutation Landscape")
+                 title = "Mutation Landscape")
 p + theme(legend.position = "right")
 ```
 

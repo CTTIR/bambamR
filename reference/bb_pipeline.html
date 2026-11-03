@@ -75,7 +75,9 @@ expression, and visualization.</p>
 
 <dl><dt id="arg-fastq-dir">fastq_dir<a class="anchor" aria-label="anchor" href="#arg-fastq-dir"></a></dt>
 <dd><p>Character or NULL. Directory containing FASTQ files.
-If provided, the pipeline starts from alignment.</p></dd>
+If provided, the pipeline starts from alignment. Each file is one
+single-end sample, named by removing its FASTQ extension. For paired-end
+reads use <code><a href="bb_align.html">bb_align()</a></code> with explicit pairs, then <code><a href="bb_count_reads.html">bb_count_reads()</a></code>.</p></dd>
 
 
 <dt id="arg-bam-dir">bam_dir<a class="anchor" aria-label="anchor" href="#arg-bam-dir"></a></dt>
@@ -90,7 +92,7 @@ If provided, the pipeline starts from normalization/DE.</p></dd>
 
 <dt id="arg-output-dir">output_dir<a class="anchor" aria-label="anchor" href="#arg-output-dir"></a></dt>
 <dd><p>Character. Output directory for results.
-Default <code>"bambamR_output"</code>.</p></dd>
+Default <code>"bambamR_output"</code>. Existing result files are never overwritten.</p></dd>
 
 
 <dt id="arg-genome-index">genome_index<a class="anchor" aria-label="anchor" href="#arg-genome-index"></a></dt>

@@ -52,7 +52,7 @@ BiocManager::install(c("DESeq2", "edgeR", "limma", "ShortRead", "Rsamtools"))
 ``` r
 
 library(bambamR)
-#> bambamR: Full mode (all Bioconductor packages available)
+#> bambamR: Optional Bioconductor engines are installed
 ```
 
 ------------------------------------------------------------------------
@@ -375,6 +375,7 @@ bambamR includes a small example FASTQ file (100 reads):
 
 fq_path <- system.file("extdata", "example_reads.fastq", package = "bambamR")
 reads <- bb_read_fastq(fq_path, n = 5)
+#> Using base-R FASTQ parser.
 reads
 #>                    id
 #> 1 read_0001 length=75
@@ -456,6 +457,13 @@ bb_export_rds(de_results, "de_results.rds")
 ------------------------------------------------------------------------
 
 ## Full Pipeline (FASTQ to Plots in One Call)
+
+FASTQ entry treats each file as one single-end sample. Use explicit
+paired paths with `bb_align(paired = TRUE)` for paired reads. Metadata
+must match all samples exactly; use a fresh output directory for every
+run. A requested DE failure stops the pipeline. For CRAN-only counts
+processing use `skip = "de"`. Annotation tracks in plots require
+`patchwork`.
 
 When you have real data (FASTQ files, a genome index, and a GTF
 annotation), run the entire pipeline with a single function:

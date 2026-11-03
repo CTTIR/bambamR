@@ -17,7 +17,9 @@ bb_read_fastq(path, n = NULL)
 
 - n:
 
-  Integer or NULL. Number of reads to sample. `NULL` reads all.
+  Integer or NULL. Number of initial reads to read. `NULL` reads all. A
+  finite limit uses the four-line base parser without reading the full
+  file.
 
 ## Value
 

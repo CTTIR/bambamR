@@ -31,7 +31,7 @@ bb_align(
 
 - output_dir:
 
-  Character. Output directory for BAM files.
+  Character. New or empty output directory for BAM files.
 
 - aligner:
 
@@ -48,7 +48,8 @@ bb_align(
 
 - extra_args:
 
-  Character or NULL. Additional arguments to pass to the aligner.
+  Character or NULL. Additional arguments to pass to the aligner, one
+  argument per element (for example `c("-x", "sr")`).
 
 ## Value
 

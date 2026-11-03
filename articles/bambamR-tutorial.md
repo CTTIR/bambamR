@@ -26,7 +26,7 @@ packages are required.**
 ``` r
 
 library(bambamR)
-#> bambamR: Full mode (all Bioconductor packages available)
+#> bambamR: Optional Bioconductor engines are installed
 ```
 
 ## 1. Load Data and Normalize

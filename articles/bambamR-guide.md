@@ -379,7 +379,7 @@ bambamR includes a small example FASTQ file (100 reads, 75 bp):
 ``` r
 
 fq_path <- system.file("extdata", "example_reads.fastq",
-                        package = "bambamR")
+                       package = "bambamR")
 reads <- bb_read_fastq(fq_path, n = 5)
 reads
 #>                    id
@@ -478,6 +478,13 @@ bb_export_rds(de_results, "de_results.rds")
 ------------------------------------------------------------------------
 
 ## Full Pipeline
+
+FASTQ entry treats each file as one single-end sample. Use explicit
+paired paths with `bb_align(paired = TRUE)` for paired reads. Metadata
+must match all samples exactly; use a fresh output directory for every
+run. A requested DE failure stops the pipeline. For CRAN-only counts
+processing use `skip = "de"`. Annotation tracks in plots require
+`patchwork`.
 
 The
 [`bb_pipeline()`](https://cttir.github.io/bambamR/reference/bb_pipeline.md)
@@ -622,7 +629,7 @@ If you use bambamR in your research, please cite:
 ``` r
 
 sessionInfo()
-#> R version 4.6.1 (2026-06-24)
+#> R version 4.6.2 (2026-10-29)
 #> Platform: x86_64-pc-linux-gnu
 #> Running under: Ubuntu 26.04.1 LTS
 #> 
@@ -646,54 +653,45 @@ sessionInfo()
 #> [1] bambamR_0.1.0
 #> 
 #> loaded via a namespace (and not attached):
-#>  [1] tidyselect_1.2.1            dplyr_1.2.1                
-#>  [3] farver_2.1.2                Biostrings_2.80.2          
-#>  [5] S7_0.2.2                    bitops_1.1-0               
-#>  [7] fastmap_1.2.0               GenomicAlignments_1.48.0   
-#>  [9] digest_0.6.39               lifecycle_1.0.5            
-#> [11] cluster_2.1.8.2             pwalign_1.8.0              
-#> [13] statmod_1.5.2               magrittr_2.0.5             
-#> [15] compiler_4.6.1              rlang_1.3.0                
-#> [17] sass_0.4.10                 tools_4.6.1                
-#> [19] yaml_2.3.12                 knitr_1.52                 
-#> [21] labeling_0.4.3              S4Arrays_1.12.1            
-#> [23] htmlwidgets_1.6.4           interp_1.1-6               
-#> [25] DelayedArray_0.38.2         RColorBrewer_1.1-3         
-#> [27] ShortRead_1.70.0            abind_1.4-8                
-#> [29] BiocParallel_1.46.0         withr_3.0.3                
-#> [31] hwriter_1.3.2.1             BiocGenerics_0.58.1        
-#> [33] desc_1.4.3                  grid_4.6.1                 
-#> [35] stats4_4.6.1                latticeExtra_0.6-31        
-#> [37] colorspace_2.1-4            edgeR_4.10.7               
-#> [39] ggplot2_4.0.3               scales_1.4.0               
-#> [41] iterators_1.0.14            SummarizedExperiment_1.42.0
-#> [43] cli_3.6.6                   rmarkdown_2.32             
-#> [45] crayon_1.5.3                ragg_1.5.2                 
-#> [47] generics_0.1.4              otel_0.2.0                 
-#> [49] rjson_0.2.23                cachem_1.1.0               
-#> [51] parallel_4.6.1              XVector_0.52.0             
-#> [53] matrixStats_1.5.0           vctrs_0.7.3                
-#> [55] Matrix_1.7-5                jsonlite_2.0.0             
-#> [57] patchwork_1.3.2             IRanges_2.46.0             
-#> [59] GetoptLong_1.1.1            S4Vectors_0.50.3           
-#> [61] ggrepel_0.9.8               clue_0.3-68                
-#> [63] systemfonts_1.3.2           jpeg_0.1-11                
-#> [65] locfit_1.5-9.12             foreach_1.5.2              
-#> [67] limma_3.68.5                jquerylib_0.1.4            
-#> [69] glue_1.8.1                  pkgdown_2.2.1              
-#> [71] codetools_0.2-20            shape_1.4.6.1              
-#> [73] gtable_0.3.6                deldir_2.0-4               
-#> [75] GenomicRanges_1.64.0        ComplexHeatmap_2.28.0      
-#> [77] tibble_3.3.1                pillar_1.11.1              
-#> [79] htmltools_0.5.9             Seqinfo_1.2.0              
-#> [81] circlize_0.4.18             R6_2.6.1                   
-#> [83] textshaping_1.0.5           doParallel_1.0.17          
-#> [85] evaluate_1.0.5              lattice_0.22-9             
-#> [87] Biobase_2.72.0              png_0.1-9                  
-#> [89] Rsamtools_2.28.0            cigarillo_1.2.1            
-#> [91] bslib_0.12.0                Rcpp_1.1.2                 
-#> [93] SparseArray_1.12.3          DESeq2_1.52.0              
-#> [95] xfun_0.62                   fs_2.1.0                   
-#> [97] MatrixGenerics_1.24.0       pkgconfig_2.0.3            
-#> [99] GlobalOptions_0.1.4
+#>  [1] SummarizedExperiment_1.42.0 gtable_0.3.6               
+#>  [3] hwriter_1.3.2.1             xfun_0.62                  
+#>  [5] bslib_0.12.0                ggplot2_4.0.3              
+#>  [7] htmlwidgets_1.6.4           ggrepel_0.9.8              
+#>  [9] latticeExtra_0.6-31         Biobase_2.72.0             
+#> [11] lattice_0.23-1              vctrs_0.7.3                
+#> [13] tools_4.6.2                 bitops_1.1-0               
+#> [15] generics_0.1.4              stats4_4.6.2               
+#> [17] parallel_4.6.2              tibble_3.3.1               
+#> [19] pkgconfig_2.0.3             Matrix_1.7-6               
+#> [21] RColorBrewer_1.1-3          S7_0.2.2                   
+#> [23] desc_1.4.3                  S4Vectors_0.50.3           
+#> [25] cigarillo_1.2.1             lifecycle_1.0.5            
+#> [27] deldir_2.0-4                compiler_4.6.2             
+#> [29] farver_2.1.2                Rsamtools_2.28.0           
+#> [31] textshaping_1.0.5           Biostrings_2.80.2          
+#> [33] Seqinfo_1.2.0               codetools_0.2-20           
+#> [35] htmltools_0.5.9             sass_0.4.10                
+#> [37] yaml_2.3.12                 pillar_1.11.1              
+#> [39] pkgdown_2.2.1               crayon_1.5.3               
+#> [41] jquerylib_0.1.4             BiocParallel_1.46.0        
+#> [43] cachem_1.1.0                DelayedArray_0.38.2        
+#> [45] ShortRead_1.70.0            abind_1.4-8                
+#> [47] tidyselect_1.2.1            digest_0.6.39              
+#> [49] dplyr_1.2.1                 labeling_0.4.3             
+#> [51] fastmap_1.2.0               grid_4.6.2                 
+#> [53] cli_3.6.6                   SparseArray_1.12.3         
+#> [55] magrittr_2.0.5              patchwork_1.3.2            
+#> [57] S4Arrays_1.12.1             withr_3.0.3                
+#> [59] scales_1.4.0                rmarkdown_2.32             
+#> [61] pwalign_1.8.0               XVector_0.52.0             
+#> [63] jpeg_0.1-11                 matrixStats_1.5.0          
+#> [65] interp_1.1-6                otel_0.2.0                 
+#> [67] png_0.1-9                   ragg_1.5.2                 
+#> [69] evaluate_1.0.5              knitr_1.52                 
+#> [71] GenomicRanges_1.64.0        IRanges_2.46.0             
+#> [73] rlang_1.3.0                 Rcpp_1.1.2                 
+#> [75] glue_1.8.1                  BiocGenerics_0.58.1        
+#> [77] jsonlite_2.0.0              R6_2.6.1                   
+#> [79] MatrixGenerics_1.24.0       GenomicAlignments_1.48.0   
+#> [81] systemfonts_1.3.2           fs_2.1.0
 ```

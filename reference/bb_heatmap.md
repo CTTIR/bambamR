@@ -36,7 +36,8 @@ bb_heatmap(
 - annotation_col:
 
   A data.frame for column (sample) annotations. Rownames must match
-  column names of `counts`.
+  column names of `counts`. Annotation tracks require the optional
+  `patchwork` package.
 
 - scale:
 

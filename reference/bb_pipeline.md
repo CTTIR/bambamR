@@ -28,7 +28,11 @@ bb_pipeline(
 - fastq_dir:
 
   Character or NULL. Directory containing FASTQ files. If provided, the
-  pipeline starts from alignment.
+  pipeline starts from alignment. Each file is one single-end sample,
+  named by removing its FASTQ extension. For paired-end reads use
+  [`bb_align()`](https://cttir.github.io/bambamR/reference/bb_align.md)
+  with explicit pairs, then
+  [`bb_count_reads()`](https://cttir.github.io/bambamR/reference/bb_count_reads.md).
 
 - bam_dir:
 
@@ -43,6 +47,7 @@ bb_pipeline(
 - output_dir:
 
   Character. Output directory for results. Default `"bambamR_output"`.
+  Existing result files are never overwritten.
 
 - genome_index:
 

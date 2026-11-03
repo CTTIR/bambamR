@@ -22,8 +22,8 @@ bb_limma_voom(counts, design, contrast = NULL)
 
 - contrast:
 
-  A contrast vector or matrix. If `NULL`, the last coefficient is
-  tested.
+  A contrast vector or one-column matrix. If `NULL`, the last design
+  coefficient is tested. One contrast is returned per call.
 
 ## Value
 

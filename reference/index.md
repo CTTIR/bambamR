@@ -82,7 +82,8 @@ Run the full end-to-end pipeline and export results.
 
 ## Example Data
 
-Bundled datasets for exploring every feature without external files.
+Synthetic counts, mutations and DE results for normalization and
+plotting.
 
 - [`bb_example_counts()`](https://cttir.github.io/bambamR/reference/bb_example_counts.md)
   : Load Example Count Matrix

@@ -41,13 +41,15 @@ bb_oncoplot(
 
 - sort_by:
 
-  Character. How to sort samples: `"frequency"` (by mutation burden) or
-  `"cluster"` (by co-occurrence clustering). Default `"frequency"`.
+  Character. How to sort samples: `"frequency"` (by number of mutated
+  genes shown) or `"cluster"` (by co-occurrence clustering). Default
+  `"frequency"`.
 
 - annotation_df:
 
   A data.frame for sample annotations (bottom tracks). Rownames must be
   sample identifiers. Each column becomes an annotation track.
+  Annotation tracks require `patchwork`.
 
 - mutation_colors:
 
@@ -61,8 +63,8 @@ bb_oncoplot(
 
 - show_barplot:
 
-  Logical. Show top (sample burden) and side (gene count) barplots.
-  Default `TRUE`.
+  Logical. Show top (mutated genes per sample) and side (mutated samples
+  per gene) barplots. Default `TRUE`.
 
 - title:
 
@@ -86,9 +88,11 @@ Multi-hit genes (multiple mutation types in one sample) are labeled
 `"Multi_Hit"`.
 
 When `show_barplot = TRUE` and the `patchwork` package is available, the
-plot is composed of three panels: top barplot (mutation burden per
-sample), main tile plot, and right barplot (mutations per gene). Without
-patchwork, only the main tile plot is returned.
+plot is composed of three panels: top barplot (mutated genes per
+sample), main tile plot, and right barplot (mutated samples per gene).
+Without patchwork, the main tile plot is returned unless annotations
+were requested. Percentages use all samples represented in `data` before
+gene selection; samples with no recorded mutations cannot be inferred.
 
 ## Examples
 

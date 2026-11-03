@@ -17,7 +17,7 @@ bb_count_bam(path)
 
 ## Value
 
-An integer: total number of reads.
+A numeric value: total number of reads.
 
 ## Examples
 
