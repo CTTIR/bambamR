@@ -14,12 +14,17 @@
 #'   elements. Default `FALSE`.
 #' @param extra_args Character or NULL. Additional arguments to pass to the
 #'   aligner, one argument per element (for example `c("-x", "sr")`).
+#'   HISAT2 optional arguments must not contain whitespace or shell metacharacters:
+#'   its upstream wrapper reparses them through a shell. FASTQ and index paths
+#'   containing these characters are handled with temporary symbolic links.
 #'
 #' @return A list with components:
 #' \describe{
 #'   \item{bam}{Path to the output BAM file}
 #'   \item{stats}{A data.frame with alignment statistics}
 #'   \item{command}{The exact command that was executed}
+#'   \item{input_paths}{For HISAT2, the original FASTQ and index paths before
+#'     temporary aliasing. Temporary aliases are removed after execution.}
 #' }
 #'
 #' @examples
@@ -153,6 +158,17 @@ bb_align <- function(fastq, genome_index, output_dir,
   check_tool("hisat2")
   check_tool("samtools")
 
+  if (!is.null(extra_args) && (!is.character(extra_args) || anyNA(extra_args) ||
+      any(!grepl("^[A-Za-z0-9_./,:=+%-]+$", extra_args)))) {
+    stop("HISAT2 optional arguments cannot safely contain whitespace or shell metacharacters; ",
+         "its upstream wrapper reparses them through a shell.", call. = FALSE)
+  }
+  input_paths <- list(fastq = fastq, genome_index = genome_index)
+  inputs <- .hisat2_inputs(fastq, genome_index)
+  if (!is.null(inputs$directory)) on.exit(unlink(inputs$directory, recursive = TRUE), add = TRUE)
+  fastq <- inputs$fastq
+  genome_index <- inputs$genome_index
+
   bam_out <- file.path(output_dir, "hisat2_aligned.bam")
 
   args <- c("-x", genome_index, "-p", threads)
@@ -184,7 +200,47 @@ bb_align <- function(fastq, genome_index, output_dir,
     stringsAsFactors = FALSE
   )
 
-  list(bam = bam_out, stats = stats, command = cmd)
+  list(bam = bam_out, stats = stats, command = cmd, input_paths = input_paths)
+}
+
+# The HISAT2 2.2.1 Perl wrapper joins arguments into another shell command.
+# Quoting at system2's boundary alone therefore cannot preserve these paths.
+# Alias only inputs, never copy large indexes or rewrite the user's files.
+.hisat2_inputs <- function(fastq, genome_index) {
+  safe <- function(x) grepl("^[A-Za-z0-9_./:+-]+$", x)
+  if (all(safe(c(fastq, genome_index)))) {
+    return(list(fastq = fastq, genome_index = genome_index, directory = NULL))
+  }
+  temporary_root <- normalizePath(tempdir(), winslash = "/", mustWork = TRUE)
+  if (!safe(temporary_root) && .Platform$OS.type == "unix") temporary_root <- "/tmp"
+  if (!safe(temporary_root)) stop("HISAT2 requires a temporary directory without shell metacharacters.",
+                                  call. = FALSE)
+  directory <- tempfile("bambamR-hisat2-", tmpdir = temporary_root)
+  if (!dir.create(directory, mode = "0700")) stop("Cannot create HISAT2 staging directory.", call. = FALSE)
+  complete <- FALSE
+  on.exit(if (!complete) unlink(directory, recursive = TRUE))
+  prefixes <- genome_index
+  search_path <- Sys.getenv("HISAT2_INDEXES")
+  if (nzchar(search_path)) prefixes <- c(prefixes, file.path(search_path, genome_index))
+  suffixes <- character()
+  for (prefix in prefixes) {
+    for (extension in c("ht2", "ht2l")) {
+      parts <- paste0(".", seq_len(8L), ".", extension)
+      if (all(file.exists(paste0(prefix, parts)))) suffixes <- c(suffixes, parts)
+    }
+    if (length(suffixes)) break
+  }
+  if (!length(suffixes)) stop("Cannot find a complete HISAT2 index for: ", genome_index, call. = FALSE)
+  sources <- c(paste0(prefix, suffixes), fastq)
+  compression <- ifelse(grepl("\\.gz$", fastq), ".gz",
+                         ifelse(grepl("\\.bz2$", fastq), ".bz2", ""))
+  aliases <- file.path(directory, c(paste0("index", suffixes),
+    paste0("reads", seq_along(fastq), ".fastq", compression)))
+  sources <- normalizePath(sources, winslash = "/", mustWork = TRUE)
+  if (!all(file.symlink(sources, aliases))) stop("Cannot create safe HISAT2 input aliases.", call. = FALSE)
+  complete <- TRUE
+  list(fastq = utils::tail(aliases, length(fastq)),
+       genome_index = file.path(directory, "index"), directory = directory)
 }
 
 
