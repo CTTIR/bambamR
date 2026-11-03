@@ -93,3 +93,41 @@ test_that("Unix literal backslashes remain filename bytes and are staged", {
   expect_identical(Sys.readlink(x$fastq), normalizePath(reads))
   expect_identical(tools::md5sum(c(reads, parts)), before)
 })
+
+
+test_that("Windows existing short read paths expand before shell admission", {
+  helper <- .hisat2_inputs
+  lookup <- new.env(parent = environment(helper))
+  lookup$.Platform <- list(OS.type = "windows")
+  short <- c("C:/Users/RUNNER~1/reads/mate1.fastq", "C:/Users/RUNNER~1/reads/mate2.fastq")
+  long <- sub("RUNNER~1", "runneradmin", short, fixed = TRUE)
+  lookup$file.exists <- function(paths) paths %in% short
+  lookup$normalizePath <- function(paths, winslash, mustWork) {
+    expect_identical(paths, short)
+    expect_identical(winslash, "/")
+    expect_true(mustWork)
+    long
+  }
+  environment(helper) <- lookup
+  result <- helper(short, "index-from-search-path")
+  expect_identical(result$fastq, long)
+  expect_identical(result$genome_index, "index-from-search-path")
+  expect_null(result$directory)
+})
+
+test_that("native Windows short paths preserve input identity", {
+  skip_if_not(.Platform$OS.type == "windows")
+  root <- withr::local_tempdir()
+  reads <- file.path(root, "reads.fastq")
+  writeLines(c("@read", "ACGT", "+", "IIII"), reads)
+  short <- utils::shortPathName(reads)
+  index <- file.path(root, "index")
+  parts <- paste0(index, ".", seq_len(8L), ".ht2")
+  for (part in parts) writeLines("synthetic index part", part)
+  before <- tools::md5sum(c(reads, parts))
+  x <- .hisat2_inputs(short, index)
+  if (!is.null(x$directory)) withr::defer(unlink(x$directory, recursive = TRUE))
+  expect_identical(readLines(x$fastq), readLines(reads))
+  expect_identical(normalizePath(x$fastq), normalizePath(reads))
+  expect_identical(tools::md5sum(c(reads, parts)), before)
+})

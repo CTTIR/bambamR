@@ -184,3 +184,15 @@ Unix filenames, while retaining the original paired-command and native
 punctuation fixtures. The experimental Ubuntu oldrel-3 dependency job separately
 cannot resolve optional `txdbmaker` from Bioconductor3.18; that availability
 limit is retained, not treated as a successful full-Bioconductor qualification.
+
+
+A second native Windows run exposed R's `RUNNER~1` short-name spelling after
+separator normalization. Existing Windows FASTQ paths are now canonicalized
+before shell admission, using R's documented expansion of short path elements;
+bare index names retain `HISAT2_INDEXES` lookup semantics. The paired-command
+fixture now supplies a complete eight-part placeholder index, so it remains a
+valid input when an ambient temporary directory correctly requires staging.
+Mocked expansion and native Windows `shortPathName()` regressions retain path
+identity and source hashes. Native Linux integration passed both preceding
+repair heads; the latest Windows and complete hosted results remain separately
+observed gates.

@@ -210,6 +210,8 @@ bb_align <- function(fastq, genome_index, output_dir,
   # Backslashes are Windows path separators, but literal filename characters on Unix.
   if (.Platform$OS.type == "windows") {
     fastq <- gsub("\\", "/", fastq, fixed = TRUE)
+    existing <- file.exists(fastq)
+    fastq[existing] <- normalizePath(fastq[existing], winslash = "/", mustWork = TRUE)
     genome_index <- gsub("\\", "/", genome_index, fixed = TRUE)
   }
   safe <- function(x) grepl("^[A-Za-z0-9_./:+-]+$", x)
