@@ -49,7 +49,10 @@ bb_align(
 - extra_args:
 
   Character or NULL. Additional arguments to pass to the aligner, one
-  argument per element (for example `c("-x", "sr")`).
+  argument per element (for example `c("-x", "sr")`). HISAT2 optional
+  arguments must not contain whitespace or shell metacharacters: its
+  upstream wrapper reparses them through a shell. FASTQ and index paths
+  containing these characters are handled with temporary symbolic links.
 
 ## Value
 
@@ -66,6 +69,11 @@ A list with components:
 - command:
 
   The exact command that was executed
+
+- input_paths:
+
+  For HISAT2, the original FASTQ and index paths before temporary
+  aliasing. Temporary aliases are removed after execution.
 
 ## Examples
 

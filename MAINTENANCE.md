@@ -109,14 +109,15 @@ supplied; the fixture is deliberately synthetic.
 
 ## Remaining gates and next actions
 
-Before publication, run the new revision on hosted CI, including native
-STAR and HISAT2 and the supported R/OS matrix. Verify the intended
-Zenodo record/DOI and publication date, then prepare the release/tag and
-submission with those verified values. No push, release, deployment or
-submission was performed in this audit. Study-specific biological
-validity and large-data performance are not established by the synthetic
-fixture. Paired-end sample-sheet automation, streaming QC, strand-aware
-counting and the house-style/API migration remain deferred.
+For each published revision, observe hosted CI, including native STAR
+and HISAT2 and the supported R/OS matrix. Verify the intended Zenodo
+record/DOI and publication date, then prepare the release/tag and
+submission with those verified values. The original audit prepared local
+changes; subsequent source publication does not constitute a release,
+deployment or submission. Study-specific biological validity and
+large-data performance are not established by the synthetic fixture.
+Paired-end sample-sheet automation, streaming QC, strand-aware counting
+and the house-style/API migration remain deferred.
 
 The audit logs, package archive, hashes, native fixture products and
 verification receipt are retained outside the checkout in the CTTIR
@@ -157,3 +158,43 @@ Authoritative references checked for this audit:
   schema would be a migration, not a safe maintenance edit. The existing
   report-only lint setting is unchanged; these findings remain
   explicitly deferred.
+
+## HISAT2 path follow-up — 3 November 2026
+
+The hosted native fixture exposed a second shell parse inside the
+upstream [HISAT2 2.2.1 Perl
+wrapper](https://github.com/DaehwanKimLab/hisat2/blob/v2.2.1/hisat2).
+Quoting arguments at R’s outer process boundary does not preserve an
+index prefix containing spaces across that second parse. The spaces-path
+acceptance fixture is retained. Inputs needing protection now receive
+private temporary symbolic links with shell-safe names; complete
+small/large indexes and compressed FASTQ extensions are preserved.
+Aliases are removed on success and failure without changing source
+bytes. Results retain the caller’s original `input_paths`. Optional
+arguments containing whitespace or shell metacharacters are rejected
+explicitly because their arbitrary path/value semantics cannot safely be
+inferred.
+
+A disposable Ubuntu 24.04 aarch64 container reproduced the baseline
+failure with HISAT2 2.2.1. The repaired external-engine fixture passed
+real STAR, HISAT2 and minimap2 alignment, exact two-sample gene counts,
+pipeline execution and paired fragment counting. Additional real HISAT2
+checks passed large `.ht2l` indexes,
+spaces/apostrophes/semicolon/dollar/comma in paths, gzip and bzip2
+reads, paired gzip input and `HISAT2_INDEXES` lookup, with original
+checksums unchanged. The native container’s older R/Bioconductor lacks
+`txdbmaker`, so its separate external-engine probe explicitly omits the
+internal-engine assertions; the unchanged complete native CI script
+remains the hosted acceptance gate. An R startup attempt with a space in
+`TMPDIR` was refused by R before package code ran and is not a qualified
+environment.
+
+Permanent regressions exercise an actual second shell parse, alias
+cleanup and unsafe optional-argument rejection. The macOS full package
+suite passed with expected optional-dependency/tool skips. Independent
+source review found no blocking issue. Existing report-only house
+lint/API-migration policy is unchanged. Logs, primary wrapper source,
+synthetic products and exact source identities are under
+`hosted-followup/bambamR/runtime` in the external maintenance evidence.
+Hosted checks for the follow-up commit must still be observed
+separately.
