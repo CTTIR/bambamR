@@ -31,7 +31,10 @@ index prefix (HISAT2, minimap2).}
 elements. Default \code{FALSE}.}
 
 \item{extra_args}{Character or NULL. Additional arguments to pass to the
-aligner, one argument per element (for example \code{c("-x", "sr")}).}
+aligner, one argument per element (for example \code{c("-x", "sr")}).
+HISAT2 optional arguments must not contain whitespace or shell metacharacters:
+its upstream wrapper reparses them through a shell. FASTQ and index paths
+containing these characters are handled with temporary symbolic links.}
 }
 \value{
 A list with components:
@@ -39,6 +42,8 @@ A list with components:
 \item{bam}{Path to the output BAM file}
 \item{stats}{A data.frame with alignment statistics}
 \item{command}{The exact command that was executed}
+\item{input_paths}{For HISAT2, the original FASTQ and index paths before
+temporary aliasing. Temporary aliases are removed after execution.}
 }
 }
 \description{

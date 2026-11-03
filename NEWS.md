@@ -1,5 +1,10 @@
 # Development changes
 
+* Preserve HISAT2 FASTQ/index paths containing spaces or shell punctuation with
+  private temporary aliases, including compressed reads and large indexes.
+  Retain original input paths in the result; reject unsafe optional arguments
+  that the upstream wrapper would parse through a second shell.
+
 * Preserve separate FASTQ alignment products and sample names; reject ambiguous
   pipeline entry points, incompatible skipped steps and output replacement.
 * Check external command status/products and quote argument tokens. HISAT2 SAM
