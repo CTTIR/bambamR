@@ -207,6 +207,11 @@ bb_align <- function(fastq, genome_index, output_dir,
 # Quoting at system2's boundary alone therefore cannot preserve these paths.
 # Alias only inputs, never copy large indexes or rewrite the user's files.
 .hisat2_inputs <- function(fastq, genome_index) {
+  # Backslashes are Windows path separators, but literal filename characters on Unix.
+  if (.Platform$OS.type == "windows") {
+    fastq <- gsub("\\", "/", fastq, fixed = TRUE)
+    genome_index <- gsub("\\", "/", genome_index, fixed = TRUE)
+  }
   safe <- function(x) grepl("^[A-Za-z0-9_./:+-]+$", x)
   if (all(safe(c(fastq, genome_index)))) {
     return(list(fastq = fastq, genome_index = genome_index, directory = NULL))
