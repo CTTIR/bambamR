@@ -1,7 +1,8 @@
 # bambamR ![bambamR logo](reference/figures/logo-with-name.png)
 
-Development version. A published release DOI has not been verified; see
-[release status](https://cttir.github.io/bambamR/MAINTENANCE.md).
+Version 0.2.0, prepared for CRAN submission. A published release DOI has
+not been verified; see [release
+status](https://cttir.github.io/bambamR/MAINTENANCE.md).
 
 **End-to-end RNA-seq processing from FASTQ to publication-ready plots.**
 
@@ -295,9 +296,9 @@ objects (data.frames, matrices, ggplot objects).
 
 If you use bambamR in your research, please cite:
 
-    Heller R, Witte H, Steinestel K (2026). bambamR: End-to-End RNA-Seq
-    Processing from FASTQ to Publication-Ready Plots. R package version 0.1.0.
-    https://github.com/cttir/bambamR
+    Heller R, Witte H, Steinestel K (2026). bambamR: RNA-Seq Processing from
+    FASTQ Files to Publication-Ready Plots. R package version 0.2.0.
+    https://github.com/CTTIR/bambamR
 
 ## License
 

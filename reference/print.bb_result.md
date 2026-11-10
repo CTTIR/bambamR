@@ -18,3 +18,7 @@ print(x, ...)
 - ...:
 
   Additional arguments (ignored).
+
+## Value
+
+`x`, invisibly; called for its side effect of printing a summary.

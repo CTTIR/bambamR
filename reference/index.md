@@ -104,5 +104,5 @@ S3 classes for pipeline results and QC objects.
   : Summary method for bb_qc
 - [`bambamR`](https://cttir.github.io/bambamR/reference/bambamR-package.md)
   [`bambamR-package`](https://cttir.github.io/bambamR/reference/bambamR-package.md)
-  : bambamR: End-to-End RNA-Seq Processing from FASTQ to
-  Publication-Ready Plots
+  : bambamR: RNA-Seq Processing from FASTQ Files to Publication-Ready
+  Plots

@@ -11,7 +11,7 @@ bb_pipeline(
   fastq_dir = NULL,
   bam_dir = NULL,
   count_matrix = NULL,
-  output_dir = "bambamR_output",
+  output_dir = tempfile("bambamR_output"),
   genome_index = NULL,
   annotation = NULL,
   sample_info = NULL,
@@ -46,8 +46,10 @@ bb_pipeline(
 
 - output_dir:
 
-  Character. Output directory for results. Default `"bambamR_output"`.
-  Existing result files are never overwritten.
+  Character. Output directory for results. Defaults to a new directory
+  below [`tempdir()`](https://rdrr.io/r/base/tempfile.html); supply a
+  permanent path to keep the results. Existing result files are never
+  overwritten.
 
 - genome_index:
 
@@ -105,8 +107,8 @@ The pipeline allows entry at any stage:
 ## Examples
 
 ``` r
-# \donttest{
-# Starting from a count matrix (minimal mode, no Bioconductor needed)
+# Starting from a count matrix; skipping differential expression keeps
+# this example free of optional Bioconductor packages.
 set.seed(42)
 counts <- matrix(rpois(600, 100), nrow = 100, ncol = 6,
   dimnames = list(paste0("gene", 1:100), paste0("S", 1:6)))
@@ -114,6 +116,42 @@ sample_info <- data.frame(
   condition = factor(rep(c("ctrl", "treat"), each = 3)),
   row.names = paste0("S", 1:6)
 )
-# result <- bb_pipeline(count_matrix = counts, sample_info = sample_info)
+out <- file.path(tempdir(), "bambamR-pipeline-example")
+result <- bb_pipeline(count_matrix = counts, sample_info = sample_info,
+                      output_dir = out, skip = "de")
+#> === Step 4: Normalization ===
+#>   CPM normalization complete
+#> === Step 6: Generating Plots ===
+#>   Generated: pca, heatmap
+#> Saved to: /tmp/RtmpPdJiwa/bambamR-pipeline-example/bambamR_result.rds
+#> 
+#> === Pipeline complete ===
+result
+#> bambamR Result
+#> ==============
+#> Genes:    100 
+#> Samples:  6 
+#> Plots:  pca, heatmap 
+unlink(out, recursive = TRUE)
+
+# \donttest{
+# Full run including differential expression with edgeR.
+if (requireNamespace("edgeR", quietly = TRUE)) {
+  out <- file.path(tempdir(), "bambamR-pipeline-edger")
+  result <- bb_pipeline(count_matrix = counts, sample_info = sample_info,
+                        output_dir = out, de_method = "edgeR")
+  head(result$de_results)
+  unlink(out, recursive = TRUE)
+}
+#> === Step 4: Normalization ===
+#>   CPM normalization complete
+#> === Step 5: Differential Expression (edgeR) ===
+#> calcNormFactors has been renamed to normLibSizes
+#>   Found 0 significant genes (FDR < 0.05)
+#> === Step 6: Generating Plots ===
+#>   Generated: pca, heatmap, volcano
+#> Saved to: /tmp/RtmpPdJiwa/bambamR-pipeline-edger/bambamR_result.rds
+#> 
+#> === Pipeline complete ===
 # }
 ```

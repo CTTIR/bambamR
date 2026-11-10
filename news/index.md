@@ -1,5 +1,70 @@
 # Changelog
 
+## bambamR 0.2.0
+
+### CRAN preparation
+
+- [`bb_pipeline()`](https://cttir.github.io/bambamR/reference/bb_pipeline.md)
+  now writes to a new directory below
+  [`tempdir()`](https://rdrr.io/r/base/tempfile.html) by default instead
+  of `"bambamR_output"` in the working directory; pass `output_dir` to
+  keep results.
+- Examples no longer contain commented-out calls: BAM and counting
+  examples build a tiny BAM file when ‘Rsamtools’ is installed, the
+  pipeline example runs in minimal mode, and
+  [`bb_align()`](https://cttir.github.io/bambamR/reference/bb_align.md)
+  documents why its example cannot run.
+- Documented return values of the print and summary methods.
+- `DESCRIPTION`: shorter title, quoted software names, `Language` and
+  `SystemRequirements` for the optional external tools.
+
+### Integrity fixes
+
+- Expand existing Windows short read-path aliases before HISAT2
+  admission; preserve bare index names and the caller’s original path
+  provenance.
+
+- Normalize Windows path separators before HISAT2 alias admission while
+  preserving literal backslashes in Unix filenames and original input
+  paths.
+
+- Preserve HISAT2 FASTQ/index paths containing spaces or shell
+  punctuation with private temporary aliases, including compressed reads
+  and large indexes. Retain original input paths in the result; reject
+  unsafe optional arguments that the upstream wrapper would parse
+  through a second shell.
+
+- Preserve separate FASTQ alignment products and sample names; reject
+  ambiguous pipeline entry points, incompatible skipped steps and output
+  replacement.
+
+- Check external command status/products and quote argument tokens.
+  HISAT2 SAM output no longer contains diagnostics. Paired featureCounts
+  requests fragments.
+
+- Match named TPM lengths and metadata by identifier, reject invalid
+  counts and empty libraries, preserve edgeR adjustment variables, and
+  repair limma contrasts.
+
+- Fail requested DE explicitly; retain plot warnings in the saved
+  result.
+
+- Validate FASTQ records and limit reads when a sample size is
+  requested.
+
+- Clear stale Shiny results, implement previews and normalization
+  selection, and provide a normalization-only mode. TPM remains
+  available through the R API.
+
+- Preserve the oncoplot cohort denominator, display requested annotation
+  tracks, and label unscaled heatmaps as expression rather than
+  Z-scores.
+
+Compatibility: use a fresh output directory for each alignment/pipeline
+run. Metadata must now match all samples. Supply external-tool options
+as separate argument tokens. limma returns one contrast per call. See
+MAINTENANCE.md for validation evidence and remaining release gates.
+
 ## bambamR 0.1.0
 
 - Standardize the named v5 package logo across README, documentation
