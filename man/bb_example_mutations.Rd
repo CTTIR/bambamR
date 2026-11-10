@@ -27,7 +27,9 @@ head(ex$mutations)
 # Basic oncoplot
 bb_oncoplot(ex$mutations, n_genes = 10)
 
-# With clinical annotations
-bb_oncoplot(ex$mutations, n_genes = 10, annotation_df = ex$clinical)
+# With clinical annotations (needs the optional 'patchwork' package)
+if (requireNamespace("patchwork", quietly = TRUE)) {
+  bb_oncoplot(ex$mutations, n_genes = 10, annotation_df = ex$clinical)
+}
 
 }

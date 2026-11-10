@@ -40,6 +40,7 @@ test_that("bb_oncoplot handles multi-hit mutations", {
 })
 
 test_that("bb_oncoplot with annotation tracks", {
+  skip_if_not_installed("patchwork")
   set.seed(42)
   mut_data <- data.frame(
     sample = rep(paste0("S", 1:5), each = 3),
