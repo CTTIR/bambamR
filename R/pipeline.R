@@ -12,8 +12,9 @@
 #'   If provided, the pipeline starts from read counting.
 #' @param count_matrix A numeric matrix or NULL. Pre-computed count matrix.
 #'   If provided, the pipeline starts from normalization/DE.
-#' @param output_dir Character. Output directory for results.
-#'   Default `"bambamR_output"`. Existing result files are never overwritten.
+#' @param output_dir Character. Output directory for results. Defaults to a
+#'   new directory below [tempdir()]; supply a permanent path to keep the
+#'   results. Existing result files are never overwritten.
 #' @param genome_index Character or NULL. Path to genome index. Required if
 #'   starting from FASTQ.
 #' @param annotation Character or NULL. Path to GTF annotation. Required if
@@ -40,8 +41,8 @@
 #' - **From counts**: requires `count_matrix` and `sample_info`
 #'
 #' @examples
-#' \donttest{
-#' # Starting from a count matrix (minimal mode, no Bioconductor needed)
+#' # Starting from a count matrix; skipping differential expression keeps
+#' # this example free of optional Bioconductor packages.
 #' set.seed(42)
 #' counts <- matrix(rpois(600, 100), nrow = 100, ncol = 6,
 #'   dimnames = list(paste0("gene", 1:100), paste0("S", 1:6)))
@@ -49,14 +50,28 @@
 #'   condition = factor(rep(c("ctrl", "treat"), each = 3)),
 #'   row.names = paste0("S", 1:6)
 #' )
-#' # result <- bb_pipeline(count_matrix = counts, sample_info = sample_info)
+#' out <- file.path(tempdir(), "bambamR-pipeline-example")
+#' result <- bb_pipeline(count_matrix = counts, sample_info = sample_info,
+#'                       output_dir = out, skip = "de")
+#' result
+#' unlink(out, recursive = TRUE)
+#'
+#' \donttest{
+#' # Full run including differential expression with edgeR.
+#' if (requireNamespace("edgeR", quietly = TRUE)) {
+#'   out <- file.path(tempdir(), "bambamR-pipeline-edger")
+#'   result <- bb_pipeline(count_matrix = counts, sample_info = sample_info,
+#'                         output_dir = out, de_method = "edgeR")
+#'   head(result$de_results)
+#'   unlink(out, recursive = TRUE)
+#' }
 #' }
 #'
 #' @export
 bb_pipeline <- function(fastq_dir = NULL,
                         bam_dir = NULL,
                         count_matrix = NULL,
-                        output_dir = "bambamR_output",
+                        output_dir = tempfile("bambamR_output"),
                         genome_index = NULL,
                         annotation = NULL,
                         sample_info = NULL,
