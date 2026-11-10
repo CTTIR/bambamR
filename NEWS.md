@@ -1,4 +1,18 @@
-# Development changes
+# bambamR 0.2.0
+
+## CRAN preparation
+
+* `bb_pipeline()` now writes to a new directory below `tempdir()` by default
+  instead of `"bambamR_output"` in the working directory; pass `output_dir`
+  to keep results.
+* Examples no longer contain commented-out calls: BAM and counting examples
+  build a tiny BAM file when 'Rsamtools' is installed, the pipeline example
+  runs in minimal mode, and `bb_align()` documents why its example cannot run.
+* Documented return values of the print and summary methods.
+* `DESCRIPTION`: shorter title, quoted software names, `Language` and
+  `SystemRequirements` for the optional external tools.
+
+## Integrity fixes
 
 * Expand existing Windows short read-path aliases before HISAT2 admission;
   preserve bare index names and the caller's original path provenance.

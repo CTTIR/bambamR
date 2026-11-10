@@ -1,7 +1,7 @@
 # bambamR <picture class="cttir-readme-logo"><source class="cttir-logo-dark-source" media="(prefers-color-scheme: dark)" srcset="man/figures/logo-with-name-dark.png" /><img src="man/figures/logo-with-name.png" align="right" alt="bambamR logo" width="120" height="139" /></picture>
 
-Development version. A published release DOI has not been verified; see
-[release status](MAINTENANCE.md).
+Version 0.2.0, prepared for CRAN submission. A published release DOI has
+not been verified; see [release status](MAINTENANCE.md).
 
 <!-- badges: start -->
 [![R-CMD-check](https://github.com/CTTIR/bambamR/actions/workflows/R-CMD-check.yaml/badge.svg)](https://github.com/CTTIR/bambamR/actions/workflows/R-CMD-check.yaml)
@@ -258,9 +258,9 @@ All exported functions use the `bb_` prefix and return standard R objects
 If you use bambamR in your research, please cite:
 
 ```
-Heller R, Witte H, Steinestel K (2026). bambamR: End-to-End RNA-Seq
-Processing from FASTQ to Publication-Ready Plots. R package version 0.1.0.
-https://github.com/cttir/bambamR
+Heller R, Witte H, Steinestel K (2026). bambamR: RNA-Seq Processing from
+FASTQ Files to Publication-Ready Plots. R package version 0.2.0.
+https://github.com/CTTIR/bambamR
 ```
 
 ## License

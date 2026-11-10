@@ -1,35 +1,47 @@
-## Local R CMD check results (30 October 2026)
+## Submission
+
+This is a new submission of `bambamR` (version 0.2.0).
+
+## Test environments
+
+* local macOS (aarch64), R 4.6.1:
+  `R CMD check --as-cran --no-manual` (LaTeX is not installed locally, so
+  the PDF manual was not built here), run twice:
+  * with all suggested CRAN and Bioconductor packages installed, and
+  * in a library that contains CRAN packages only
+    (`_R_CHECK_FORCE_SUGGESTS_=false`), i.e. without any Bioconductor
+    package.
+* GitHub Actions (r-lib/actions v2, `--as-cran`):
+  macos-latest (release), windows-latest (release),
+  ubuntu-latest (devel, release, oldrel-1)
+
+## R CMD check results
 
 0 errors | 0 warnings | 1 note
 
-The note is CRAN incoming feasibility: "New submission".
-The full check includes examples, donttest examples, tests, vignette rebuilding,
-HTML help validation and the indexed PDF manual.
+* checking CRAN incoming feasibility ... NOTE
+  New submission
 
-## Verified environment
+## Notes for CRAN
 
-* macOS 27.0.1 (Apple Silicon), R 4.6.1.
-* CRAN-only first use from a separate package library.
-* Optional Bioconductor engines, including DESeq2, edgeR, limma,
-  ShortRead, Rsamtools and GenomicAlignments.
-* Native synthetic-read integration with minimap2 2.31, samtools 1.25 and
-  featureCounts 2.0.2; counts checked against known expected values.
-
-The new revision has not run on hosted GitHub Actions, Windows or Linux.
-Native STAR/HISAT2 integration is prepared in CI but was not run on this Mac.
-These must be qualified before claiming the complete supported-platform matrix.
-
-## Publication status
-
-No CRAN submission or GitHub release was performed. The previously recorded
-Zenodo identifier does not currently resolve; its provenance is preserved in
-CITATION.cff comments and MAINTENANCE.md. Confirm publisher metadata before release.
-
-## Optional dependencies
-
-Statistical engines and read-processing backends are optional. Requested missing
-engines fail with installation guidance. CRAN-only pipeline use explicitly skips
-DE; it does not report a failed DE analysis as complete.
-
-See MAINTENANCE.md for the audit, migration notes, exact local validation commands,
-and remaining qualification work.
+* All Bioconductor packages are in Suggests ('ShortRead', 'Biostrings',
+  'Rsamtools', 'GenomicAlignments', 'GenomicFeatures', 'txdbmaker',
+  'GenomicRanges', 'DESeq2', 'edgeR', 'limma', 'SummarizedExperiment',
+  'Biobase', 'ComplexHeatmap'). They are only used after
+  `requireNamespace()` checks; examples, tests and vignettes that need them
+  are skipped when they are not installed. The package passes
+  `R CMD check` with CRAN-only dependencies ("minimal mode").
+* External command-line tools (STAR, HISAT2, minimap2, samtools,
+  featureCounts) are optional and listed in SystemRequirements. They are
+  never called during examples, tests or vignettes on CRAN; the example of
+  `bb_align()` is in `\dontrun{}` because it needs an aligner and a genome
+  index that cannot be shipped.
+* Examples that load the optional 'Bioconductor' back ends are wrapped in
+  `\donttest{}` because loading those packages alone can take several
+  seconds.
+* `bb_pipeline()` writes to a new directory below `tempdir()` unless the
+  user supplies `output_dir`; examples, tests and vignettes only write to
+  `tempdir()`.
+* README.md and the vignettes carry CRAN badges linking to
+  <https://CRAN.R-project.org/package=bambamR>, which returns 404 until the
+  package has been accepted; all other URLs resolve.
