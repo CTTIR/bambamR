@@ -4,18 +4,18 @@
 \name{bambamR-package}
 \alias{bambamR}
 \alias{bambamR-package}
-\title{bambamR: End-to-End RNA-Seq Processing from FASTQ to Publication-Ready Plots}
+\title{bambamR: RNA-Seq Processing from FASTQ Files to Publication-Ready Plots}
 \description{
 \if{html}{\figure{logo.svg}{options: style='float: right' alt='logo' width='120'}}
 
-A streamlined toolkit for RNA-seq analysis covering FASTQ/BAM import, quality control, alignment, read counting, normalization, differential expression analysis, and publication-ready visualizations including onco plots, volcano plots, heatmaps, and PCA. Operates in minimal mode with CRAN-only dependencies or in full mode when Bioconductor packages are available.
+A streamlined toolkit for RNA sequencing (RNA-seq) analysis covering FASTQ and BAM import, quality control, alignment through external aligners ('STAR', 'HISAT2', 'minimap2'), read counting, normalization, differential expression analysis with 'DESeq2', 'edgeR' or 'limma', and publication-ready visualizations including oncoplots, volcano plots, heatmaps and principal component analysis plots. Works in a minimal mode with dependencies from CRAN only, or in a full mode when the optional 'Bioconductor' packages are installed.
 }
 \seealso{
 Useful links:
 \itemize{
   \item \url{https://cttir.github.io/bambamR/}
-  \item \url{https://github.com/cttir/bambamR}
-  \item Report bugs at \url{https://github.com/cttir/bambamR/issues}
+  \item \url{https://github.com/CTTIR/bambamR}
+  \item Report bugs at \url{https://github.com/CTTIR/bambamR/issues}
 }
 
 }

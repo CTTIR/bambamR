@@ -11,6 +11,9 @@
 
 \item{...}{Additional arguments (ignored).}
 }
+\value{
+\code{x}, invisibly; called for its side effect of printing a summary.
+}
 \description{
 Print method for bb_result
 }

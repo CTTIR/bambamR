@@ -11,6 +11,20 @@
 
 \item{...}{Additional arguments (ignored).}
 }
+\value{
+\code{x}, invisibly; called for its side effect of printing a summary.
+}
 \description{
 Print method for bb_qc
+}
+\examples{
+\donttest{
+# bb_qc() reads FASTQ files with the optional 'ShortRead' package when it
+# is installed; loading it can take several seconds.
+tmp <- tempfile(fileext = ".fastq")
+writeLines(c("@r1", "ACGT", "+", "IIII"), tmp)
+qc <- bb_qc(fastq_path = tmp, use_fastqc = FALSE)
+print(qc)
+unlink(tmp)
+}
 }

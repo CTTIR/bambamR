@@ -11,6 +11,21 @@
 
 \item{...}{Additional arguments (ignored).}
 }
+\value{
+A data frame with one row per analyzed file, as returned by
+\code{\link[=bb_qc_summary]{bb_qc_summary()}}.
+}
 \description{
 Summary method for bb_qc
+}
+\examples{
+\donttest{
+# bb_qc() reads FASTQ files with the optional 'ShortRead' package when it
+# is installed; loading it can take several seconds.
+tmp <- tempfile(fileext = ".fastq")
+writeLines(c("@r1", "ACGT", "+", "IIII"), tmp)
+qc <- bb_qc(fastq_path = tmp, use_fastqc = FALSE)
+summary(qc)
+unlink(tmp)
+}
 }

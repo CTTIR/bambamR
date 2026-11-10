@@ -264,6 +264,7 @@ new_bb_result <- function(counts = NULL, metadata = NULL,
 #' Print method for bb_result
 #' @param x A bb_result object.
 #' @param ... Additional arguments (ignored).
+#' @return `x`, invisibly; called for its side effect of printing a summary.
 #' @export
 print.bb_result <- function(x, ...) {
   cat("bambamR Result\n")

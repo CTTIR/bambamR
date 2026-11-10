@@ -80,7 +80,18 @@ bb_qc <- function(fastq_path = NULL, bam_path = NULL, use_fastqc = TRUE) {
 #' Print method for bb_qc
 #' @param x A bb_qc object.
 #' @param ... Additional arguments (ignored).
+#' @return `x`, invisibly; called for its side effect of printing a summary.
 #' @export
+#' @examples
+#' \donttest{
+#' # bb_qc() reads FASTQ files with the optional 'ShortRead' package when it
+#' # is installed; loading it can take several seconds.
+#' tmp <- tempfile(fileext = ".fastq")
+#' writeLines(c("@r1", "ACGT", "+", "IIII"), tmp)
+#' qc <- bb_qc(fastq_path = tmp, use_fastqc = FALSE)
+#' print(qc)
+#' unlink(tmp)
+#' }
 print.bb_qc <- function(x, ...) {
   cat("bambamR QC Summary\n")
   cat("==================\n")
@@ -140,7 +151,19 @@ bb_qc_summary <- function(qc_object) {
 #' Summary method for bb_qc
 #' @param object A bb_qc object.
 #' @param ... Additional arguments (ignored).
+#' @return A data frame with one row per analyzed file, as returned by
+#'   [bb_qc_summary()].
 #' @export
+#' @examples
+#' \donttest{
+#' # bb_qc() reads FASTQ files with the optional 'ShortRead' package when it
+#' # is installed; loading it can take several seconds.
+#' tmp <- tempfile(fileext = ".fastq")
+#' writeLines(c("@r1", "ACGT", "+", "IIII"), tmp)
+#' qc <- bb_qc(fastq_path = tmp, use_fastqc = FALSE)
+#' summary(qc)
+#' unlink(tmp)
+#' }
 summary.bb_qc <- function(object, ...) {
   bb_qc_summary(object)
 }

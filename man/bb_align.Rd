@@ -51,9 +51,11 @@ Wrapper for STAR, HISAT2, or minimap2 alignment tools. Checks that the
 selected aligner is available on the system PATH before running.
 }
 \examples{
-\donttest{
-# Requires STAR/HISAT2/minimap2 installed
-# result <- bb_align("reads.fastq", "/path/to/index", "output/")
+\dontrun{
+# Not run: needs an external aligner (STAR, HISAT2 or minimap2) on the
+# PATH and a prebuilt genome index, neither of which can be shipped.
+result <- bb_align("reads.fastq", "/path/to/index",
+                   file.path(tempdir(), "alignment"), aligner = "HISAT2")
 }
 
 }

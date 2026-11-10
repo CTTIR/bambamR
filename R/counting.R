@@ -22,8 +22,30 @@
 #'
 #' @examples
 #' \donttest{
-#' # Requires BAM files and a GTF annotation
-#' # counts <- bb_count_reads(c("s1.bam", "s2.bam"), "genes.gtf")
+#' # Internal counting needs the optional Bioconductor packages Rsamtools,
+#' # GenomicAlignments, GenomicFeatures and txdbmaker.
+#' needed <- c("Rsamtools", "GenomicAlignments", "GenomicRanges",
+#'             "GenomicFeatures", "txdbmaker", "SummarizedExperiment")
+#' if (all(vapply(needed, requireNamespace, logical(1), quietly = TRUE))) {
+#'   dir <- tempfile("bambamR-count-")
+#'   dir.create(dir)
+#'   sam <- file.path(dir, "s1.sam")
+#'   writeLines(c(
+#'     "@HD\tVN:1.6\tSO:coordinate", "@SQ\tSN:chr1\tLN:2000",
+#'     "r1\t0\tchr1\t100\t60\t8M\t*\t0\t0\tACGTACGT\tIIIIIIII",
+#'     "r2\t0\tchr1\t300\t60\t8M\t*\t0\t0\tTTGCAACG\tIIIIIIII"
+#'   ), sam)
+#'   bam <- Rsamtools::asBam(sam, destination = file.path(dir, "s1"))
+#'   gtf <- file.path(dir, "genes.gtf")
+#'   writeLines(c(
+#'     paste("chr1", "example", "exon", "90", "150", ".", "+", ".",
+#'           "gene_id \"G1\"; transcript_id \"T1\";", sep = "\t"),
+#'     paste("chr1", "example", "exon", "280", "350", ".", "+", ".",
+#'           "gene_id \"G2\"; transcript_id \"T2\";", sep = "\t")
+#'   ), gtf)
+#'   bb_count_reads(bam, gtf, method = "internal")
+#'   unlink(dir, recursive = TRUE)
+#' }
 #' }
 #'
 #' @export
