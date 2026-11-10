@@ -29,7 +29,7 @@ tmp <- tempfile(fileext = ".rds")
 counts <- matrix(rpois(100, 50), nrow = 10,
   dimnames = list(paste0("g", 1:10), paste0("s", 1:10)))
 bb_export_rds(counts, tmp)
-#> Saved to: /tmp/RtmpZY5CzC/file19af3d48eecf.rds
+#> Saved to: /tmp/Rtmp7thIVe/file189557e43a2a.rds
 readRDS(tmp)
 #>     s1 s2 s3 s4 s5 s6 s7 s8 s9 s10
 #> g1  52 52 45 53 62 42 46 53 50  52

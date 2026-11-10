@@ -2,7 +2,7 @@
 
 ## Authors
 
-- **R. Heller**. Author, maintainer.
+- **R. Heller**. Author, maintainer, copyright holder.
   [](https://orcid.org/0000-0001-8006-9742)
 
 - **Hanno Witte**. Author.

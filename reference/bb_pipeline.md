@@ -123,7 +123,7 @@ result <- bb_pipeline(count_matrix = counts, sample_info = sample_info,
 #>   CPM normalization complete
 #> === Step 6: Generating Plots ===
 #>   Generated: pca, heatmap
-#> Saved to: /tmp/RtmpZY5CzC/bambamR-pipeline-example/bambamR_result.rds
+#> Saved to: /tmp/Rtmp7thIVe/bambamR-pipeline-example/bambamR_result.rds
 #> 
 #> === Pipeline complete ===
 result
@@ -150,7 +150,7 @@ if (requireNamespace("edgeR", quietly = TRUE)) {
 #>   Found 0 significant genes (FDR < 0.05)
 #> === Step 6: Generating Plots ===
 #>   Generated: pca, heatmap, volcano
-#> Saved to: /tmp/RtmpZY5CzC/bambamR-pipeline-edger/bambamR_result.rds
+#> Saved to: /tmp/Rtmp7thIVe/bambamR-pipeline-edger/bambamR_result.rds
 #> 
 #> === Pipeline complete ===
 # }
