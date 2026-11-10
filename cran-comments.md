@@ -5,8 +5,9 @@ This is a new submission of `bambamR` (version 0.2.0).
 ## Test environments
 
 * local macOS (aarch64), R 4.6.1:
-  `R CMD check --as-cran --no-manual` (LaTeX is not installed locally, so
-  the PDF manual was not built here), run twice:
+  `R CMD check --as-cran --no-manual` (the PDF manual was built locally
+  with TinyTeX (TeX Live 2026) via `R CMD Rd2pdf` without errors; the check
+  run itself used `--no-manual`), run twice:
   * with all suggested CRAN and Bioconductor packages installed, and
   * in a library that contains CRAN packages only
     (`_R_CHECK_FORCE_SUGGESTS_=false`), i.e. without any Bioconductor
