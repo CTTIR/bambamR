@@ -17,7 +17,7 @@
 ^\.lintr$
 ^\.claude$
 ^_coverage$
-^tools/branding$
+^tools$
 ^MAINTENANCE\.md$
 ^\.git$
 ^\.zenodo\.json$
