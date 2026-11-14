@@ -112,12 +112,7 @@ bb_count_bam <- function(path) {
   param <- Rsamtools::ScanBamParam(what = what)
   bam <- Rsamtools::scanBam(path, param = param)[[1]]
 
-  # Convert list to data.frame
-  lens <- vapply(bam, length, integer(1))
-  if (all(lens == 0L)) {
-    return(data.frame(stringsAsFactors = FALSE))
-  }
-
+  # Preserve requested fields and their types even when no alignments exist.
   as.data.frame(bam, stringsAsFactors = FALSE)
 }
 

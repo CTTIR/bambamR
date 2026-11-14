@@ -4,17 +4,19 @@ This is a new submission of `bambamR` (version 0.2.0).
 
 ## Test environments
 
-* local macOS (aarch64), R 4.6.1:
-  `R CMD check --as-cran --no-manual` (the PDF manual was built locally
-  with TinyTeX (TeX Live 2026) via `R CMD Rd2pdf` without errors; the check
-  run itself used `--no-manual`), run twice:
-  * with all suggested CRAN and Bioconductor packages installed, and
-  * in a library that contains CRAN packages only
-    (`_R_CHECK_FORCE_SUGGESTS_=false`), i.e. without any Bioconductor
-    package.
-* GitHub Actions (r-lib/actions v2, `--as-cran`):
+* Local macOS (aarch64), R 4.6.1: full `R CMD check --as-cran` on the
+  built tarball, including the PDF manual with TinyTeX and all suggested
+  CRAN and Bioconductor packages. The 2026-11-14 candidate passed 364 test
+  assertions. Eleven tests were skipped by their missing-package,
+  platform or CRAN guards; the native minimap2/samtools regression ran.
+* The native regression used minimap2 2.31-r1302 and samtools, with a
+  deterministic 10 kb synthetic reference and single- and paired-end reads.
+  It checked alignment coordinates, strands, pairing, unmapped records and
+  BAM integrity, including paths containing spaces and apostrophes.
+* Configured GitHub Actions matrix (r-lib/actions v2, `--as-cran`):
   macos-latest (release), windows-latest (release),
-  ubuntu-latest (devel, release, oldrel-1)
+  ubuntu-latest (devel, release, oldrel-1). Exact-commit results must be
+  verified before submission.
 
 ## R CMD check results
 
@@ -25,24 +27,18 @@ This is a new submission of `bambamR` (version 0.2.0).
 
 ## Notes for CRAN
 
-* All Bioconductor packages are in Suggests ('ShortRead', 'Biostrings',
-  'Rsamtools', 'GenomicAlignments', 'GenomicFeatures', 'txdbmaker',
-  'GenomicRanges', 'DESeq2', 'edgeR', 'limma', 'SummarizedExperiment',
-  'Biobase', 'ComplexHeatmap'). They are only used after
-  `requireNamespace()` checks; examples, tests and vignettes that need them
-  are skipped when they are not installed. The package passes
-  `R CMD check` with CRAN-only dependencies ("minimal mode").
-* External command-line tools (STAR, HISAT2, minimap2, samtools,
-  featureCounts) are optional and listed in SystemRequirements. They are
-  never called during examples, tests or vignettes on CRAN; the example of
-  `bb_align()` is in `\dontrun{}` because it needs an aligner and a genome
-  index that cannot be shipped.
-* Examples that load the optional 'Bioconductor' back ends are wrapped in
-  `\donttest{}` because loading those packages alone can take several
-  seconds.
-* `bb_pipeline()` writes to a new directory below `tempdir()` unless the
-  user supplies `output_dir`; examples, tests and vignettes only write to
-  `tempdir()`.
-* README.md and the vignettes carry CRAN badges linking to
-  <https://CRAN.R-project.org/package=bambamR>, which returns 404 until the
-  package has been accepted; all other URLs resolve.
+* Bioconductor packages are optional Suggests and are used after
+  `requireNamespace()` checks. Examples, tests and vignettes that require
+  an unavailable backend are skipped.
+* External command-line tools (STAR, HISAT2, minimap2, samtools and
+  featureCounts) are optional and listed in SystemRequirements. The tiny
+  native regression runs only when minimap2 and samtools are available;
+  it downloads no reference data. The `bb_align()` example is in
+  `\dontrun{}` because it requires an installed aligner and user inputs.
+  STAR, HISAT2 and standalone featureCounts were not qualified by this run.
+* Examples loading optional Bioconductor backends use `\donttest{}` because
+  backend loading alone can take several seconds. These examples were run
+  during the full check above.
+* `bb_pipeline()` writes below `tempdir()` unless the caller supplies an
+  output directory. Examples and tests use temporary output paths.
+* No published CRAN release or archival DOI is claimed by this candidate.
