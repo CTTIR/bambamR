@@ -18,6 +18,7 @@ jobs:
       - uses: r-lib/actions/setup-r-dependencies@v2
         with:
           extra-packages: |
+            any::testthat
             bioc::GenomicAlignments
             bioc::GenomicFeatures
             bioc::txdbmaker
@@ -36,3 +37,13 @@ jobs:
           samtools --version
           featureCounts -v
           Rscript --vanilla tools/verify-native.R "$RUNNER_TEMP/bambamR-native"
+          Rscript --vanilla - <<'RSCRIPT'
+          stopifnot(all(nzchar(Sys.which(c("minimap2", "samtools")))))
+          library(bambamR)
+          results <- as.data.frame(testthat::test_file(
+            "tests/testthat/test-native-minimap2.R",
+            reporter = "summary", stop_on_failure = TRUE
+          ))
+          stopifnot(nrow(results) > 0L, !any(results$skipped),
+                    sum(results$passed) > 0L)
+          RSCRIPT
