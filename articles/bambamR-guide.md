@@ -655,7 +655,7 @@ sessionInfo()
 #> loaded via a namespace (and not attached):
 #>  [1] SummarizedExperiment_1.42.0 gtable_0.3.6               
 #>  [3] hwriter_1.3.2.1             xfun_0.62                  
-#>  [5] bslib_0.12.0                ggplot2_4.0.3              
+#>  [5] bslib_0.12.0                ggplot2_4.0.4              
 #>  [7] htmlwidgets_1.6.4           ggrepel_0.9.8              
 #>  [9] latticeExtra_0.6-31         Biobase_2.72.0             
 #> [11] lattice_0.23-1              vctrs_0.7.3                

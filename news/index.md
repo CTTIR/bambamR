@@ -20,6 +20,10 @@
 
 ### Integrity fixes
 
+- Preserve requested BAM columns and their types when the Rsamtools
+  reader encounters a valid file with no alignments. Empty results now
+  support the same field selection as populated results.
+
 - Expand existing Windows short read-path aliases before HISAT2
   admission; preserve bare index names and the caller’s original path
   provenance.

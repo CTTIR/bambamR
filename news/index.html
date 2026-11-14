@@ -53,7 +53,8 @@
 </ul></div>
 <div class="section level3">
 <h3 id="integrity-fixes-0-2-0">Integrity fixes<a class="anchor" aria-label="anchor" href="#integrity-fixes-0-2-0"></a></h3>
-<ul><li><p>Expand existing Windows short read-path aliases before HISAT2 admission; preserve bare index names and the caller’s original path provenance.</p></li>
+<ul><li><p>Preserve requested BAM columns and their types when the Rsamtools reader encounters a valid file with no alignments. Empty results now support the same field selection as populated results.</p></li>
+<li><p>Expand existing Windows short read-path aliases before HISAT2 admission; preserve bare index names and the caller’s original path provenance.</p></li>
 <li><p>Normalize Windows path separators before HISAT2 alias admission while preserving literal backslashes in Unix filenames and original input paths.</p></li>
 <li><p>Preserve HISAT2 FASTQ/index paths containing spaces or shell punctuation with private temporary aliases, including compressed reads and large indexes. Retain original input paths in the result; reject unsafe optional arguments that the upstream wrapper would parse through a second shell.</p></li>
 <li><p>Preserve separate FASTQ alignment products and sample names; reject ambiguous pipeline entry points, incompatible skipped steps and output replacement.</p></li>
