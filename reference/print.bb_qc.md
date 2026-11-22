@@ -36,7 +36,7 @@ print(qc)
 #> bambamR QC Summary
 #> ==================
 #> Files analyzed: 1 
-#>   file18a36ff6e1dd.fastq: 1 reads
+#>   file19ec5238e355.fastq: 1 reads
 unlink(tmp)
 # }
 ```

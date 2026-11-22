@@ -663,14 +663,14 @@ sessionInfo()
 #> [15] generics_0.1.4              stats4_4.6.2               
 #> [17] parallel_4.6.2              tibble_3.3.1               
 #> [19] pkgconfig_2.0.3             Matrix_1.7-6               
-#> [21] RColorBrewer_1.1-3          S7_0.2.2                   
+#> [21] RColorBrewer_1.1-3          S7_1.0.0                   
 #> [23] desc_1.4.3                  S4Vectors_0.50.3           
 #> [25] cigarillo_1.2.1             lifecycle_1.0.5            
 #> [27] deldir_2.0-4                compiler_4.6.2             
 #> [29] farver_2.1.2                Rsamtools_2.28.0           
-#> [31] textshaping_1.0.5           Biostrings_2.80.2          
+#> [31] textshaping_1.1.0           Biostrings_2.80.2          
 #> [33] Seqinfo_1.2.0               codetools_0.2-20           
-#> [35] htmltools_0.5.9             sass_0.4.10                
+#> [35] htmltools_0.5.9             sass_0.5.0                 
 #> [37] yaml_2.3.12                 pillar_1.11.1              
 #> [39] pkgdown_2.2.1               crayon_1.5.3               
 #> [41] jquerylib_0.1.4             BiocParallel_1.46.0        
@@ -693,5 +693,5 @@ sessionInfo()
 #> [75] glue_1.8.1                  BiocGenerics_0.58.1        
 #> [77] jsonlite_2.0.0              R6_2.6.1                   
 #> [79] MatrixGenerics_1.24.0       GenomicAlignments_1.48.0   
-#> [81] systemfonts_1.3.2           fs_2.1.0
+#> [81] systemfonts_1.3.3           fs_2.1.0
 ```
