@@ -24,7 +24,15 @@ test_that(".compute_qual_summary matches the per-position reference", {
   expect_equal(res$position, seq_len(12))
   expect_equal(res$mean_quality, reference(ragged))
 
-  # more reads than one accumulation block (50,000)
+  # several accumulation blocks, including reads longer than one block and
+  # empty quality strings
+  expect_equal(bambamR:::.compute_qual_summary(ragged, block_bases = 5)$mean_quality,
+               reference(ragged))
+  mixed <- c("", "II#", "", "5", "F?5I#?F", "")
+  expect_equal(bambamR:::.compute_qual_summary(mixed, block_bases = 3)$mean_quality,
+               reference(mixed))
   many <- rep(c("II#", "5", "F?"), length.out = 50003)
-  expect_equal(bambamR:::.compute_qual_summary(many)$mean_quality, reference(many))
+  expect_equal(bambamR:::.compute_qual_summary(many, block_bases = 1e4)$mean_quality,
+               reference(many))
+  expect_equal(nrow(bambamR:::.compute_qual_summary(c("", ""))), 0L)
 })

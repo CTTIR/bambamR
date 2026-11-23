@@ -182,7 +182,7 @@ summary.bb_qc <- function(object, ...) {
 
 #' Compute per-position quality summary
 #' @noRd
-.compute_qual_summary <- function(quality_strings) {
+.compute_qual_summary <- function(quality_strings, block_bases = 1e7) {
   if (length(quality_strings) == 0L) return(NULL)
 
   quality_strings <- as.character(quality_strings)
@@ -190,13 +190,14 @@ summary.bb_qc <- function(object, ...) {
   max_len <- max(lens)
 
   # Per-position sums and read counts, accumulated over blocks of reads so
-  # the work is linear in the number of bases and memory stays bounded.
+  # the work is linear in the number of bases. A block ends once it holds
+  # about `block_bases` bases, which bounds the working memory for short and
+  # for long reads alike (a read longer than that forms its own block).
   sums <- numeric(max_len)
   n <- numeric(max_len)
-  block <- 50000L
-  for (start in seq.int(1L, length(quality_strings), by = block)) {
-    idx <- seq.int(start, min(start + block - 1L, length(quality_strings)))
-    if (sum(lens[idx]) == 0L) next
+  block_id <- cumsum(as.numeric(lens)) %/% block_bases
+  for (idx in split(seq_along(lens), block_id)) {
+    if (!any(lens[idx] > 0L)) next
     # Convert Phred+33 to numeric
     vals <- as.integer(charToRaw(paste(quality_strings[idx], collapse = ""))) - 33L
     pos <- sequence(lens[idx])

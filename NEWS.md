@@ -10,7 +10,9 @@
   cases previously failed with an unrelated error from the model matrix.
 * `bb_qc()` computes GC content and per-position quality in time linear in the
   number of bases; the per-position summary previously looped over every read
-  for every position. Results are unchanged.
+  for every position. Reads are processed in blocks of about ten million
+  bases, so memory stays bounded for long reads as well. Results are
+  unchanged.
 * `bb_qc()`: `use_fastqc` is documented as reserved and ignored; it never
   called FastQC.
 * `bb_oncoplot()` no longer fails when a custom `mutation_colors` vector has no
