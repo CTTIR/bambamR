@@ -181,8 +181,9 @@ validate_counts <- function(counts) {
 
 #' @noRd
 .validate_n <- function(n, name) {
-  if (!is.numeric(n) || length(n) != 1L || !is.finite(n) || n < 1 ||
-        n != floor(n)) {
+  # `Inf` stays valid: it selects every gene, as it did before validation.
+  if (!is.numeric(n) || length(n) != 1L || is.na(n) || n < 1 ||
+        (is.finite(n) && n != floor(n))) {
     stop("'", name, "' must be a positive whole number.", call. = FALSE)
   }
   invisible(n)

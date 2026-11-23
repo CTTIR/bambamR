@@ -22,7 +22,7 @@ bb_heatmap(
 \code{n_genes} by adjusted p-value are shown.}
 
 \item{n_genes}{Integer. Number of top genes to display. Must be a positive
-whole number. Default \code{50}.}
+whole number, or \code{Inf} for all genes. Default \code{50}.}
 
 \item{annotation_col}{A data.frame for column (sample) annotations.
 Rownames must match column names of \code{counts}. Annotation tracks require

@@ -40,6 +40,9 @@ test_that("bb_heatmap validates n_genes and labels samples once with annotations
                    dimnames = list(paste0("g", 1:10), paste0("S", 1:6)))
   expect_error(bb_heatmap(counts, n_genes = 0), "'n_genes' must be a positive")
   expect_error(bb_heatmap(counts, n_genes = "5"), "'n_genes' must be a positive")
+  expect_error(bb_heatmap(counts, n_genes = 2.5), "'n_genes' must be a positive")
+  # Inf keeps selecting every gene
+  expect_equal(nlevels(bb_heatmap(counts, n_genes = Inf)$data$row_gene), 10L)
   skip_if_not_installed("patchwork")
   anno <- data.frame(group = rep(c("a", "b"), 3), row.names = colnames(counts))
   p <- bb_heatmap(counts, annotation_col = anno)
@@ -67,6 +70,8 @@ test_that("bb_volcano validates colors, n_label and drops unplottable rows", {
   expect_error(bb_volcano(de, colors = c(high = "red", low = "blue", ns = "grey")),
                "named \"up\", \"down\", \"ns\"")
   expect_error(bb_volcano(de, n_label = -1), "'n_label' must be")
+  inf_labels <- bb_volcano(de, n_label = Inf)
+  expect_equal(nrow(inf_labels$layers[[length(inf_labels$layers)]]$data), 10L)
   de$log2fc[1] <- NA
   expect_equal(nrow(bb_volcano(de)$data), nrow(de) - 1L)
 })

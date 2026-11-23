@@ -7,7 +7,7 @@
 #' @param de_result A data.frame with DE results. If provided, the top
 #'   `n_genes` by adjusted p-value are shown.
 #' @param n_genes Integer. Number of top genes to display. Must be a positive
-#'   whole number. Default `50`.
+#'   whole number, or `Inf` for all genes. Default `50`.
 #' @param annotation_col A data.frame for column (sample) annotations.
 #'   Rownames must match column names of `counts`. Annotation tracks require
 #'   the optional `patchwork` package.

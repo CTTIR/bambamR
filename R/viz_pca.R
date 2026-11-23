@@ -12,7 +12,7 @@
 #' @param shape_by Character or NULL. Column name in `metadata` for point
 #'   shapes.
 #' @param n_genes Integer. Number of top variable genes to use for PCA.
-#'   Must be a positive whole number. Default `500`.
+#'   Must be a positive whole number, or `Inf` for all genes. Default `500`.
 #' @param label Logical. Whether to label sample points. Default `FALSE`.
 #' @param point_size Numeric. Size of points. Default `3`.
 #'

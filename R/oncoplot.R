@@ -11,7 +11,7 @@
 #'   the top `n_genes` most frequently mutated genes are shown. Duplicated
 #'   entries are shown once.
 #' @param n_genes Integer. Number of top mutated genes if `genes` is `NULL`.
-#'   Must be a positive whole number. Default `20`.
+#'   Must be a positive whole number, or `Inf` for all genes. Default `20`.
 #' @param sort_by Character. How to sort samples: `"frequency"` (by number of
 #'   mutated genes shown) or `"cluster"` (by co-occurrence clustering).
 #'   Default `"frequency"`.
@@ -48,9 +48,13 @@
 #' selection; samples with no recorded mutations cannot be inferred.
 #'
 #' The legend is placed below the plot in three columns so that it fits
-#' common device widths. When moving it, for example with
-#' `+ ggplot2::theme(legend.position = "right")`, reset the layout with
-#' `+ ggplot2::guides(fill = ggplot2::guide_legend(ncol = 1))`.
+#' common device widths. When moving it, reset the layout as well. A plot
+#' with marginal barplots or annotation tracks is a patchwork composition, in
+#' which `&` applies a change to every panel:
+#' `p & ggplot2::theme(legend.position = "right") &
+#' ggplot2::guides(fill = ggplot2::guide_legend(ncol = 1))`. For a single
+#' ggplot (`show_barplot = FALSE` and no `annotation_df`), use `+` instead
+#' of `&`.
 #'
 #' @examples
 #' set.seed(42)
@@ -116,6 +120,7 @@ bb_oncoplot <- function(data,
   gene_freq <- sort(table(unique(df[, c("sample", "gene")])$gene),
                     decreasing = TRUE)
   if (!is.null(genes)) {
+    if (is.factor(genes)) genes <- as.character(genes)
     if (!is.character(genes) || !length(genes) || anyNA(genes)) {
       stop("'genes' must be a character vector of gene names without missing values.",
            call. = FALSE)

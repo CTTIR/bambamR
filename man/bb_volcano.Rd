@@ -28,7 +28,8 @@ Default \code{0.05}.}
 plot. If \code{NULL} (default), the top \code{n_label} significant genes are labeled.}
 
 \item{n_label}{Integer. Number of top significant genes to auto-label
-when \code{label_genes} is \code{NULL}; \code{0} draws no labels. Default \code{10}.}
+when \code{label_genes} is \code{NULL}; \code{0} draws no labels and \code{Inf} labels every
+significant gene. Default \code{10}.}
 
 \item{point_size}{Numeric. Size of points. Default \code{1}.}
 

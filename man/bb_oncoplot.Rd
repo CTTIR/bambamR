@@ -27,7 +27,7 @@ the top \code{n_genes} most frequently mutated genes are shown. Duplicated
 entries are shown once.}
 
 \item{n_genes}{Integer. Number of top mutated genes if \code{genes} is \code{NULL}.
-Must be a positive whole number. Default \code{20}.}
+Must be a positive whole number, or \code{Inf} for all genes. Default \code{20}.}
 
 \item{sort_by}{Character. How to sort samples: \code{"frequency"} (by number of
 mutated genes shown) or \code{"cluster"} (by co-occurrence clustering).
@@ -77,9 +77,12 @@ requested. Percentages use all samples represented in \code{data} before gene
 selection; samples with no recorded mutations cannot be inferred.
 
 The legend is placed below the plot in three columns so that it fits
-common device widths. When moving it, for example with
-\code{+ ggplot2::theme(legend.position = "right")}, reset the layout with
-\code{+ ggplot2::guides(fill = ggplot2::guide_legend(ncol = 1))}.
+common device widths. When moving it, reset the layout as well. A plot
+with marginal barplots or annotation tracks is a patchwork composition, in
+which \code{&} applies a change to every panel:
+\code{p & ggplot2::theme(legend.position = "right") & ggplot2::guides(fill = ggplot2::guide_legend(ncol = 1))}. For a single
+ggplot (\code{show_barplot = FALSE} and no \code{annotation_df}), use \code{+} instead
+of \code{&}.
 }
 \examples{
 set.seed(42)

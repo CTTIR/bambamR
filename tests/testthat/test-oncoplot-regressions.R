@@ -33,10 +33,15 @@ test_that("bb_oncoplot shows duplicated 'genes' once and validates gene selectio
   dat <- onco_data()
   p <- bb_oncoplot(dat, genes = c("TP53", "KRAS", "TP53"), show_barplot = FALSE)
   expect_equal(sort(levels(p$data$gene)), c("KRAS", "TP53"))
+  # a factor of gene names keeps working, as before the validation was added
+  p_factor <- bb_oncoplot(dat, genes = factor(c("TP53", "KRAS")), show_barplot = FALSE)
+  expect_equal(sort(levels(p_factor$data$gene)), c("KRAS", "TP53"))
   expect_error(bb_oncoplot(dat, genes = c("TP53", NA)), "'genes' must be")
   expect_error(bb_oncoplot(dat, n_genes = 0), "'n_genes' must be a positive")
   expect_error(bb_oncoplot(dat, n_genes = -2), "'n_genes' must be a positive")
   expect_error(bb_oncoplot(dat, n_genes = NA_integer_), "'n_genes' must be")
+  all_genes <- bb_oncoplot(dat, n_genes = Inf, show_barplot = FALSE)
+  expect_equal(nlevels(all_genes$data$gene), 5L)
 })
 
 test_that("bb_oncoplot warns when no annotation row matches a sample", {

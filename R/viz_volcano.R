@@ -11,7 +11,8 @@
 #' @param label_genes Character vector. Specific gene names to label on the
 #'   plot. If `NULL` (default), the top `n_label` significant genes are labeled.
 #' @param n_label Integer. Number of top significant genes to auto-label
-#'   when `label_genes` is `NULL`; `0` draws no labels. Default `10`.
+#'   when `label_genes` is `NULL`; `0` draws no labels and `Inf` labels every
+#'   significant gene. Default `10`.
 #' @param point_size Numeric. Size of points. Default `1`.
 #' @param colors Character vector of length 3 with the names `"up"`,
 #'   `"down"` and `"ns"` (non-significant). An unnamed vector is read in
@@ -42,8 +43,8 @@ bb_volcano <- function(de_result,
 
   validate_de_result(de_result)
   colors <- .named_colors(colors, c("up", "down", "ns"))
-  if (!is.numeric(n_label) || length(n_label) != 1L || !is.finite(n_label) ||
-        n_label < 0 || n_label != floor(n_label)) {
+  if (!is.numeric(n_label) || length(n_label) != 1L || is.na(n_label) ||
+        n_label < 0 || (is.finite(n_label) && n_label != floor(n_label))) {
     stop("'n_label' must be a non-negative whole number.", call. = FALSE)
   }
 

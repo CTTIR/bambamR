@@ -29,7 +29,7 @@ points.}
 shapes.}
 
 \item{n_genes}{Integer. Number of top variable genes to use for PCA.
-Must be a positive whole number. Default \code{500}.}
+Must be a positive whole number, or \code{Inf} for all genes. Default \code{500}.}
 
 \item{label}{Logical. Whether to label sample points. Default \code{FALSE}.}
 
