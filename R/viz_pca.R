@@ -3,6 +3,8 @@
 #' Creates a PCA plot from a normalized count matrix with sample metadata.
 #'
 #' @param counts Numeric matrix. Normalized count matrix (genes x samples).
+#'   Log-transformed values, for example `log2(cpm + 1)`, usually separate
+#'   samples better than untransformed counts.
 #' @param metadata A data.frame with sample information. Rownames must match
 #'   column names of `counts`.
 #' @param color_by Character. Column name in `metadata` to use for coloring
@@ -10,7 +12,7 @@
 #' @param shape_by Character or NULL. Column name in `metadata` for point
 #'   shapes.
 #' @param n_genes Integer. Number of top variable genes to use for PCA.
-#'   Default `500`.
+#'   Must be a positive whole number. Default `500`.
 #' @param label Logical. Whether to label sample points. Default `FALSE`.
 #' @param point_size Numeric. Size of points. Default `3`.
 #'
@@ -32,6 +34,14 @@ bb_pca <- function(counts, metadata, color_by, shape_by = NULL,
                    n_genes = 500L, label = FALSE, point_size = 3) {
 
   counts <- validate_counts(counts)
+  .validate_n(n_genes, "n_genes")
+  if (!is.data.frame(metadata)) {
+    stop("'metadata' must be a data.frame with samples as rownames.",
+         call. = FALSE)
+  }
+  if (!is.character(color_by) || length(color_by) != 1L || is.na(color_by)) {
+    stop("'color_by' must be a single column name of 'metadata'.", call. = FALSE)
+  }
 
   if (!color_by %in% colnames(metadata)) {
     stop("'", color_by, "' not found in metadata columns.", call. = FALSE)

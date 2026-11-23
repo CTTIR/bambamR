@@ -28,12 +28,13 @@ Default \code{0.05}.}
 plot. If \code{NULL} (default), the top \code{n_label} significant genes are labeled.}
 
 \item{n_label}{Integer. Number of top significant genes to auto-label
-when \code{label_genes} is \code{NULL}. Default \code{10}.}
+when \code{label_genes} is \code{NULL}; \code{0} draws no labels. Default \code{10}.}
 
 \item{point_size}{Numeric. Size of points. Default \code{1}.}
 
-\item{colors}{Named character vector of length 3 for up, down, and
-non-significant colors.}
+\item{colors}{Character vector of length 3 with the names \code{"up"},
+\code{"down"} and \code{"ns"} (non-significant). An unnamed vector is read in
+that order.}
 }
 \value{
 A \link[ggplot2:ggplot]{ggplot2::ggplot} object.

@@ -8,7 +8,8 @@
 #' @param p_cutoff Numeric. Adjusted p-value cutoff for coloring significant
 #'   genes. Default `0.05`.
 #' @param point_size Numeric. Size of points. Default `1`.
-#' @param colors Named character vector with `"sig"` and `"ns"` colors.
+#' @param colors Character vector of length 2 with the names `"sig"` and
+#'   `"ns"`. An unnamed vector is read in that order.
 #'
 #' @return A [ggplot2::ggplot] object.
 #'
@@ -27,6 +28,7 @@ bb_ma_plot <- function(de_result, p_cutoff = 0.05, point_size = 1,
                        colors = c(sig = "#D73027", ns = "grey70")) {
 
   validate_de_result(de_result)
+  colors <- .named_colors(colors, c("sig", "ns"))
 
   if (!"basemean" %in% colnames(de_result)) {
     stop("'de_result' must contain a 'basemean' column for MA plots.",

@@ -20,7 +20,8 @@ genes. Default \code{0.05}.}
 
 \item{point_size}{Numeric. Size of points. Default \code{1}.}
 
-\item{colors}{Named character vector with \code{"sig"} and \code{"ns"} colors.}
+\item{colors}{Character vector of length 2 with the names \code{"sig"} and
+\code{"ns"}. An unnamed vector is read in that order.}
 }
 \value{
 A \link[ggplot2:ggplot]{ggplot2::ggplot} object.

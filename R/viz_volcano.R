@@ -11,10 +11,11 @@
 #' @param label_genes Character vector. Specific gene names to label on the
 #'   plot. If `NULL` (default), the top `n_label` significant genes are labeled.
 #' @param n_label Integer. Number of top significant genes to auto-label
-#'   when `label_genes` is `NULL`. Default `10`.
+#'   when `label_genes` is `NULL`; `0` draws no labels. Default `10`.
 #' @param point_size Numeric. Size of points. Default `1`.
-#' @param colors Named character vector of length 3 for up, down, and
-#'   non-significant colors.
+#' @param colors Character vector of length 3 with the names `"up"`,
+#'   `"down"` and `"ns"` (non-significant). An unnamed vector is read in
+#'   that order.
 #'
 #' @return A [ggplot2::ggplot] object.
 #'
@@ -40,10 +41,15 @@ bb_volcano <- function(de_result,
                                   ns = "grey70")) {
 
   validate_de_result(de_result)
+  colors <- .named_colors(colors, c("up", "down", "ns"))
+  if (!is.numeric(n_label) || length(n_label) != 1L || !is.finite(n_label) ||
+        n_label < 0 || n_label != floor(n_label)) {
+    stop("'n_label' must be a non-negative whole number.", call. = FALSE)
+  }
 
-  # Remove rows with NA p-values
-
-  df <- de_result[!is.na(de_result$padj), , drop = FALSE]
+  # Remove rows that cannot be placed on either axis
+  df <- de_result[!is.na(de_result$padj) & !is.na(de_result$log2fc), ,
+                  drop = FALSE]
 
   # Classify significance
   df$sig <- ifelse(
@@ -86,16 +92,20 @@ bb_volcano <- function(de_result,
       plot.title = ggplot2::element_text(hjust = 0.5, face = "bold")
     )
 
-  # Add labels if ggrepel is available
-  has_labels <- any(!is.na(df$label))
+  # Add labels if ggrepel is available. Only labelled rows go to the text
+  # layer, so unlabelled genes do not raise a "missing values" warning.
+  labelled <- df[!is.na(df$label), , drop = FALSE]
+  has_labels <- nrow(labelled) > 0L
   if (has_labels && requireNamespace("ggrepel", quietly = TRUE)) {
     p <- p + ggrepel::geom_text_repel(
+      data = labelled,
       ggplot2::aes(label = label),
       size = 3, max.overlaps = 20,
       segment.color = "grey50"
     )
   } else if (has_labels) {
     p <- p + ggplot2::geom_text(
+      data = labelled,
       ggplot2::aes(label = label),
       size = 3, vjust = -0.5, hjust = 0.5, check_overlap = TRUE
     )

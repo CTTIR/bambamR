@@ -81,8 +81,14 @@ bb_plot_qc <- function(qc_object, which = c("all", "quality", "gc", "length")) {
 
   ggplot2::ggplot(df_all, ggplot2::aes(x = position, y = mean_quality)) +
     ggplot2::geom_line(ggplot2::aes(color = file), linewidth = 0.8) +
-    ggplot2::geom_hline(yintercept = 20, linetype = "dashed", color = "red") +
-    ggplot2::geom_hline(yintercept = 30, linetype = "dashed", color = "green3") +
+    # Thresholds are labelled and differ in line type as well as in color
+    # (Okabe-Ito vermillion and bluish green), so they do not rely on a
+    # red-green contrast.
+    ggplot2::geom_hline(yintercept = 20, linetype = "dashed", color = "#D55E00") +
+    ggplot2::geom_hline(yintercept = 30, linetype = "dotdash", color = "#009E73") +
+    ggplot2::annotate("text", x = Inf, y = c(20, 30), label = c("Q20", "Q30"),
+                      hjust = 1.1, vjust = -0.4, size = 3,
+                      color = c("#D55E00", "#009E73")) +
     ggplot2::labs(
       x = "Position in Read",
       y = "Mean Phred Quality",
@@ -149,10 +155,26 @@ bb_plot_qc <- function(qc_object, which = c("all", "quality", "gc", "length")) {
 
   df_all <- do.call(rbind, dfs)
 
+  # Read lengths are whole numbers: one bin per length while the range is
+  # narrow (also when every read has the same length), 50 bins otherwise.
+  histogram <- if (diff(range(df_all$read_length)) < 50) {
+    ggplot2::geom_histogram(ggplot2::aes(fill = file), binwidth = 1,
+                            alpha = 0.6, position = "identity")
+  } else {
+    ggplot2::geom_histogram(ggplot2::aes(fill = file), bins = 50,
+                            alpha = 0.6, position = "identity")
+  }
+  whole_breaks <- function(limits) {
+    breaks <- unique(round(pretty(limits)))
+    breaks[breaks >= limits[1] & breaks <= limits[2]]
+  }
+
   ggplot2::ggplot(df_all, ggplot2::aes(x = read_length)) +
-    ggplot2::geom_histogram(ggplot2::aes(fill = file),
-                            bins = 50, alpha = 0.6,
-                            position = "identity") +
+    histogram +
+    ggplot2::scale_x_continuous(
+      breaks = whole_breaks,
+      expand = ggplot2::expansion(mult = 0.05, add = 0.5)
+    ) +
     ggplot2::labs(
       x = "Read Length",
       y = "Count",

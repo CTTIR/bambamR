@@ -6,7 +6,8 @@
 #' @param counts Numeric matrix. Normalized count matrix (genes x samples).
 #' @param de_result A data.frame with DE results. If provided, the top
 #'   `n_genes` by adjusted p-value are shown.
-#' @param n_genes Integer. Number of top genes to display. Default `50`.
+#' @param n_genes Integer. Number of top genes to display. Must be a positive
+#'   whole number. Default `50`.
 #' @param annotation_col A data.frame for column (sample) annotations.
 #'   Rownames must match column names of `counts`. Annotation tracks require
 #'   the optional `patchwork` package.
@@ -15,8 +16,15 @@
 #' @param cluster_rows Logical. Cluster rows. Default `TRUE`.
 #' @param cluster_cols Logical. Cluster columns. Default `TRUE`.
 #' @param color_palette Character vector. Colors for the heatmap gradient.
+#'   The default is a blue-white-red diverging palette.
 #'
-#' @return A [ggplot2::ggplot] object.
+#' @details
+#' With `scale = "row"` or `scale = "column"` the color scale is symmetric
+#' around zero, so the middle color of `color_palette` always marks a Z-score
+#' of zero. Rows or columns without variance are shown as zero.
+#'
+#' @return A [ggplot2::ggplot] object (a patchwork composition when
+#'   `annotation_col` is supplied).
 #'
 #' @examples
 #' set.seed(42)
@@ -35,6 +43,7 @@ bb_heatmap <- function(counts, de_result = NULL, n_genes = 50L,
 
   scale <- match.arg(scale)
   counts <- validate_counts(counts)
+  .validate_n(n_genes, "n_genes")
 
   # Select genes
   if (!is.null(de_result)) {
@@ -61,8 +70,8 @@ bb_heatmap <- function(counts, de_result = NULL, n_genes = 50L,
     mat <- scale(mat)
   }
 
-  # Replace NaN (from zero-variance rows) with 0
-  mat[is.nan(mat)] <- 0
+  # Zero-variance rows give NaN and a single sample gives NA: show both as 0
+  mat[!is.finite(mat)] <- 0
 
   # Clustering order
   if (cluster_rows && nrow(mat) > 2L) {
@@ -95,11 +104,17 @@ bb_heatmap <- function(counts, de_result = NULL, n_genes = 50L,
     color_palette <- c("#2166AC", "#F7F7F7", "#B2182B")
   }
   fill_gradient <- grDevices::colorRampPalette(color_palette)(100)
+  # Z-scores: symmetric limits keep the palette midpoint at zero.
+  fill_limits <- NULL
+  if (scale != "none") {
+    bound <- max(abs(df$value))
+    if (is.finite(bound) && bound > 0) fill_limits <- c(-bound, bound)
+  }
 
   p <- ggplot2::ggplot(df, ggplot2::aes(x = col_sample, y = row_gene,
                                         fill = value)) +
     ggplot2::geom_tile(color = NA) +
-    ggplot2::scale_fill_gradientn(colors = fill_gradient,
+    ggplot2::scale_fill_gradientn(colors = fill_gradient, limits = fill_limits,
                                   name = if (scale == "none") "Expression" else "Z-score") +
     ggplot2::labs(x = NULL, y = NULL, title = "Heatmap") +
     ggplot2::theme_minimal(base_size = 10) +
@@ -119,7 +134,13 @@ bb_heatmap <- function(counts, de_result = NULL, n_genes = 50L,
       ggplot2::geom_tile() +
       ggplot2::scale_x_discrete(limits = col_samples, drop = FALSE) +
       ggplot2::labs(x = NULL, y = NULL, fill = "Annotation") +
-      ggplot2::theme_minimal()
+      ggplot2::theme_minimal(base_size = 10) +
+      ggplot2::theme(
+        axis.text.x = ggplot2::element_text(angle = 45, hjust = 1, size = 8),
+        panel.grid = ggplot2::element_blank()
+      )
+    # Sample labels are drawn once, below the annotation track.
+    p <- p + ggplot2::theme(axis.text.x = ggplot2::element_blank())
     return(p / p_anno + patchwork::plot_layout(heights = c(4, 1)))
   }
   p

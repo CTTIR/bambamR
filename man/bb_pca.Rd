@@ -15,7 +15,9 @@ bb_pca(
 )
 }
 \arguments{
-\item{counts}{Numeric matrix. Normalized count matrix (genes x samples).}
+\item{counts}{Numeric matrix. Normalized count matrix (genes x samples).
+Log-transformed values, for example \code{log2(cpm + 1)}, usually separate
+samples better than untransformed counts.}
 
 \item{metadata}{A data.frame with sample information. Rownames must match
 column names of \code{counts}.}
@@ -27,7 +29,7 @@ points.}
 shapes.}
 
 \item{n_genes}{Integer. Number of top variable genes to use for PCA.
-Default \code{500}.}
+Must be a positive whole number. Default \code{500}.}
 
 \item{label}{Logical. Whether to label sample points. Default \code{FALSE}.}
 

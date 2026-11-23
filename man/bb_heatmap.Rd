@@ -21,7 +21,8 @@ bb_heatmap(
 \item{de_result}{A data.frame with DE results. If provided, the top
 \code{n_genes} by adjusted p-value are shown.}
 
-\item{n_genes}{Integer. Number of top genes to display. Default \code{50}.}
+\item{n_genes}{Integer. Number of top genes to display. Must be a positive
+whole number. Default \code{50}.}
 
 \item{annotation_col}{A data.frame for column (sample) annotations.
 Rownames must match column names of \code{counts}. Annotation tracks require
@@ -34,14 +35,21 @@ or neither (\code{"none"}). Default \code{"row"}.}
 
 \item{cluster_cols}{Logical. Cluster columns. Default \code{TRUE}.}
 
-\item{color_palette}{Character vector. Colors for the heatmap gradient.}
+\item{color_palette}{Character vector. Colors for the heatmap gradient.
+The default is a blue-white-red diverging palette.}
 }
 \value{
-A \link[ggplot2:ggplot]{ggplot2::ggplot} object.
+A \link[ggplot2:ggplot]{ggplot2::ggplot} object (a patchwork composition when
+\code{annotation_col} is supplied).
 }
 \description{
 Creates a heatmap from a normalized count matrix, optionally highlighting
 the top DE genes.
+}
+\details{
+With \code{scale = "row"} or \code{scale = "column"} the color scale is symmetric
+around zero, so the middle color of \code{color_palette} always marks a Z-score
+of zero. Rows or columns without variance are shown as zero.
 }
 \examples{
 set.seed(42)

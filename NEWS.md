@@ -3,6 +3,15 @@
 ## Bug fixes
 
 ## Plot readability
+* `bb_volcano()` no longer warns about removed rows for every unlabelled gene,
+  and drops rows without a fold change. `bb_volcano()` and `bb_ma_plot()`
+  accept an unnamed `colors` vector in the documented order and report wrong
+  names clearly; `n_label = 0` draws no labels.
+* `bb_heatmap()` shows a single-sample matrix as zeros instead of missing
+  tiles when scaling, and `bb_heatmap()` and `bb_pca()` validate `n_genes`
+  and the metadata arguments.
+
+## Plot readability
 
 ## CRAN preparation
 
@@ -36,6 +45,12 @@
   title on top and at most three columns, so it is no longer clipped at the
   device edge; the top barplot title is split over two lines and no longer
   runs into the plot title.
+* `bb_heatmap()`: the Z-score color scale is symmetric, so the middle color
+  always marks zero; with `annotation_col`, sample labels are drawn once below
+  the annotation track instead of twice and overlapping.
+* `bb_plot_qc()`: the Q20 and Q30 thresholds are labelled and use a
+  color-blind-safe pair with different line types; the read-length histogram
+  uses one bin per length for narrow ranges and whole-number axis breaks.
 
 ## Integrity fixes
 
