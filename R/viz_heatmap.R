@@ -15,12 +15,12 @@
 #'   or neither (`"none"`). Default `"row"`.
 #' @param cluster_rows Logical. Cluster rows. Default `TRUE`.
 #' @param cluster_cols Logical. Cluster columns. Default `TRUE`.
-#' @param color_palette Character vector. Colors for the heatmap gradient.
+#' @param color_palette Character vector. Colours for the heatmap gradient.
 #'   The default is a blue-white-red diverging palette.
 #'
 #' @details
-#' With `scale = "row"` or `scale = "column"` the color scale is symmetric
-#' around zero, so the middle color of `color_palette` always marks a Z-score
+#' With `scale = "row"` or `scale = "column"` the colour scale is symmetric
+#' around zero, so the middle colour of `color_palette` always marks a Z-score
 #' of zero. Rows or columns without variance are shown as zero.
 #'
 #' @return A [ggplot2::ggplot] object (a patchwork composition when

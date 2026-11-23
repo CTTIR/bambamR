@@ -9,7 +9,7 @@
 #'
 #' @return A [ggplot2::ggplot] object (or a patchwork composition if
 #'   `which = "all"` and patchwork is available). In the composition the file
-#'   legend is drawn once, below the last panel; files keep the same color in
+#'   legend is drawn once, below the last panel; files keep the same colour in
 #'   every panel.
 #'
 #' @examples

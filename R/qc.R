@@ -151,7 +151,7 @@ bb_qc_summary <- function(qc_object) {
 #' Summary method for bb_qc
 #' @param object A bb_qc object.
 #' @param ... Additional arguments (ignored).
-#' @return A data frame with one row per analyzed file, as returned by
+#' @return A data frame with one row per analysed file, as returned by
 #'   [bb_qc_summary()].
 #' @export
 #' @examples

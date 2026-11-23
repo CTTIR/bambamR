@@ -18,14 +18,14 @@ bb_volcano(
 \item{de_result}{A data.frame with columns \code{gene}, \code{log2fc}, \code{pvalue}, \code{padj}.
 Typically the output of \code{\link[=bb_deseq2]{bb_deseq2()}}, \code{\link[=bb_edger]{bb_edger()}}, or \code{\link[=bb_limma_voom]{bb_limma_voom()}}.}
 
-\item{fc_cutoff}{Numeric. Absolute log2 fold-change cutoff for significance.
+\item{fc_cutoff}{Numeric. Absolute log2 fold-change cut-off for significance.
 Default \code{1}.}
 
-\item{p_cutoff}{Numeric. Adjusted p-value cutoff for significance.
+\item{p_cutoff}{Numeric. Adjusted p-value cut-off for significance.
 Default \code{0.05}.}
 
 \item{label_genes}{Character vector. Specific gene names to label on the
-plot. If \code{NULL} (default), the top \code{n_label} significant genes are labeled.}
+plot. If \code{NULL} (default), the top \code{n_label} significant genes are labelled.}
 
 \item{n_label}{Integer. Number of top significant genes to auto-label
 when \code{label_genes} is \code{NULL}; \code{0} draws no labels and \code{Inf} labels every

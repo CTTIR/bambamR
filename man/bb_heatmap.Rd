@@ -35,7 +35,7 @@ or neither (\code{"none"}). Default \code{"row"}.}
 
 \item{cluster_cols}{Logical. Cluster columns. Default \code{TRUE}.}
 
-\item{color_palette}{Character vector. Colors for the heatmap gradient.
+\item{color_palette}{Character vector. Colours for the heatmap gradient.
 The default is a blue-white-red diverging palette.}
 }
 \value{
@@ -47,8 +47,8 @@ Creates a heatmap from a normalized count matrix, optionally highlighting
 the top DE genes.
 }
 \details{
-With \code{scale = "row"} or \code{scale = "column"} the color scale is symmetric
-around zero, so the middle color of \code{color_palette} always marks a Z-score
+With \code{scale = "row"} or \code{scale = "column"} the colour scale is symmetric
+around zero, so the middle colour of \code{color_palette} always marks a Z-score
 of zero. Rows or columns without variance are shown as zero.
 }
 \examples{

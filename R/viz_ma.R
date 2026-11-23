@@ -5,7 +5,7 @@
 #'
 #' @param de_result A data.frame with columns `gene`, `log2fc`, `pvalue`,
 #'   `padj`, and `basemean`.
-#' @param p_cutoff Numeric. Adjusted p-value cutoff for coloring significant
+#' @param p_cutoff Numeric. Adjusted p-value cut-off for colouring significant
 #'   genes. Default `0.05`.
 #' @param point_size Numeric. Size of points. Default `1`.
 #' @param colors Character vector of length 2 with the names `"sig"` and

@@ -87,16 +87,16 @@ A data.frame with MAF-style columns: `Hugo_Symbol`,
 ## Basic Oncoplot
 
 ```{r basic-oncoplot, fig.width=10, fig.height=6}
-#| fig.alt: "Oncoplot of the ten most frequently mutated genes with tiles colored by mutation type, the percentage of mutated samples per gene and marginal bar charts."
+#| fig.alt: "Oncoplot of the ten most frequently mutated genes with tiles coloured by mutation type, the percentage of mutated samples per gene and marginal bar charts."
 bb_oncoplot(mut_data, n_genes = 10)
 ```
 
-## Customizing Colors
+## Customizing Colours
 
 Pass a named character vector to `mutation_colors`:
 
 ```{r custom-colors, fig.width=10, fig.height=6}
-#| fig.alt: "The same oncoplot drawn with a user-supplied color for each mutation type."
+#| fig.alt: "The same oncoplot drawn with a user-supplied colour for each mutation type."
 my_colors <- c(
   "Missense_Mutation" = "#3182BD",
   "Nonsense_Mutation" = "#E6550D",

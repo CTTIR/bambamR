@@ -39,9 +39,9 @@ track. Annotation tracks require \code{patchwork}. A warning is raised when
 no row name matches a sample, because the tracks are then omitted.}
 
 \item{mutation_colors}{Named character vector mapping mutation types to
-colors. If \code{NULL}, a default nature-style palette is used. Mutation
-types without an entry take the \code{"Other"} color of this vector or, if it
-has none, a neutral gray.}
+colours. If \code{NULL}, a default nature-style palette is used. Mutation
+types without an entry take the \code{"Other"} colour of this vector or, if it
+has none, a neutral grey.}
 
 \item{show_pct}{Logical. Show mutation percentage per gene on the right
 margin. Default \code{TRUE}.}
@@ -51,7 +51,7 @@ margin. Default \code{TRUE}.}
 
 \item{title}{Character or NULL. Plot title.}
 
-\item{border_color}{Character or NULL. Color of tile borders. Default
+\item{border_color}{Character or NULL. Colour of tile borders. Default
 \code{"white"}.}
 }
 \value{
@@ -65,8 +65,8 @@ across samples. Accepts either a simple \code{data.frame} with \code{sample},
 }
 \details{
 The oncoplot encodes the mutation landscape of a cohort as a tiled grid:
-columns = samples, rows = genes. Tiles are colored by mutation type.
-Multi-hit genes (multiple mutation types in one sample) are labeled
+columns = samples, rows = genes. Tiles are coloured by mutation type.
+Multi-hit genes (multiple mutation types in one sample) are labelled
 \code{"Multi_Hit"}.
 
 When \code{show_barplot = TRUE} and the \code{patchwork} package is available,

@@ -22,7 +22,7 @@ samples better than untransformed counts.}
 \item{metadata}{A data.frame with sample information. Rownames must match
 column names of \code{counts}.}
 
-\item{color_by}{Character. Column name in \code{metadata} to use for coloring
+\item{color_by}{Character. Column name in \code{metadata} to use for colouring
 points.}
 
 \item{shape_by}{Character or NULL. Column name in \code{metadata} for point

@@ -4,12 +4,12 @@
 #'
 #' @param de_result A data.frame with columns `gene`, `log2fc`, `pvalue`, `padj`.
 #'   Typically the output of [bb_deseq2()], [bb_edger()], or [bb_limma_voom()].
-#' @param fc_cutoff Numeric. Absolute log2 fold-change cutoff for significance.
+#' @param fc_cutoff Numeric. Absolute log2 fold-change cut-off for significance.
 #'   Default `1`.
-#' @param p_cutoff Numeric. Adjusted p-value cutoff for significance.
+#' @param p_cutoff Numeric. Adjusted p-value cut-off for significance.
 #'   Default `0.05`.
 #' @param label_genes Character vector. Specific gene names to label on the
-#'   plot. If `NULL` (default), the top `n_label` significant genes are labeled.
+#'   plot. If `NULL` (default), the top `n_label` significant genes are labelled.
 #' @param n_label Integer. Number of top significant genes to auto-label
 #'   when `label_genes` is `NULL`; `0` draws no labels and `Inf` labels every
 #'   significant gene. Default `10`.

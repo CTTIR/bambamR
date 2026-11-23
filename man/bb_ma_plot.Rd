@@ -15,7 +15,7 @@ bb_ma_plot(
 \item{de_result}{A data.frame with columns \code{gene}, \code{log2fc}, \code{pvalue},
 \code{padj}, and \code{basemean}.}
 
-\item{p_cutoff}{Numeric. Adjusted p-value cutoff for coloring significant
+\item{p_cutoff}{Numeric. Adjusted p-value cut-off for colouring significant
 genes. Default \code{0.05}.}
 
 \item{point_size}{Numeric. Size of points. Default \code{1}.}

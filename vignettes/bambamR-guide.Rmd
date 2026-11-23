@@ -189,7 +189,7 @@ customized with `+ theme()`, `+ labs()`, etc.
 
 ## PCA Plot
 
-```{r pca, fig.cap = "PCA plot colored by experimental condition."}
+```{r pca, fig.cap = "PCA plot coloured by experimental condition."}
 bb_pca(cpm, metadata, color_by = "condition")
 ```
 
@@ -224,7 +224,7 @@ bb_volcano(de_results, fc_cutoff = 1, p_cutoff = 0.05, n_label = 8)
 
 ---
 
-```{r volcano-custom, fig.cap = "Volcano plot with custom gene labels and colors."}
+```{r volcano-custom, fig.cap = "Volcano plot with custom gene labels and colours."}
 bb_volcano(de_results,
            fc_cutoff = 1.5,
            p_cutoff = 0.05,
@@ -286,9 +286,9 @@ bb_oncoplot(mut$mutations, show_barplot = FALSE,
             genes = c("TP53", "KRAS", "PIK3CA", "BRAF", "EGFR"))
 ```
 
-## Custom Colors
+## Custom Colours
 
-```{r oncoplot-colors, fig.cap = "Oncoplot with a custom color palette.", fig.width = 7, fig.height = 5}
+```{r oncoplot-colors, fig.cap = "Oncoplot with a custom colour palette.", fig.width = 7, fig.height = 5}
 my_colors <- c(
   "Missense_Mutation" = "#3182BD",
   "Nonsense_Mutation" = "#E6550D",

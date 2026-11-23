@@ -54,7 +54,7 @@ Suggests:
     withr
 License: MIT + file LICENSE
 Encoding: UTF-8
-Language: en-US
+Language: en-GB
 Roxygen: list(markdown = TRUE)
 SystemRequirements: Optional external tools: STAR, HISAT2 or minimap2
     (alignment), samtools (BAM access without 'Rsamtools'), featureCounts

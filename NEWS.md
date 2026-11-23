@@ -17,13 +17,13 @@
   called FastQC.
 * `bb_oncoplot()` no longer fails when a custom `mutation_colors` vector has no
   `"Other"` entry and the data contain an unlisted mutation type (a neutral
-  gray is used), or when `genes` contains duplicates. `n_genes`, `genes`,
+  grey is used), or when `genes` contains duplicates. `n_genes`, `genes`,
   `mutation_colors` and `annotation_df` are validated, and a warning is raised
   when no row name of `annotation_df` matches a sample instead of dropping the
   tracks silently.
 * `bb_edger()`, `bb_limma_voom()` and TMM normalization no longer print the
   edgeR 4.0 notice that `calcNormFactors()` was renamed to `normLibSizes()`.
-* `bb_volcano()` no longer warns about removed rows for every unlabeled gene,
+* `bb_volcano()` no longer warns about removed rows for every unlabelled gene,
   and drops rows without a fold change. `bb_volcano()` and `bb_ma_plot()`
   accept an unnamed `colors` vector in the documented order and report wrong
   names clearly; `n_label = 0` draws no labels.
@@ -43,11 +43,11 @@
   composition use `p & ggplot2::theme(legend.position = "right") &
   ggplot2::guides(fill = ggplot2::guide_legend(ncol = 1))`, for a single
   ggplot (`show_barplot = FALSE`, no `annotation_df`) use `+` instead of `&`.
-* `bb_heatmap()`: the Z-score color scale is symmetric, so the middle color
+* `bb_heatmap()`: the Z-score colour scale is symmetric, so the middle colour
   always marks zero; with `annotation_col`, sample labels are drawn once below
   the annotation track instead of twice and overlapping.
-* `bb_plot_qc()`: the Q20 and Q30 thresholds are labeled and use a
-  color-blind-safe pair with different line types; the read-length histogram
+* `bb_plot_qc()`: the Q20 and Q30 thresholds are labelled and use a
+  colour-blind-safe pair with different line types; the read-length histogram
   uses one bin per length for narrow ranges and whole-number axis breaks. The
   combined panel draws the file legend once instead of three times, which
   leaves more room for the panels.
@@ -59,9 +59,11 @@
 
 ## Documentation
 
+* Documentation uses British English (`Language: en-GB`); code identifiers,
+  argument names and plot labels are unchanged.
 * Figures in the tutorial, quick-start and oncoplot vignettes carry alt text.
-* The custom volcano example in the vignettes uses cutoffs that leave
-  significant genes, so the custom colors are visible.
+* The custom volcano example in the vignettes uses cut-off values that leave
+  significant genes, so the custom colours are visible.
 * The GitHub icon in the site navigation bar has an accessible label.
 
 ## CRAN preparation

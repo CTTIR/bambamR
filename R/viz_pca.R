@@ -7,7 +7,7 @@
 #'   samples better than untransformed counts.
 #' @param metadata A data.frame with sample information. Rownames must match
 #'   column names of `counts`.
-#' @param color_by Character. Column name in `metadata` to use for coloring
+#' @param color_by Character. Column name in `metadata` to use for colouring
 #'   points.
 #' @param shape_by Character or NULL. Column name in `metadata` for point
 #'   shapes.

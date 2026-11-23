@@ -12,7 +12,7 @@
 \item{...}{Additional arguments (ignored).}
 }
 \value{
-A data frame with one row per analyzed file, as returned by
+A data frame with one row per analysed file, as returned by
 \code{\link[=bb_qc_summary]{bb_qc_summary()}}.
 }
 \description{

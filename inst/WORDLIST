@@ -1,6 +1,9 @@
+alt
+backends
 BAM
 bambamR's
 basemean
+basenames
 bb
 bp
 CLI
@@ -10,10 +13,12 @@ copyediting
 CPM
 DESeq
 edgeR
+etc
 FASTQ
 FastQC
 fc
 FC
+FDR
 featureCounts
 GC
 GenomicAlignments
@@ -45,6 +50,7 @@ pkgdown
 pre
 Pre
 pvalue
+PyTorch
 qc
 Raban
 README
@@ -53,6 +59,8 @@ RLE
 Rsamtools
 RStudio
 samtools
+seq
+Seq
 ShortRead
 SingleCellLab
 Subread

@@ -230,9 +230,9 @@ All exported functions use the `bb_` prefix and return standard R objects
 
 ### Visualization (all return ggplot objects)
 - `bb_oncoplot()` -- publication-ready waterfall mutation plot
-- `bb_volcano()` -- volcano plot with auto-labeling
+- `bb_volcano()` -- volcano plot with auto-labelling
 - `bb_heatmap()` -- clustered heatmap of top genes
-- `bb_pca()` -- PCA with metadata coloring
+- `bb_pca()` -- PCA with metadata colouring
 - `bb_ma_plot()` -- MA plot (mean expression vs. fold change)
 
 ### Pipeline & Export
@@ -263,7 +263,7 @@ FASTQ Files to Publication-Ready Plots. R package version 0.2.0.
 https://github.com/CTTIR/bambamR
 ```
 
-## License
+## Licence
 
 MIT
 

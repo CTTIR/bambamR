@@ -20,15 +20,15 @@
 #'   track. Annotation tracks require `patchwork`. A warning is raised when
 #'   no row name matches a sample, because the tracks are then omitted.
 #' @param mutation_colors Named character vector mapping mutation types to
-#'   colors. If `NULL`, a default nature-style palette is used. Mutation
-#'   types without an entry take the `"Other"` color of this vector or, if it
-#'   has none, a neutral gray.
+#'   colours. If `NULL`, a default nature-style palette is used. Mutation
+#'   types without an entry take the `"Other"` colour of this vector or, if it
+#'   has none, a neutral grey.
 #' @param show_pct Logical. Show mutation percentage per gene on the right
 #'   margin. Default `TRUE`.
 #' @param show_barplot Logical. Show top (mutated genes per sample) and side
 #'   (mutated samples per gene) barplots. Default `TRUE`.
 #' @param title Character or NULL. Plot title.
-#' @param border_color Character or NULL. Color of tile borders. Default
+#' @param border_color Character or NULL. Colour of tile borders. Default
 #'   `"white"`.
 #'
 #' @return A [ggplot2::ggplot] object (composed with patchwork if barplots
@@ -36,8 +36,8 @@
 #'
 #' @details
 #' The oncoplot encodes the mutation landscape of a cohort as a tiled grid:
-#' columns = samples, rows = genes. Tiles are colored by mutation type.
-#' Multi-hit genes (multiple mutation types in one sample) are labeled
+#' columns = samples, rows = genes. Tiles are coloured by mutation type.
+#' Multi-hit genes (multiple mutation types in one sample) are labelled
 #' `"Multi_Hit"`.
 #'
 #' When `show_barplot = TRUE` and the `patchwork` package is available,
