@@ -24,6 +24,7 @@ navbar:
   right:
     - icon: fa-github
       href: https://github.com/cttir/bambamR
+      aria-label: GitHub
 
 articles:
   - title: "Getting Started"

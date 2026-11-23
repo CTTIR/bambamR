@@ -45,6 +45,16 @@
   color-blind-safe pair with different line types; the read-length histogram
   uses one bin per length for narrow ranges and whole-number axis breaks.
 
+* Shiny app: plots are drawn at 96 dpi instead of 72 dpi, so axis and gene
+  labels are readable in the result tabs.
+
+## Documentation
+
+* Figures in the tutorial, quick-start and oncoplot vignettes carry alt text.
+* The custom volcano example in the vignettes uses cutoffs that leave
+  significant genes, so the custom colors are visible.
+* The GitHub icon in the site navigation bar has an accessible label.
+
 ## CRAN preparation
 
 * `bb_pipeline()` now writes to a new directory below `tempdir()` by default

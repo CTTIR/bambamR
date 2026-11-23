@@ -226,8 +226,8 @@ bb_volcano(de_results, fc_cutoff = 1, p_cutoff = 0.05, n_label = 8)
 
 ```{r volcano-custom, fig.cap = "Volcano plot with custom gene labels and colors."}
 bb_volcano(de_results,
-           fc_cutoff = 0.5,
-           p_cutoff = 0.01,
+           fc_cutoff = 1.5,
+           p_cutoff = 0.05,
            label_genes = c("TP53", "KRAS", "EGFR", "PTEN"),
            colors = c(up = "#E41A1C", down = "#377EB8", ns = "grey80"))
 ```

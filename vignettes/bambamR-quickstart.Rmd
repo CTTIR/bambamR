@@ -149,12 +149,14 @@ tmm <- bb_normalize(counts, method = "tmm")
 Visualize sample-level structure. Color by any metadata column:
 
 ```{r pca-condition, fig.width=6, fig.height=5}
+#| fig.alt: "PCA plot of the example samples colored by condition."
 bb_pca(cpm, metadata, color_by = "condition")
 ```
 
 Add shape mapping and sample labels:
 
 ```{r pca-batch, fig.width=6, fig.height=5}
+#| fig.alt: "PCA plot colored by condition, with point shape showing the batch and each point labelled by its sample name."
 bb_pca(cpm, metadata, color_by = "condition", shape_by = "batch", label = TRUE)
 ```
 
@@ -165,6 +167,7 @@ bb_pca(cpm, metadata, color_by = "condition", shape_by = "batch", label = TRUE)
 Show the top 30 most variable genes:
 
 ```{r heatmap-var, fig.width=7, fig.height=6}
+#| fig.alt: "Clustered heatmap of row-scaled expression (Z-scores) for the 30 most variable genes."
 bb_heatmap(cpm, n_genes = 30)
 ```
 
@@ -203,15 +206,17 @@ cat("Down-regulated (log2FC < -1):",
 ## Step 6: Volcano Plot
 
 ```{r volcano, fig.width=7, fig.height=5}
+#| fig.alt: "Volcano plot of log2 fold change against negative log10 adjusted p-value with the most significant genes labelled."
 bb_volcano(de_results, fc_cutoff = 1, p_cutoff = 0.05, n_label = 8)
 ```
 
 Customize the cutoffs and label specific genes:
 
 ```{r volcano-custom, fig.width=7, fig.height=5}
+#| fig.alt: "Volcano plot with a stricter fold-change cutoff, custom colors and labels for TP53, KRAS, EGFR and PTEN."
 bb_volcano(de_results,
-           fc_cutoff = 0.5,
-           p_cutoff = 0.01,
+           fc_cutoff = 1.5,
+           p_cutoff = 0.05,
            label_genes = c("TP53", "KRAS", "EGFR", "PTEN"),
            colors = c(up = "#E41A1C", down = "#377EB8", ns = "grey80"))
 ```
@@ -224,6 +229,7 @@ The MA plot shows log2 fold-change vs. mean expression, highlighting
 genes that change at different expression levels:
 
 ```{r ma-plot, fig.width=7, fig.height=5}
+#| fig.alt: "MA plot of log2 fold change against log10 mean expression with significant genes highlighted."
 bb_ma_plot(de_results, p_cutoff = 0.05)
 ```
 
@@ -235,6 +241,7 @@ Pass DE results to `bb_heatmap()` to show the top differentially
 expressed genes instead of the most variable:
 
 ```{r heatmap-de, fig.width=7, fig.height=6}
+#| fig.alt: "Clustered heatmap of row-scaled expression (Z-scores) for the top 25 differentially expressed genes."
 bb_heatmap(cpm, de_result = de_results, n_genes = 25)
 ```
 
@@ -254,18 +261,21 @@ head(mut$clinical)
 ### Basic Oncoplot
 
 ```{r oncoplot-basic, fig.width=10, fig.height=6}
+#| fig.alt: "Oncoplot of the ten most frequently mutated genes with tiles colored by mutation type and marginal bar charts."
 bb_oncoplot(mut$mutations, n_genes = 10)
 ```
 
 ### With Clinical Annotations
 
 ```{r oncoplot-clinical, fig.width=10, fig.height=7}
+#| fig.alt: "Oncoplot of the ten most frequently mutated genes with clinical annotation tracks below the mutation tiles."
 bb_oncoplot(mut$mutations, n_genes = 10, annotation_df = mut$clinical)
 ```
 
 ### Select Specific Genes
 
 ```{r oncoplot-genes, fig.width=10, fig.height=5}
+#| fig.alt: "Oncoplot restricted to the five genes TP53, KRAS, PIK3CA, BRAF and EGFR."
 bb_oncoplot(mut$mutations,
             genes = c("TP53", "KRAS", "PIK3CA", "BRAF", "EGFR"))
 ```
@@ -308,6 +318,7 @@ bb_qc_summary(qc)
 Visualize QC metrics:
 
 ```{r qc-plot, fig.width=7, fig.height=8}
+#| fig.alt: "Three stacked QC panels: mean Phred quality per read position with Q20 and Q30 thresholds, the GC content distribution and the read length distribution."
 bb_plot_qc(qc)
 ```
 
