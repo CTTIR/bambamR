@@ -100,7 +100,7 @@ test_that(".align_star builds a command and parses the STAR log", {
   expect_match(res$bam, "Aligned.sortedByCoord.out.bam$")
 })
 
-test_that(".align_star adds zcat for gzipped input and extra_args", {
+test_that(".align_star decompresses gzipped input portably and adds extra_args", {
   fq <- withr::local_tempfile(fileext = ".fastq.gz")
   con <- gzfile(fq, "w")
   writeLines(c("@r1", "ACGT", "+", "IIII"), con)
@@ -114,7 +114,9 @@ test_that(".align_star adds zcat for gzipped input and extra_args", {
   res <- bambamR:::.align_star(fq, "idx", out_dir, threads = 1L,
                                paired = FALSE, extra_args = c("--quantMode",
                                                               "GeneCounts"))
-  expect_match(res$command, "zcat")
+  # BSD zcat on macOS rejects .gz files; gunzip -c works on every platform.
+  expect_match(res$command, "'--readFilesCommand' 'gunzip' '-c'", fixed = TRUE)
+  expect_no_match(res$command, "zcat")
   expect_match(res$command, "GeneCounts")
 })
 

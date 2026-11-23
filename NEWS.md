@@ -1,5 +1,7 @@
 # bambamR 0.2.0
 
+## Bug fixes
+
 ## CRAN preparation
 
 * `bb_pipeline()` now writes to a new directory below `tempdir()` by default
@@ -11,6 +13,9 @@
 * Documented return values of the print and summary methods.
 * `DESCRIPTION`: shorter title, quoted software names, `Language` and
   `SystemRequirements` for the optional external tools.
+* `bb_align()` with `aligner = "STAR"` now decompresses gzipped FASTQ files
+  with `gunzip -c` instead of `zcat`. The `zcat` shipped with macOS only reads
+  `.Z` files, so STAR could not read `.fastq.gz` input there.
 
 ## Integrity fixes
 

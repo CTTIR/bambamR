@@ -98,9 +98,10 @@ bb_align <- function(fastq, genome_index, output_dir,
     "--outSAMunmapped", "Within"
   )
 
-  # Handle gzipped input
+  # Handle gzipped input. "gunzip -c" reads .gz files on Linux and macOS;
+  # the BSD zcat shipped with macOS only accepts .Z files.
   if (any(grepl("\\.gz$", fastq))) {
-    args <- c(args, "--readFilesCommand", "zcat")
+    args <- c(args, "--readFilesCommand", "gunzip", "-c")
   }
 
   if (!is.null(extra_args)) {
