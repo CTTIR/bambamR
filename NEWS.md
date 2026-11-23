@@ -33,6 +33,9 @@
   title on top and at most three columns, so it is no longer clipped at the
   device edge; the top barplot title is split over two lines and no longer
   runs into the plot title.
+  Annotation tracks drawn without barplots collect their legends in the same
+  way. When moving the legend, reset its layout with
+  `+ ggplot2::guides(fill = ggplot2::guide_legend(ncol = 1))`.
 * `bb_heatmap()`: the Z-score color scale is symmetric, so the middle color
   always marks zero; with `annotation_col`, sample labels are drawn once below
   the annotation track instead of twice and overlapping.

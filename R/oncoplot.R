@@ -47,6 +47,11 @@
 #' requested. Percentages use all samples represented in `data` before gene
 #' selection; samples with no recorded mutations cannot be inferred.
 #'
+#' The legend is placed below the plot in three columns so that it fits
+#' common device widths. When moving it, for example with
+#' `+ ggplot2::theme(legend.position = "right")`, reset the layout with
+#' `+ ggplot2::guides(fill = ggplot2::guide_legend(ncol = 1))`.
+#'
 #' @examples
 #' set.seed(42)
 #' mut_data <- data.frame(
@@ -303,7 +308,11 @@ bb_oncoplot <- function(data,
   if (!is.null(annotation_df)) {
     check_pkg("patchwork", reason = "for oncoplot annotation tracks")
     p_anno <- p_anno + ggplot2::scale_x_discrete(limits = sample_order, drop = FALSE)
-    return(p_main / p_anno + patchwork::plot_layout(heights = c(4, 1)))
+    return(
+      p_main / p_anno +
+        patchwork::plot_layout(heights = c(4, 1), guides = "collect") &
+        ggplot2::theme(legend.position = "bottom", legend.box = "vertical")
+    )
   }
 
   p_main

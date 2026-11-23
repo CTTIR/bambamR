@@ -73,3 +73,12 @@ test_that("cluster ordering of oncoplot samples matches the row-wise reference",
   reference <- colnames(mat)[stats::hclust(stats::dist(t(mat), method = "binary"))$order]
   expect_identical(bambamR:::.sort_onco_samples(dat, genes, "cluster"), reference)
 })
+
+test_that("annotation tracks without barplots also collect their legends", {
+  skip_if_not_installed("patchwork")
+  dat <- onco_data()
+  anno <- data.frame(stage = rep(c("I", "II"), 6), row.names = paste0("S", 1:12))
+  p <- bb_oncoplot(dat, annotation_df = anno, show_barplot = FALSE)
+  expect_s3_class(p, "patchwork")
+  expect_identical(p$patches$layout$guides, "collect")
+})

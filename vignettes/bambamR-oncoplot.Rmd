@@ -87,6 +87,7 @@ A data.frame with MAF-style columns: `Hugo_Symbol`,
 ## Basic Oncoplot
 
 ```{r basic-oncoplot, fig.width=10, fig.height=6}
+#| fig.alt: "Oncoplot of the ten most frequently mutated genes with tiles colored by mutation type, the percentage of mutated samples per gene and marginal bar charts."
 bb_oncoplot(mut_data, n_genes = 10)
 ```
 
@@ -95,6 +96,7 @@ bb_oncoplot(mut_data, n_genes = 10)
 Pass a named character vector to `mutation_colors`:
 
 ```{r custom-colors, fig.width=10, fig.height=6}
+#| fig.alt: "The same oncoplot drawn with a user-supplied color for each mutation type."
 my_colors <- c(
   "Missense_Mutation" = "#3182BD",
   "Nonsense_Mutation" = "#E6550D",
@@ -112,6 +114,7 @@ bb_oncoplot(mut_data, n_genes = 10, mutation_colors = my_colors)
 ## Selecting Specific Genes
 
 ```{r select-genes, fig.width=10, fig.height=5}
+#| fig.alt: "Oncoplot restricted to the five genes TP53, KRAS, PIK3CA, BRAF and EGFR."
 bb_oncoplot(mut_data, genes = c("TP53", "KRAS", "PIK3CA", "BRAF", "EGFR"))
 ```
 
@@ -120,6 +123,7 @@ bb_oncoplot(mut_data, genes = c("TP53", "KRAS", "PIK3CA", "BRAF", "EGFR"))
 Provide a data.frame with sample annotations:
 
 ```{r annotations, fig.width=10, fig.height=7}
+#| fig.alt: "Oncoplot of eight genes with clinical annotation tracks for each sample below the mutation tiles."
 # Use the bundled clinical annotations
 bb_oncoplot(mut_data, n_genes = 8, annotation_df = clinical_data)
 ```
@@ -129,17 +133,22 @@ bb_oncoplot(mut_data, n_genes = 8, annotation_df = clinical_data)
 Sort samples by mutation frequency (default) or by co-occurrence clustering:
 
 ```{r sort-cluster, fig.width=10, fig.height=6}
+#| fig.alt: "Oncoplot of eight genes with samples ordered by co-occurrence clustering instead of mutation frequency."
 bb_oncoplot(mut_data, n_genes = 8, sort_by = "cluster")
 ```
 
 ## Customizing with ggplot2
 
-Since `bb_oncoplot()` returns a ggplot object, you can further customize:
+Since `bb_oncoplot()` returns a ggplot object, you can further customize.
+The legend is laid out in three columns for its default position below the
+plot; reset the layout when you move it:
 
 ```{r customize, fig.width=10, fig.height=6}
+#| fig.alt: "Oncoplot without marginal bar charts, titled Mutation Landscape, with a one-column legend moved to the right."
 p <- bb_oncoplot(mut_data, n_genes = 8, show_barplot = FALSE,
                  title = "Mutation Landscape")
-p + theme(legend.position = "right")
+p + theme(legend.position = "right") +
+  guides(fill = guide_legend(ncol = 1))
 ```
 
 ## Exporting Publication-Quality Figures

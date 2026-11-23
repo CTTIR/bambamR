@@ -75,6 +75,11 @@ sample), main tile plot, and right barplot (mutated samples per gene).
 Without patchwork, the main tile plot is returned unless annotations were
 requested. Percentages use all samples represented in \code{data} before gene
 selection; samples with no recorded mutations cannot be inferred.
+
+The legend is placed below the plot in three columns so that it fits
+common device widths. When moving it, for example with
+\code{+ ggplot2::theme(legend.position = "right")}, reset the layout with
+\code{+ ggplot2::guides(fill = ggplot2::guide_legend(ncol = 1))}.
 }
 \examples{
 set.seed(42)
