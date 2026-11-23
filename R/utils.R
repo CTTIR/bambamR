@@ -180,6 +180,42 @@ validate_counts <- function(counts) {
 }
 
 #' @noRd
+.validate_n <- function(n, name) {
+  if (!is.numeric(n) || length(n) != 1L || !is.finite(n) || n < 1 ||
+        n != floor(n)) {
+    stop("'", name, "' must be a positive whole number.", call. = FALSE)
+  }
+  invisible(n)
+}
+
+# Named color vectors: accept an unnamed vector of the right length in the
+# documented order, otherwise require every documented name.
+#' @noRd
+.named_colors <- function(colors, required, name = "colors") {
+  if (is.character(colors) && !anyNA(colors) && is.null(names(colors)) &&
+        length(colors) == length(required)) {
+    names(colors) <- required
+  }
+  if (!is.character(colors) || anyNA(colors) ||
+        !all(required %in% names(colors))) {
+    stop("'", name, "' must be a character vector of colors named ",
+         paste0("\"", required, "\"", collapse = ", "), ".", call. = FALSE)
+  }
+  colors
+}
+
+# `legend.title.position` exists from ggplot2 3.5.0; older versions keep the
+# title beside the keys.
+#' @noRd
+.legend_title_top <- function() {
+  if (utils::packageVersion("ggplot2") >= "3.5.0") {
+    ggplot2::theme(legend.title.position = "top")
+  } else {
+    ggplot2::theme()
+  }
+}
+
+#' @noRd
 .run_tool <- function(tool, args, stdout = TRUE) {
   check_tool(tool)
   diagnostics <- tempfile("bambamR-stderr-")

@@ -2,6 +2,8 @@
 
 ## Bug fixes
 
+## Plot readability
+
 ## CRAN preparation
 
 * `bb_pipeline()` now writes to a new directory below `tempdir()` by default
@@ -17,14 +19,23 @@
   with `gunzip -c` instead of `zcat`. The `zcat` shipped with macOS only reads
   `.Z` files, so STAR could not read `.fastq.gz` input there.
 * `bb_edger()` now stops with a clear message when `group` has a single level
-  and no `design` is given (the intercept was tested before, which reported
-  nearly every gene as differentially expressed) or when `group` contains
-  missing values.
+  and no `design` is given, or when `group` contains missing values. Both
+  cases previously failed with an unrelated error from the model matrix.
 * `bb_qc()` computes GC content and per-position quality in time linear in the
   number of bases; the per-position summary previously looped over every read
   for every position. Results are unchanged.
 * `bb_qc()`: `use_fastqc` is documented as reserved and ignored; it never
   called FastQC.
+* `bb_oncoplot()` no longer fails when a custom `mutation_colors` vector has no
+  `"Other"` entry and the data contain an unlisted mutation type (a neutral
+  grey is used), or when `genes` contains duplicates. `n_genes`, `genes`,
+  `mutation_colors` and `annotation_df` are validated, and a warning is raised
+  when no rowname of `annotation_df` matches a sample instead of dropping the
+  tracks silently.
+* `bb_oncoplot()`: the legend is collected below the whole figure with its
+  title on top and at most three columns, so it is no longer clipped at the
+  device edge; the top barplot title is split over two lines and no longer
+  runs into the plot title.
 
 ## Integrity fixes
 

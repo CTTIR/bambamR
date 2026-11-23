@@ -23,10 +23,11 @@ Alternatively, a MAF-like data.frame with \code{Hugo_Symbol},
 \code{Tumor_Sample_Barcode}, and \code{Variant_Classification} columns.}
 
 \item{genes}{Character vector. Specific genes to display. If \code{NULL},
-the top \code{n_genes} most frequently mutated genes are shown.}
+the top \code{n_genes} most frequently mutated genes are shown. Duplicated
+entries are shown once.}
 
 \item{n_genes}{Integer. Number of top mutated genes if \code{genes} is \code{NULL}.
-Default \code{20}.}
+Must be a positive whole number. Default \code{20}.}
 
 \item{sort_by}{Character. How to sort samples: \code{"frequency"} (by number of
 mutated genes shown) or \code{"cluster"} (by co-occurrence clustering).
@@ -34,10 +35,13 @@ Default \code{"frequency"}.}
 
 \item{annotation_df}{A data.frame for sample annotations (bottom tracks).
 Rownames must be sample identifiers. Each column becomes an annotation
-track. Annotation tracks require \code{patchwork}.}
+track. Annotation tracks require \code{patchwork}. A warning is raised when
+no rowname matches a sample, because the tracks are then omitted.}
 
 \item{mutation_colors}{Named character vector mapping mutation types to
-colors. If \code{NULL}, a default nature-style palette is used.}
+colors. If \code{NULL}, a default nature-style palette is used. Mutation
+types without an entry take the \code{"Other"} color of this vector or, if it
+has none, a neutral grey.}
 
 \item{show_pct}{Logical. Show mutation percentage per gene on the right
 margin. Default \code{TRUE}.}

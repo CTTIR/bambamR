@@ -8,17 +8,21 @@
 #'   Alternatively, a MAF-like data.frame with `Hugo_Symbol`,
 #'   `Tumor_Sample_Barcode`, and `Variant_Classification` columns.
 #' @param genes Character vector. Specific genes to display. If `NULL`,
-#'   the top `n_genes` most frequently mutated genes are shown.
+#'   the top `n_genes` most frequently mutated genes are shown. Duplicated
+#'   entries are shown once.
 #' @param n_genes Integer. Number of top mutated genes if `genes` is `NULL`.
-#'   Default `20`.
+#'   Must be a positive whole number. Default `20`.
 #' @param sort_by Character. How to sort samples: `"frequency"` (by number of
 #'   mutated genes shown) or `"cluster"` (by co-occurrence clustering).
 #'   Default `"frequency"`.
 #' @param annotation_df A data.frame for sample annotations (bottom tracks).
 #'   Rownames must be sample identifiers. Each column becomes an annotation
-#'   track. Annotation tracks require `patchwork`.
+#'   track. Annotation tracks require `patchwork`. A warning is raised when
+#'   no rowname matches a sample, because the tracks are then omitted.
 #' @param mutation_colors Named character vector mapping mutation types to
-#'   colors. If `NULL`, a default nature-style palette is used.
+#'   colors. If `NULL`, a default nature-style palette is used. Mutation
+#'   types without an entry take the `"Other"` color of this vector or, if it
+#'   has none, a neutral grey.
 #' @param show_pct Logical. Show mutation percentage per gene on the right
 #'   margin. Default `TRUE`.
 #' @param show_barplot Logical. Show top (mutated genes per sample) and side
@@ -85,6 +89,14 @@ bb_oncoplot <- function(data,
   )
   if (is.null(mutation_colors)) {
     mutation_colors <- default_colors
+  } else if (!is.character(mutation_colors) || is.null(names(mutation_colors)) ||
+               anyNA(mutation_colors) || any(!nzchar(names(mutation_colors)))) {
+    stop("'mutation_colors' must be a named character vector of colors.",
+         call. = FALSE)
+  }
+  if (!is.null(annotation_df) && !is.data.frame(annotation_df)) {
+    stop("'annotation_df' must be a data.frame with samples as rownames.",
+         call. = FALSE)
   }
 
   # 1. Standardize input -----------------------------------------------
@@ -99,8 +111,13 @@ bb_oncoplot <- function(data,
   gene_freq <- sort(table(unique(df[, c("sample", "gene")])$gene),
                     decreasing = TRUE)
   if (!is.null(genes)) {
-    gene_list <- genes
+    if (!is.character(genes) || !length(genes) || anyNA(genes)) {
+      stop("'genes' must be a character vector of gene names without missing values.",
+           call. = FALSE)
+    }
+    gene_list <- unique(genes)
   } else {
+    .validate_n(n_genes, "n_genes")
     gene_list <- names(gene_freq)[seq_len(min(n_genes, length(gene_freq)))]
   }
   df <- df[df$gene %in% gene_list, , drop = FALSE]
@@ -125,9 +142,12 @@ bb_oncoplot <- function(data,
   # Map unknown mutation types to "Other"
   unknown <- setdiff(unique(df$mutation_type), names(mutation_colors))
   if (length(unknown) > 0L) {
-    for (u in unknown) {
-      mutation_colors[u] <- mutation_colors[["Other"]]
+    other_color <- if ("Other" %in% names(mutation_colors)) {
+      mutation_colors[["Other"]]
+    } else {
+      default_colors[["Other"]]
     }
+    mutation_colors[unknown] <- other_color
   }
 
   # 7. Build main tile plot --------------------------------------------
@@ -140,6 +160,9 @@ bb_oncoplot <- function(data,
       name = "Mutation Type",
       drop = FALSE
     ) +
+    # Three legend columns with the title on top stay inside a 7 in device
+    # even for the longest default label ("Translation_Start_Site").
+    ggplot2::guides(fill = ggplot2::guide_legend(ncol = 3)) +
     ggplot2::theme_minimal(base_size = 10) +
     ggplot2::theme(
       axis.text.x = ggplot2::element_blank(),
@@ -148,8 +171,10 @@ bb_oncoplot <- function(data,
       panel.grid = ggplot2::element_blank(),
       legend.position = "bottom",
       legend.key.size = ggplot2::unit(0.4, "cm"),
+      legend.text = ggplot2::element_text(size = 8),
       plot.margin = ggplot2::margin(5, 5, 5, 5)
-    )
+    ) +
+    .legend_title_top()
 
   # 8. Percentage annotation -------------------------------------------
   if (show_pct) {
@@ -178,12 +203,14 @@ bb_oncoplot <- function(data,
     p_top <- ggplot2::ggplot(sample_burden,
                              ggplot2::aes(x = sample, y = n_mutations)) +
       ggplot2::geom_bar(stat = "identity", fill = "#636363", width = 0.8) +
-      ggplot2::labs(y = "Mutated genes") +
+      # Two lines: the panel is short, a one-line title would run past it.
+      ggplot2::labs(y = "Mutated\ngenes") +
       ggplot2::theme_minimal(base_size = 10) +
       ggplot2::theme(
         axis.text.x = ggplot2::element_blank(),
         axis.ticks.x = ggplot2::element_blank(),
         axis.title.x = ggplot2::element_blank(),
+        axis.title.y = ggplot2::element_text(size = 9),
         panel.grid.minor = ggplot2::element_blank(),
         panel.grid.major.x = ggplot2::element_blank(),
         plot.margin = ggplot2::margin(5, 5, 0, 5)
@@ -227,9 +254,14 @@ bb_oncoplot <- function(data,
           axis.title = ggplot2::element_blank(),
           panel.grid = ggplot2::element_blank(),
           legend.position = "bottom",
+          legend.key.size = ggplot2::unit(0.4, "cm"),
+          legend.text = ggplot2::element_text(size = 8),
           plot.margin = ggplot2::margin(0, 5, 5, 5)
-        )
+        ) +
+        .legend_title_top()
     } else {
+      warning("No rowname of 'annotation_df' matches a sample; ",
+              "annotation tracks are omitted.", call. = FALSE)
       annotation_df <- NULL
     }
   }
@@ -247,8 +279,12 @@ bb_oncoplot <- function(data,
       design <- paste0(design, if (show_pct) "\nA##" else "\nA#")
       heights <- c(heights, 0.25)
     }
+    # Collect the legends below the whole figure: a legend centred under the
+    # (narrower) tile panel alone is clipped at the left device edge.
     layout <- patchwork::wrap_plots(panels, design = design,
-                                    widths = widths, heights = heights)
+                                    widths = widths, heights = heights,
+                                    guides = "collect") &
+      ggplot2::theme(legend.position = "bottom", legend.box = "vertical")
     if (!is.null(title)) layout <- layout + patchwork::plot_annotation(title = title)
     return(layout)
   }
@@ -353,11 +389,8 @@ bb_oncoplot <- function(data,
     # Build binary matrix (genes x samples)
     mat <- matrix(0L, nrow = length(gene_list), ncol = length(all_samples),
                   dimnames = list(gene_list, all_samples))
-    for (i in seq_len(nrow(df))) {
-      g <- as.character(df$gene[i])
-      s <- as.character(df$sample[i])
-      if (g %in% gene_list) mat[g, s] <- 1L
-    }
+    keep <- df$gene %in% gene_list
+    mat[cbind(as.character(df$gene[keep]), as.character(df$sample[keep]))] <- 1L
     if (ncol(mat) > 2L) {
       hc <- stats::hclust(stats::dist(t(mat), method = "binary"))
       sample_order <- colnames(mat)[hc$order]
