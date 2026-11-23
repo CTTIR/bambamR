@@ -43,7 +43,9 @@
   the annotation track instead of twice and overlapping.
 * `bb_plot_qc()`: the Q20 and Q30 thresholds are labeled and use a
   color-blind-safe pair with different line types; the read-length histogram
-  uses one bin per length for narrow ranges and whole-number axis breaks.
+  uses one bin per length for narrow ranges and whole-number axis breaks. The
+  combined panel draws the file legend once instead of three times, which
+  leaves more room for the panels.
 
 * Shiny app: plots are drawn at 96 dpi instead of 72 dpi, so axis and gene
   labels are readable in the result tabs. The PCA and MA tabs say why they are

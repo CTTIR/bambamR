@@ -8,7 +8,9 @@
 #'   `"length"`, or `"all"`. Default `"all"`.
 #'
 #' @return A [ggplot2::ggplot] object (or a patchwork composition if
-#'   `which = "all"` and patchwork is available).
+#'   `which = "all"` and patchwork is available). In the composition the file
+#'   legend is drawn once, below the last panel; files keep the same color in
+#'   every panel.
 #'
 #' @examples
 #' \donttest{
@@ -48,6 +50,12 @@ bb_plot_qc <- function(qc_object, which = c("all", "quality", "gc", "length")) {
   }
 
   if (requireNamespace("patchwork", quietly = TRUE)) {
+    # Files have the same color in every panel, so one legend (below the last
+    # panel) is enough; three legends squash the panels at common figure sizes.
+    upper <- seq_len(length(plots) - 1L)
+    plots[upper] <- lapply(plots[upper], function(p) {
+      p + ggplot2::theme(legend.position = "none")
+    })
     combined <- Reduce(`+`, plots) +
       patchwork::plot_layout(ncol = 1)
     return(combined)
@@ -91,7 +99,7 @@ bb_plot_qc <- function(qc_object, which = c("all", "quality", "gc", "length")) {
                       color = c("#D55E00", "#009E73")) +
     ggplot2::labs(
       x = "Position in Read",
-      y = "Mean Phred Quality",
+      y = "Mean Phred\nQuality",
       title = "Per-Position Quality",
       color = "File"
     ) +

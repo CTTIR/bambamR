@@ -14,7 +14,9 @@ bb_plot_qc(qc_object, which = c("all", "quality", "gc", "length"))
 }
 \value{
 A \link[ggplot2:ggplot]{ggplot2::ggplot} object (or a patchwork composition if
-\code{which = "all"} and patchwork is available).
+\code{which = "all"} and patchwork is available). In the composition the file
+legend is drawn once, below the last panel; files keep the same color in
+every panel.
 }
 \description{
 Creates a panel of QC plots from a \code{bb_qc} object, including read quality

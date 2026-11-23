@@ -125,3 +125,22 @@ test_that("quality thresholds are labelled in the per-position plot", {
   expect_equal(sum(is_text), 1L)
   expect_setequal(p$layers[[which(is_text)]]$aes_params$label, c("Q20", "Q30"))
 })
+
+test_that("the combined QC panel draws the file legend once", {
+  skip_if_not_installed("patchwork")
+  qc <- structure(list(
+    read_counts = list(a = 3),
+    quality_scores = list(a = data.frame(position = 1:4, mean_quality = c(38, 37, 36, 35))),
+    gc_content = list(a = c(0.4, 0.5, 0.6)),
+    read_lengths = list(a = c(4L, 4L, 4L)),
+    mapping_rate = list()
+  ), class = "bb_qc")
+  p <- bb_plot_qc(qc)
+  expect_s3_class(p, "patchwork")
+  positions <- vapply(1:3, function(i) {
+    position <- p[[i]]$theme$legend.position
+    if (is.null(position)) NA_character_ else as.character(position)
+  }, character(1))
+  expect_equal(sum(positions == "none", na.rm = TRUE), 2L)
+  expect_equal(sum(positions == "bottom", na.rm = TRUE), 1L)
+})
