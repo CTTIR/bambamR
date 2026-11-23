@@ -2,28 +2,6 @@
 
 ## Bug fixes
 
-## Plot readability
-* `bb_volcano()` no longer warns about removed rows for every unlabelled gene,
-  and drops rows without a fold change. `bb_volcano()` and `bb_ma_plot()`
-  accept an unnamed `colors` vector in the documented order and report wrong
-  names clearly; `n_label = 0` draws no labels.
-* `bb_heatmap()` shows a single-sample matrix as zeros instead of missing
-  tiles when scaling, and `bb_heatmap()` and `bb_pca()` validate `n_genes`
-  and the metadata arguments.
-
-## Plot readability
-
-## CRAN preparation
-
-* `bb_pipeline()` now writes to a new directory below `tempdir()` by default
-  instead of `"bambamR_output"` in the working directory; pass `output_dir`
-  to keep results.
-* Examples no longer contain commented-out calls: BAM and counting examples
-  build a tiny BAM file when 'Rsamtools' is installed, the pipeline example
-  runs in minimal mode, and `bb_align()` documents why its example cannot run.
-* Documented return values of the print and summary methods.
-* `DESCRIPTION`: shorter title, quoted software names, `Language` and
-  `SystemRequirements` for the optional external tools.
 * `bb_align()` with `aligner = "STAR"` now decompresses gzipped FASTQ files
   with `gunzip -c` instead of `zcat`. The `zcat` shipped with macOS only reads
   `.Z` files, so STAR could not read `.fastq.gz` input there.
@@ -41,6 +19,16 @@
   `mutation_colors` and `annotation_df` are validated, and a warning is raised
   when no rowname of `annotation_df` matches a sample instead of dropping the
   tracks silently.
+* `bb_volcano()` no longer warns about removed rows for every unlabelled gene,
+  and drops rows without a fold change. `bb_volcano()` and `bb_ma_plot()`
+  accept an unnamed `colors` vector in the documented order and report wrong
+  names clearly; `n_label = 0` draws no labels.
+* `bb_heatmap()` shows a single-sample matrix as zeros instead of missing
+  tiles when scaling, and `bb_heatmap()` and `bb_pca()` validate `n_genes`
+  and the metadata arguments.
+
+## Plot readability
+
 * `bb_oncoplot()`: the legend is collected below the whole figure with its
   title on top and at most three columns, so it is no longer clipped at the
   device edge; the top barplot title is split over two lines and no longer
@@ -51,6 +39,18 @@
 * `bb_plot_qc()`: the Q20 and Q30 thresholds are labelled and use a
   color-blind-safe pair with different line types; the read-length histogram
   uses one bin per length for narrow ranges and whole-number axis breaks.
+
+## CRAN preparation
+
+* `bb_pipeline()` now writes to a new directory below `tempdir()` by default
+  instead of `"bambamR_output"` in the working directory; pass `output_dir`
+  to keep results.
+* Examples no longer contain commented-out calls: BAM and counting examples
+  build a tiny BAM file when 'Rsamtools' is installed, the pipeline example
+  runs in minimal mode, and `bb_align()` documents why its example cannot run.
+* Documented return values of the print and summary methods.
+* `DESCRIPTION`: shorter title, quoted software names, `Language` and
+  `SystemRequirements` for the optional external tools.
 
 ## Integrity fixes
 
