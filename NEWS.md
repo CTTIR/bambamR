@@ -107,8 +107,7 @@
 
 Compatibility: use a fresh output directory for each alignment/pipeline run.
 Metadata must now match all samples. Supply external-tool options as separate
-argument tokens. limma returns one contrast per call. See MAINTENANCE.md for
-validation evidence and remaining release gates.
+argument tokens. limma returns one contrast per call.
 
 # bambamR 0.1.0
 

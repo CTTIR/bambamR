@@ -18,3 +18,6 @@ _build.R
 *.bak
 *.orig
 *.Rcheck/
+
+# Local maintenance records
+/MAINTENANCE.md
