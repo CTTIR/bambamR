@@ -9,9 +9,12 @@ bb_edger(counts, group, design = NULL)
 \arguments{
 \item{counts}{Numeric matrix. Raw count matrix.}
 
-\item{group}{Factor or character vector. Group assignment for each sample.}
+\item{group}{Factor or character vector. Group assignment for each sample,
+without missing values.}
 
-\item{design}{A design matrix. If \code{NULL}, a simple group design is created.}
+\item{design}{A design matrix. If \code{NULL}, a simple group design
+(\code{~ group}) is created, which needs at least two groups. The last
+coefficient of the design is tested.}
 }
 \value{
 A data.frame with columns \code{gene}, \code{log2fc}, \code{pvalue}, \code{padj}.

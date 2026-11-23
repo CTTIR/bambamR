@@ -61,3 +61,13 @@ test_that("standardize_de_result attaches basemean only when present", {
   res2 <- bambamR:::standardize_de_result(df, basemean_col = "missing")
   expect_false("basemean" %in% colnames(res2))
 })
+
+test_that("bb_edger rejects a single group and missing group labels", {
+  skip_if_not_installed("edgeR")
+  set.seed(9)
+  counts <- matrix(rpois(120, 80), nrow = 20,
+                   dimnames = list(paste0("g", 1:20), paste0("S", 1:6)))
+  expect_error(bb_edger(counts, rep("a", 6)), "at least two groups")
+  expect_error(bb_edger(counts, c("a", "a", "a", "b", "b", NA)),
+               "must not contain missing values")
+})

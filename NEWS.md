@@ -16,6 +16,10 @@
 * `bb_align()` with `aligner = "STAR"` now decompresses gzipped FASTQ files
   with `gunzip -c` instead of `zcat`. The `zcat` shipped with macOS only reads
   `.Z` files, so STAR could not read `.fastq.gz` input there.
+* `bb_edger()` now stops with a clear message when `group` has a single level
+  and no `design` is given (the intercept was tested before, which reported
+  nearly every gene as differentially expressed) or when `group` contains
+  missing values.
 
 ## Integrity fixes
 

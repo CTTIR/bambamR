@@ -77,8 +77,11 @@ bb_deseq2 <- function(counts, coldata, design = ~ condition,
 #' the `edgeR` package.
 #'
 #' @param counts Numeric matrix. Raw count matrix.
-#' @param group Factor or character vector. Group assignment for each sample.
-#' @param design A design matrix. If `NULL`, a simple group design is created.
+#' @param group Factor or character vector. Group assignment for each sample,
+#'   without missing values.
+#' @param design A design matrix. If `NULL`, a simple group design
+#'   (`~ group`) is created, which needs at least two groups. The last
+#'   coefficient of the design is tested.
 #'
 #' @return A data.frame with columns `gene`, `log2fc`, `pvalue`, `padj`.
 #'
@@ -105,7 +108,14 @@ bb_edger <- function(counts, group, design = NULL) {
          call. = FALSE)
   }
 
+  if (anyNA(group)) {
+    stop("'group' must not contain missing values.", call. = FALSE)
+  }
   group <- factor(group)
+  if (is.null(design) && nlevels(group) < 2L) {
+    stop("'group' must contain at least two groups when 'design' is NULL.",
+         call. = FALSE)
+  }
   dge <- edgeR::DGEList(counts = counts, group = group)
   dge <- edgeR::calcNormFactors(dge)
 
