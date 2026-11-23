@@ -23,7 +23,7 @@ bb_ma_plot(
 
 - p_cutoff:
 
-  Numeric. Adjusted p-value cutoff for coloring significant genes.
+  Numeric. Adjusted p-value cut-off for colouring significant genes.
   Default `0.05`.
 
 - point_size:

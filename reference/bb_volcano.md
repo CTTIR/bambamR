@@ -30,17 +30,17 @@ bb_volcano(
 
 - fc_cutoff:
 
-  Numeric. Absolute log2 fold-change cutoff for significance. Default
+  Numeric. Absolute log2 fold-change cut-off for significance. Default
   `1`.
 
 - p_cutoff:
 
-  Numeric. Adjusted p-value cutoff for significance. Default `0.05`.
+  Numeric. Adjusted p-value cut-off for significance. Default `0.05`.
 
 - label_genes:
 
   Character vector. Specific gene names to label on the plot. If `NULL`
-  (default), the top `n_label` significant genes are labeled.
+  (default), the top `n_label` significant genes are labelled.
 
 - n_label:
 

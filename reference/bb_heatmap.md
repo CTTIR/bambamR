@@ -55,7 +55,7 @@ bb_heatmap(
 
 - color_palette:
 
-  Character vector. Colors for the heatmap gradient. The default is a
+  Character vector. Colours for the heatmap gradient. The default is a
   blue-white-red diverging palette.
 
 ## Value
@@ -65,8 +65,8 @@ object (a patchwork composition when `annotation_col` is supplied).
 
 ## Details
 
-With `scale = "row"` or `scale = "column"` the color scale is symmetric
-around zero, so the middle color of `color_palette` always marks a
+With `scale = "row"` or `scale = "column"` the colour scale is symmetric
+around zero, so the middle colour of `color_palette` always marks a
 Z-score of zero. Rows or columns without variance are shown as zero.
 
 ## Examples

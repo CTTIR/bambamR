@@ -181,10 +181,10 @@ customized with `+ theme()`, `+ labs()`, etc.
 bb_pca(cpm, metadata, color_by = "condition")
 ```
 
-![PCA plot colored by experimental
+![PCA plot coloured by experimental
 condition.](bambamR-guide_files/figure-html/pca-1.png)
 
-PCA plot colored by experimental condition.
+PCA plot coloured by experimental condition.
 
 ``` r
 
@@ -247,9 +247,9 @@ bb_volcano(de_results,
 ```
 
 ![Volcano plot with custom gene labels and
-colors.](bambamR-guide_files/figure-html/volcano-custom-1.png)
+colours.](bambamR-guide_files/figure-html/volcano-custom-1.png)
 
-Volcano plot with custom gene labels and colors.
+Volcano plot with custom gene labels and colours.
 
 ### MA Plot
 
@@ -345,7 +345,7 @@ genes.](bambamR-guide_files/figure-html/oncoplot-genes-1.png)
 
 Oncoplot showing five selected genes.
 
-### Custom Colors
+### Custom Colours
 
 ``` r
 
@@ -365,10 +365,10 @@ bb_oncoplot(mut$mutations, n_genes = 8,
             mutation_colors = my_colors, show_barplot = FALSE)
 ```
 
-![Oncoplot with a custom color
+![Oncoplot with a custom colour
 palette.](bambamR-guide_files/figure-html/oncoplot-colors-1.png)
 
-Oncoplot with a custom color palette.
+Oncoplot with a custom colour palette.
 
 ------------------------------------------------------------------------
 

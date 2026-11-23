@@ -1,8 +1,7 @@
 # bambamR ![bambamR logo](reference/figures/logo-with-name.png)
 
 Version 0.2.0, prepared for CRAN submission. A published release DOI has
-not been verified; see [release
-status](https://cttir.github.io/bambamR/MAINTENANCE.md).
+not been verified.
 
 **End-to-end RNA-seq processing from FASTQ to publication-ready plots.**
 
@@ -72,9 +71,7 @@ For the app, install `shiny` and optionally `bslib` and `DT`, then run
 `bambamR::bb_run_app(host = "127.0.0.1")`. Load the example data, select
 **Normalization only**, and run the analysis. External aligners,
 samtools, featureCounts and optional statistical engines are separate
-prerequisites. See [the maintenance
-record](https://cttir.github.io/bambamR/MAINTENANCE.md) for tested
-versions and release gates.
+prerequisites.
 
 ## Bundled Example Datasets
 
@@ -253,11 +250,11 @@ objects (data.frames, matrices, ggplot objects).
 - [`bb_oncoplot()`](https://cttir.github.io/bambamR/reference/bb_oncoplot.md)
   – publication-ready waterfall mutation plot
 - [`bb_volcano()`](https://cttir.github.io/bambamR/reference/bb_volcano.md)
-  – volcano plot with auto-labeling
+  – volcano plot with auto-labelling
 - [`bb_heatmap()`](https://cttir.github.io/bambamR/reference/bb_heatmap.md)
   – clustered heatmap of top genes
 - [`bb_pca()`](https://cttir.github.io/bambamR/reference/bb_pca.md) –
-  PCA with metadata coloring
+  PCA with metadata colouring
 - [`bb_ma_plot()`](https://cttir.github.io/bambamR/reference/bb_ma_plot.md)
   – MA plot (mean expression vs. fold change)
 
@@ -296,11 +293,11 @@ objects (data.frames, matrices, ggplot objects).
 
 If you use bambamR in your research, please cite:
 
-    Heller R, Witte H, Steinestel K (2026). bambamR: RNA-Seq Processing from
-    FASTQ Files to Publication-Ready Plots. R package version 0.2.0.
+    R. Heller, H. Witte and K. Steinestel (2026). bambamR: RNA-Seq Processing
+    from FASTQ Files to Publication-Ready Plots. R package version 0.2.0.
     https://github.com/CTTIR/bambamR
 
-## License
+## Licence
 
 MIT
 

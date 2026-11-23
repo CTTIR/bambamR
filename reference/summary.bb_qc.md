@@ -21,7 +21,7 @@ summary(object, ...)
 
 ## Value
 
-A data frame with one row per analyzed file, as returned by
+A data frame with one row per analysed file, as returned by
 [`bb_qc_summary()`](https://cttir.github.io/bambamR/reference/bb_qc_summary.md).
 
 ## Examples
@@ -35,7 +35,7 @@ writeLines(c("@r1", "ACGT", "+", "IIII"), tmp)
 qc <- bb_qc(fastq_path = tmp, use_fastqc = FALSE)
 summary(qc)
 #>                     file total_reads median_gc mapping_rate
-#> 1 file19a9321a7ffb.fastq           1       0.5           NA
+#> 1 file197957e5de91.fastq           1       0.5           NA
 unlink(tmp)
 # }
 ```

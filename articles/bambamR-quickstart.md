@@ -155,14 +155,14 @@ tmm <- bb_normalize(counts, method = "tmm")
 
 ## Step 3: PCA Plot
 
-Visualize sample-level structure. Color by any metadata column:
+Visualize sample-level structure. Colour by any metadata column:
 
 ``` r
 
 bb_pca(cpm, metadata, color_by = "condition")
 ```
 
-![PCA plot of the example samples colored by
+![PCA plot of the example samples coloured by
 condition.](bambamR-quickstart_files/figure-html/pca-condition-1.png)
 
 Add shape mapping and sample labels:
@@ -172,8 +172,8 @@ Add shape mapping and sample labels:
 bb_pca(cpm, metadata, color_by = "condition", shape_by = "batch", label = TRUE)
 ```
 
-![PCA plot colored by condition, with point shape showing the batch and
-each point labeled by its sample
+![PCA plot coloured by condition, with point shape showing the batch and
+each point labelled by its sample
 name.](bambamR-quickstart_files/figure-html/pca-batch-1.png)
 
 ------------------------------------------------------------------------
@@ -261,9 +261,9 @@ bb_volcano(de_results, fc_cutoff = 1, p_cutoff = 0.05, n_label = 8)
 
 ![Volcano plot of log2 fold change against negative log10 adjusted
 p-value with the most significant genes
-labeled.](bambamR-quickstart_files/figure-html/volcano-1.png)
+labelled.](bambamR-quickstart_files/figure-html/volcano-1.png)
 
-Customize the cutoffs and label specific genes:
+Customize the cut-off values and label specific genes:
 
 ``` r
 
@@ -274,7 +274,7 @@ bb_volcano(de_results,
            colors = c(up = "#E41A1C", down = "#377EB8", ns = "grey80"))
 ```
 
-![Volcano plot with a stricter fold-change cutoff, custom colors and
+![Volcano plot with a stricter fold-change cut-off, custom colours and
 labels for TP53, KRAS, EGFR and
 PTEN.](bambamR-quickstart_files/figure-html/volcano-custom-1.png)
 
@@ -347,7 +347,7 @@ head(mut$clinical)
 bb_oncoplot(mut$mutations, n_genes = 10)
 ```
 
-![Oncoplot of the ten most frequently mutated genes with tiles colored
+![Oncoplot of the ten most frequently mutated genes with tiles coloured
 by mutation type and marginal bar
 charts.](bambamR-quickstart_files/figure-html/oncoplot-basic-1.png)
 

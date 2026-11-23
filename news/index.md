@@ -24,7 +24,7 @@
 - [`bb_oncoplot()`](https://cttir.github.io/bambamR/reference/bb_oncoplot.md)
   no longer fails when a custom `mutation_colors` vector has no
   `"Other"` entry and the data contain an unlisted mutation type (a
-  neutral gray is used), or when `genes` contains duplicates. `n_genes`,
+  neutral grey is used), or when `genes` contains duplicates. `n_genes`,
   `genes`, `mutation_colors` and `annotation_df` are validated, and a
   warning is raised when no row name of `annotation_df` matches a sample
   instead of dropping the tracks silently.
@@ -33,8 +33,8 @@
   and TMM normalization no longer print the edgeR 4.0 notice that
   `calcNormFactors()` was renamed to `normLibSizes()`.
 - [`bb_volcano()`](https://cttir.github.io/bambamR/reference/bb_volcano.md)
-  no longer warns about removed rows for every unlabeled gene, and drops
-  rows without a fold change.
+  no longer warns about removed rows for every unlabelled gene, and
+  drops rows without a fold change.
   [`bb_volcano()`](https://cttir.github.io/bambamR/reference/bb_volcano.md)
   and
   [`bb_ma_plot()`](https://cttir.github.io/bambamR/reference/bb_ma_plot.md)
@@ -62,16 +62,16 @@
   `+` instead of `&`.
 
 - [`bb_heatmap()`](https://cttir.github.io/bambamR/reference/bb_heatmap.md):
-  the Z-score color scale is symmetric, so the middle color always marks
-  zero; with `annotation_col`, sample labels are drawn once below the
-  annotation track instead of twice and overlapping.
+  the Z-score colour scale is symmetric, so the middle colour always
+  marks zero; with `annotation_col`, sample labels are drawn once below
+  the annotation track instead of twice and overlapping.
 
 - [`bb_plot_qc()`](https://cttir.github.io/bambamR/reference/bb_plot_qc.md):
-  the Q20 and Q30 thresholds are labeled and use a color-blind-safe pair
-  with different line types; the read-length histogram uses one bin per
-  length for narrow ranges and whole-number axis breaks. The combined
-  panel draws the file legend once instead of three times, which leaves
-  more room for the panels.
+  the Q20 and Q30 thresholds are labelled and use a colour-blind-safe
+  pair with different line types; the read-length histogram uses one bin
+  per length for narrow ranges and whole-number axis breaks. The
+  combined panel draws the file legend once instead of three times,
+  which leaves more room for the panels.
 
 - Shiny app: plots are drawn at 96 dpi instead of 72 dpi, so axis and
   gene labels are readable in the result tabs. The PCA and MA tabs say
@@ -81,10 +81,14 @@
 
 ### Documentation
 
+- Documentation uses British English (`Language: en-GB`); code
+  identifiers, argument names and plot labels are unchanged.
+- The README citation, `CITATION.cff` and `.zenodo.json` name the author
+  as R. Heller and use the package title of `citation("bambamR")`.
 - Figures in the tutorial, quick-start and oncoplot vignettes carry alt
   text.
-- The custom volcano example in the vignettes uses cutoffs that leave
-  significant genes, so the custom colors are visible.
+- The custom volcano example in the vignettes uses cut-off values that
+  leave significant genes, so the custom colours are visible.
 - The GitHub icon in the site navigation bar has an accessible label.
 
 ### CRAN preparation
@@ -151,8 +155,7 @@
 
 Compatibility: use a fresh output directory for each alignment/pipeline
 run. Metadata must now match all samples. Supply external-tool options
-as separate argument tokens. limma returns one contrast per call. See
-MAINTENANCE.md for validation evidence and remaining release gates.
+as separate argument tokens. limma returns one contrast per call.
 
 ## bambamR 0.1.0
 

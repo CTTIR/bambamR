@@ -69,12 +69,12 @@ A data.frame with MAF-style columns: `Hugo_Symbol`,
 bb_oncoplot(mut_data, n_genes = 10)
 ```
 
-![Oncoplot of the ten most frequently mutated genes with tiles colored
+![Oncoplot of the ten most frequently mutated genes with tiles coloured
 by mutation type, the percentage of mutated samples per gene and
 marginal bar
 charts.](bambamR-oncoplot_files/figure-html/basic-oncoplot-1.png)
 
-## Customizing Colors
+## Customizing Colours
 
 Pass a named character vector to `mutation_colors`:
 
@@ -94,7 +94,7 @@ my_colors <- c(
 bb_oncoplot(mut_data, n_genes = 10, mutation_colors = my_colors)
 ```
 
-![The same oncoplot drawn with a user-supplied color for each mutation
+![The same oncoplot drawn with a user-supplied colour for each mutation
 type.](bambamR-oncoplot_files/figure-html/custom-colors-1.png)
 
 ## Selecting Specific Genes

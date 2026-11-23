@@ -31,7 +31,7 @@ bb_pca(
 
 - color_by:
 
-  Character. Column name in `metadata` to use for coloring points.
+  Character. Column name in `metadata` to use for colouring points.
 
 - shape_by:
 

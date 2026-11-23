@@ -55,10 +55,10 @@ bb_oncoplot(
 
 - mutation_colors:
 
-  Named character vector mapping mutation types to colors. If `NULL`, a
+  Named character vector mapping mutation types to colours. If `NULL`, a
   default nature-style palette is used. Mutation types without an entry
-  take the `"Other"` color of this vector or, if it has none, a neutral
-  gray.
+  take the `"Other"` colour of this vector or, if it has none, a neutral
+  grey.
 
 - show_pct:
 
@@ -76,7 +76,7 @@ bb_oncoplot(
 
 - border_color:
 
-  Character or NULL. Color of tile borders. Default `"white"`.
+  Character or NULL. Colour of tile borders. Default `"white"`.
 
 ## Value
 
@@ -87,8 +87,8 @@ available).
 ## Details
 
 The oncoplot encodes the mutation landscape of a cohort as a tiled grid:
-columns = samples, rows = genes. Tiles are colored by mutation type.
-Multi-hit genes (multiple mutation types in one sample) are labeled
+columns = samples, rows = genes. Tiles are coloured by mutation type.
+Multi-hit genes (multiple mutation types in one sample) are labelled
 `"Multi_Hit"`.
 
 When `show_barplot = TRUE` and the `patchwork` package is available, the
