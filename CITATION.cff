@@ -1,13 +1,13 @@
 cff-version: 1.2.0
 message: If you use this software, please cite it as below.
 type: software
-title: 'bambamR: RNA-seq processing from FASTQ files to publication-ready plots'
+title: 'bambamR: RNA-Seq Processing from FASTQ Files to Publication-Ready Plots'
 version: 0.2.0
 doi: 10.5281/zenodo.21889924
 # Previously recorded date-released: '2026-08-11'; publication is unverified.
 authors:
 - family-names: Heller
-  given-names: Raban
+  given-names: R.
   orcid: https://orcid.org/0000-0001-8006-9742
 - family-names: Witte
   given-names: Hanno

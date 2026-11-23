@@ -61,6 +61,8 @@
 
 * Documentation uses British English (`Language: en-GB`); code identifiers,
   argument names and plot labels are unchanged.
+* The README citation, `CITATION.cff` and `.zenodo.json` name the author as
+  R. Heller and use the package title of `citation("bambamR")`.
 * Figures in the tutorial, quick-start and oncoplot vignettes carry alt text.
 * The custom volcano example in the vignettes uses cut-off values that leave
   significant genes, so the custom colours are visible.

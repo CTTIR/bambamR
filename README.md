@@ -258,8 +258,8 @@ All exported functions use the `bb_` prefix and return standard R objects
 If you use bambamR in your research, please cite:
 
 ```
-Heller R, Witte H, Steinestel K (2026). bambamR: RNA-Seq Processing from
-FASTQ Files to Publication-Ready Plots. R package version 0.2.0.
+R. Heller, H. Witte and K. Steinestel (2026). bambamR: RNA-Seq Processing
+from FASTQ Files to Publication-Ready Plots. R package version 0.2.0.
 https://github.com/CTTIR/bambamR
 ```
 
