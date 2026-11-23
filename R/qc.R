@@ -4,8 +4,8 @@
 #'
 #' @param fastq_path Character or NULL. Path(s) to FASTQ file(s).
 #' @param bam_path Character or NULL. Path(s) to BAM file(s).
-#' @param use_fastqc Logical. Try to use system FastQC if available.
-#'   Default `TRUE`.
+#' @param use_fastqc Logical. Reserved for a FastQC backend and currently
+#'   ignored: all metrics are computed in R. Default `TRUE`.
 #'
 #' @return A `bb_qc` object containing:
 #' \describe{
@@ -175,10 +175,8 @@ summary.bb_qc <- function(object, ...) {
 #' Compute GC content per read
 #' @noRd
 .compute_gc <- function(sequences) {
-  vapply(sequences, function(s) {
-    chars <- strsplit(toupper(s), "", fixed = TRUE)[[1]]
-    sum(chars %in% c("G", "C")) / length(chars)
-  }, numeric(1), USE.NAMES = FALSE)
+  sequences <- unname(as.character(sequences))
+  nchar(gsub("[^GCgc]", "", sequences)) / nchar(sequences)
 }
 
 
@@ -187,24 +185,30 @@ summary.bb_qc <- function(object, ...) {
 .compute_qual_summary <- function(quality_strings) {
   if (length(quality_strings) == 0L) return(NULL)
 
-  # Convert Phred+33 to numeric
-  qual_nums <- lapply(quality_strings, function(q) {
-    as.integer(charToRaw(q)) - 33L
-  })
+  quality_strings <- as.character(quality_strings)
+  lens <- nchar(quality_strings, type = "bytes")
+  max_len <- max(lens)
 
-  max_len <- max(vapply(qual_nums, length, integer(1)))
-
-  # Per-position mean quality
-  pos_means <- vapply(seq_len(max_len), function(pos) {
-    vals <- vapply(qual_nums, function(q) {
-      if (pos <= length(q)) q[pos] else NA_integer_
-    }, integer(1))
-    mean(vals, na.rm = TRUE)
-  }, numeric(1))
+  # Per-position sums and read counts, accumulated over blocks of reads so
+  # the work is linear in the number of bases and memory stays bounded.
+  sums <- numeric(max_len)
+  n <- numeric(max_len)
+  block <- 50000L
+  for (start in seq.int(1L, length(quality_strings), by = block)) {
+    idx <- seq.int(start, min(start + block - 1L, length(quality_strings)))
+    if (sum(lens[idx]) == 0L) next
+    # Convert Phred+33 to numeric
+    vals <- as.integer(charToRaw(paste(quality_strings[idx], collapse = ""))) - 33L
+    pos <- sequence(lens[idx])
+    block_sums <- rowsum(vals, pos)
+    seen <- as.integer(rownames(block_sums))
+    sums[seen] <- sums[seen] + block_sums[, 1L]
+    n <- n + tabulate(pos, nbins = max_len)
+  }
 
   data.frame(
     position = seq_len(max_len),
-    mean_quality = pos_means,
+    mean_quality = sums / n,
     stringsAsFactors = FALSE
   )
 }

@@ -11,8 +11,8 @@ bb_qc(fastq_path = NULL, bam_path = NULL, use_fastqc = TRUE)
 
 \item{bam_path}{Character or NULL. Path(s) to BAM file(s).}
 
-\item{use_fastqc}{Logical. Try to use system FastQC if available.
-Default \code{TRUE}.}
+\item{use_fastqc}{Logical. Reserved for a FastQC backend and currently
+ignored: all metrics are computed in R. Default \code{TRUE}.}
 }
 \value{
 A \code{bb_qc} object containing:

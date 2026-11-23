@@ -20,6 +20,11 @@
   and no `design` is given (the intercept was tested before, which reported
   nearly every gene as differentially expressed) or when `group` contains
   missing values.
+* `bb_qc()` computes GC content and per-position quality in time linear in the
+  number of bases; the per-position summary previously looped over every read
+  for every position. Results are unchanged.
+* `bb_qc()`: `use_fastqc` is documented as reserved and ignored; it never
+  called FastQC.
 
 ## Integrity fixes
 
