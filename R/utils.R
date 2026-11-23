@@ -204,6 +204,19 @@ validate_counts <- function(counts) {
   colors
 }
 
+# edgeR 4.0 renamed calcNormFactors() to normLibSizes() and announces the
+# rename on every call of the old name; use whichever the installed version
+# provides.
+#' @noRd
+.edger_norm_factors <- function(dge, ...) {
+  fun <- if (exists("normLibSizes", envir = asNamespace("edgeR"), inherits = FALSE)) {
+    "normLibSizes"
+  } else {
+    "calcNormFactors"
+  }
+  getExportedValue("edgeR", fun)(dge, ...)
+}
+
 # `legend.title.position` exists from ggplot2 3.5.0; older versions keep the
 # title beside the keys.
 #' @noRd

@@ -117,7 +117,7 @@ bb_edger <- function(counts, group, design = NULL) {
          call. = FALSE)
   }
   dge <- edgeR::DGEList(counts = counts, group = group)
-  dge <- edgeR::calcNormFactors(dge)
+  dge <- .edger_norm_factors(dge)
 
   if (is.null(design)) {
     design <- stats::model.matrix(~ group)
@@ -176,7 +176,7 @@ bb_limma_voom <- function(counts, design, contrast = NULL) {
   design <- .validate_design(design, counts)
 
   dge <- edgeR::DGEList(counts = counts)
-  dge <- edgeR::calcNormFactors(dge)
+  dge <- .edger_norm_factors(dge)
 
   v <- limma::voom(dge, design, plot = FALSE)
   fit <- limma::lmFit(v, design)

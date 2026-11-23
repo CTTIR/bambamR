@@ -103,7 +103,7 @@ bb_normalize <- function(counts, method = c("cpm", "tpm", "tmm", "rle"),
   check_pkg("edgeR", reason = "for TMM normalization")
   dge <- edgeR::DGEList(counts = counts)
 
-  dge <- edgeR::calcNormFactors(dge, method = "TMM")
+  dge <- .edger_norm_factors(dge, method = "TMM")
   edgeR::cpm(dge)
 }
 

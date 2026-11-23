@@ -71,3 +71,17 @@ test_that("bb_edger rejects a single group and missing group labels", {
   expect_error(bb_edger(counts, c("a", "a", "a", "b", "b", NA)),
                "must not contain missing values")
 })
+
+test_that("edgeR normalization does not announce the renamed function", {
+  skip_if_not_installed("edgeR")
+  set.seed(13)
+  counts <- matrix(rpois(600, 100), nrow = 100, ncol = 6,
+                   dimnames = list(paste0("g", 1:100), paste0("s", 1:6)))
+  group <- factor(rep(c("ctrl", "treat"), each = 3))
+  messages <- testthat::capture_messages(res <- bb_edger(counts, group))
+  expect_false(any(grepl("renamed", messages)))
+  expect_equal(nrow(res), 100L)
+  expect_false(any(grepl("renamed", testthat::capture_messages(
+    bb_normalize(counts, method = "tmm")
+  ))))
+})

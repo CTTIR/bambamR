@@ -19,6 +19,8 @@
   `mutation_colors` and `annotation_df` are validated, and a warning is raised
   when no rowname of `annotation_df` matches a sample instead of dropping the
   tracks silently.
+* `bb_edger()`, `bb_limma_voom()` and TMM normalization no longer print
+  "calcNormFactors has been renamed to normLibSizes" with edgeR 4.0 or later.
 * `bb_volcano()` no longer warns about removed rows for every unlabelled gene,
   and drops rows without a fold change. `bb_volcano()` and `bb_ma_plot()`
   accept an unnamed `colors` vector in the documented order and report wrong
