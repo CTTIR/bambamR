@@ -240,8 +240,8 @@ Volcano plot highlighting differentially expressed genes.
 ``` r
 
 bb_volcano(de_results,
-           fc_cutoff = 0.5,
-           p_cutoff = 0.01,
+           fc_cutoff = 1.5,
+           p_cutoff = 0.05,
            label_genes = c("TP53", "KRAS", "EGFR", "PTEN"),
            colors = c(up = "#E41A1C", down = "#377EB8", ns = "grey80"))
 ```
@@ -693,5 +693,5 @@ sessionInfo()
 #> [75] glue_1.8.1                  BiocGenerics_0.58.1        
 #> [77] jsonlite_2.0.0              R6_2.6.1                   
 #> [79] MatrixGenerics_1.24.0       GenomicAlignments_1.48.0   
-#> [81] systemfonts_1.3.3           fs_2.1.0
+#> [81] systemfonts_1.3.4           fs_2.1.0
 ```

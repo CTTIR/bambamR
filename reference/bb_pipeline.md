@@ -123,7 +123,7 @@ result <- bb_pipeline(count_matrix = counts, sample_info = sample_info,
 #>   CPM normalization complete
 #> === Step 6: Generating Plots ===
 #>   Generated: pca, heatmap
-#> Saved to: /tmp/RtmpyWdY15/bambamR-pipeline-example/bambamR_result.rds
+#> Saved to: /tmp/RtmptfvEF9/bambamR-pipeline-example/bambamR_result.rds
 #> 
 #> === Pipeline complete ===
 result
@@ -146,11 +146,10 @@ if (requireNamespace("edgeR", quietly = TRUE)) {
 #> === Step 4: Normalization ===
 #>   CPM normalization complete
 #> === Step 5: Differential Expression (edgeR) ===
-#> calcNormFactors has been renamed to normLibSizes
 #>   Found 0 significant genes (FDR < 0.05)
 #> === Step 6: Generating Plots ===
 #>   Generated: pca, heatmap, volcano
-#> Saved to: /tmp/RtmpyWdY15/bambamR-pipeline-edger/bambamR_result.rds
+#> Saved to: /tmp/RtmptfvEF9/bambamR-pipeline-edger/bambamR_result.rds
 #> 
 #> === Pipeline complete ===
 # }

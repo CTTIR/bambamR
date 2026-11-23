@@ -28,7 +28,7 @@
 <li class="nav-item"><a class="nav-link" href="../articles/index.html">Vignettes</a></li>
 <li class="active nav-item"><a class="nav-link" href="../reference/index.html">Functions</a></li>
 <li class="nav-item"><a class="nav-link" href="../news/index.html">News</a></li>
-      </ul><ul class="navbar-nav"><li class="nav-item"><a class="external-link nav-link" href="https://github.com/cttir/bambamR"><span class="fa fa-github"></span></a></li>
+      </ul><ul class="navbar-nav"><li class="nav-item"><a class="external-link nav-link" href="https://github.com/cttir/bambamR" aria-label="GitHub"><span class="fa fa-github"></span></a></li>
       </ul></div>
 
 
@@ -84,7 +84,8 @@ plot. If <code>NULL</code> (default), the top <code>n_label</code> significant g
 
 <dt id="arg-n-label">n_label<a class="anchor" aria-label="anchor" href="#arg-n-label"></a></dt>
 <dd><p>Integer. Number of top significant genes to auto-label
-when <code>label_genes</code> is <code>NULL</code>. Default <code>10</code>.</p></dd>
+when <code>label_genes</code> is <code>NULL</code>; <code>0</code> draws no labels and <code>Inf</code> labels every
+significant gene. Default <code>10</code>.</p></dd>
 
 
 <dt id="arg-point-size">point_size<a class="anchor" aria-label="anchor" href="#arg-point-size"></a></dt>
@@ -92,8 +93,9 @@ when <code>label_genes</code> is <code>NULL</code>. Default <code>10</code>.</p>
 
 
 <dt id="arg-colors">colors<a class="anchor" aria-label="anchor" href="#arg-colors"></a></dt>
-<dd><p>Named character vector of length 3 for up, down, and
-non-significant colors.</p></dd>
+<dd><p>Character vector of length 3 with the names <code>"up"</code>,
+<code>"down"</code> and <code>"ns"</code> (non-significant). An unnamed vector is read in
+that order.</p></dd>
 
 </dl></div>
     <div class="section level2">
@@ -110,8 +112,6 @@ non-significant colors.</p></dd>
 <span class="r-in"><span>  padj <span class="op">=</span> <span class="fl">10</span><span class="op">^</span><span class="op">(</span><span class="op">-</span><span class="fu"><a href="https://rdrr.io/r/stats/Uniform.html" class="external-link">runif</a></span><span class="op">(</span><span class="fl">200</span>, <span class="fl">0</span>, <span class="fl">4</span><span class="op">)</span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="fu">bb_volcano</span><span class="op">(</span><span class="va">de</span><span class="op">)</span></span></span>
-<span class="r-wrn co"><span class="r-pr">#&gt;</span> <span class="warning">Warning: </span>Removed 190 rows containing missing values or values outside the scale range</span>
-<span class="r-wrn co"><span class="r-pr">#&gt;</span> (`geom_text_repel()`).</span>
 <span class="r-plt img"><img src="bb_volcano-1.png" alt="" width="700" height="433"></span>
 <span class="r-in"><span></span></span>
 </code></pre></div>

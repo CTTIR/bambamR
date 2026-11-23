@@ -2,6 +2,91 @@
 
 ## bambamR 0.2.0
 
+### Bug fixes
+
+- [`bb_align()`](https://cttir.github.io/bambamR/reference/bb_align.md)
+  with `aligner = "STAR"` now decompresses gzipped FASTQ files with
+  `gunzip -c` instead of `zcat`. The `zcat` shipped with macOS only
+  reads `.Z` files, so STAR could not read `.fastq.gz` input there.
+- [`bb_edger()`](https://cttir.github.io/bambamR/reference/bb_edger.md)
+  now stops with a clear message when `group` has a single level and no
+  `design` is given, or when `group` contains missing values. Both cases
+  previously failed with an unrelated error from the model matrix.
+- [`bb_qc()`](https://cttir.github.io/bambamR/reference/bb_qc.md)
+  computes GC content and per-position quality in time linear in the
+  number of bases; the per-position summary previously looped over every
+  read for every position. Reads are processed in blocks of about ten
+  million bases, so memory stays bounded for long reads as well. Results
+  are unchanged.
+- [`bb_qc()`](https://cttir.github.io/bambamR/reference/bb_qc.md):
+  `use_fastqc` is documented as reserved and ignored; it never called
+  FastQC.
+- [`bb_oncoplot()`](https://cttir.github.io/bambamR/reference/bb_oncoplot.md)
+  no longer fails when a custom `mutation_colors` vector has no
+  `"Other"` entry and the data contain an unlisted mutation type (a
+  neutral gray is used), or when `genes` contains duplicates. `n_genes`,
+  `genes`, `mutation_colors` and `annotation_df` are validated, and a
+  warning is raised when no row name of `annotation_df` matches a sample
+  instead of dropping the tracks silently.
+- [`bb_edger()`](https://cttir.github.io/bambamR/reference/bb_edger.md),
+  [`bb_limma_voom()`](https://cttir.github.io/bambamR/reference/bb_limma_voom.md)
+  and TMM normalization no longer print the edgeR 4.0 notice that
+  `calcNormFactors()` was renamed to `normLibSizes()`.
+- [`bb_volcano()`](https://cttir.github.io/bambamR/reference/bb_volcano.md)
+  no longer warns about removed rows for every unlabeled gene, and drops
+  rows without a fold change.
+  [`bb_volcano()`](https://cttir.github.io/bambamR/reference/bb_volcano.md)
+  and
+  [`bb_ma_plot()`](https://cttir.github.io/bambamR/reference/bb_ma_plot.md)
+  accept an unnamed `colors` vector in the documented order and report
+  wrong names clearly; `n_label = 0` draws no labels.
+- [`bb_heatmap()`](https://cttir.github.io/bambamR/reference/bb_heatmap.md)
+  shows a single-sample matrix as zeros instead of missing tiles when
+  scaling, and
+  [`bb_heatmap()`](https://cttir.github.io/bambamR/reference/bb_heatmap.md)
+  and [`bb_pca()`](https://cttir.github.io/bambamR/reference/bb_pca.md)
+  validate `n_genes` and the metadata arguments.
+
+### Plot readability
+
+- [`bb_oncoplot()`](https://cttir.github.io/bambamR/reference/bb_oncoplot.md):
+  the legend is collected below the whole figure with its title on top
+  and at most three columns, so it is no longer clipped at the device
+  edge; the top barplot title is split over two lines and no longer runs
+  into the plot title, and its axis of gene counts uses whole-number
+  breaks. Annotation tracks drawn without barplots collect their legends
+  in the same way. When moving the legend, reset its layout too: for the
+  patchwork composition use
+  `p & ggplot2::theme(legend.position = "right") & ggplot2::guides(fill = ggplot2::guide_legend(ncol = 1))`,
+  for a single ggplot (`show_barplot = FALSE`, no `annotation_df`) use
+  `+` instead of `&`.
+
+- [`bb_heatmap()`](https://cttir.github.io/bambamR/reference/bb_heatmap.md):
+  the Z-score color scale is symmetric, so the middle color always marks
+  zero; with `annotation_col`, sample labels are drawn once below the
+  annotation track instead of twice and overlapping.
+
+- [`bb_plot_qc()`](https://cttir.github.io/bambamR/reference/bb_plot_qc.md):
+  the Q20 and Q30 thresholds are labeled and use a color-blind-safe pair
+  with different line types; the read-length histogram uses one bin per
+  length for narrow ranges and whole-number axis breaks. The combined
+  panel draws the file legend once instead of three times, which leaves
+  more room for the panels.
+
+- Shiny app: plots are drawn at 96 dpi instead of 72 dpi, so axis and
+  gene labels are readable in the result tabs. The PCA and MA tabs say
+  why they are empty (no `condition` column, or a DE method without mean
+  expression) instead of staying blank, and the DE table shows three
+  significant digits.
+
+### Documentation
+
+- Figures in the tutorial, quick-start and oncoplot vignettes carry alt
+  text.
+- The custom volcano example in the vignettes uses cutoffs that leave
+  significant genes, so the custom colors are visible.
+- The GitHub icon in the site navigation bar has an accessible label.
+
 ### CRAN preparation
 
 - [`bb_pipeline()`](https://cttir.github.io/bambamR/reference/bb_pipeline.md)

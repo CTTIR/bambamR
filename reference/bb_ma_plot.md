@@ -32,7 +32,8 @@ bb_ma_plot(
 
 - colors:
 
-  Named character vector with `"sig"` and `"ns"` colors.
+  Character vector of length 2 with the names `"sig"` and `"ns"`. An
+  unnamed vector is read in that order.
 
 ## Value
 

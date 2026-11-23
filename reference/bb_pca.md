@@ -21,6 +21,8 @@ bb_pca(
 - counts:
 
   Numeric matrix. Normalized count matrix (genes x samples).
+  Log-transformed values, for example `log2(cpm + 1)`, usually separate
+  samples better than untransformed counts.
 
 - metadata:
 
@@ -37,7 +39,8 @@ bb_pca(
 
 - n_genes:
 
-  Integer. Number of top variable genes to use for PCA. Default `500`.
+  Integer. Number of top variable genes to use for PCA. Must be a
+  positive whole number, or `Inf` for all genes. Default `500`.
 
 - label:
 

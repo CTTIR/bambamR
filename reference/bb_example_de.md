@@ -30,8 +30,6 @@ head(de[order(de$padj), ])
 
 # Volcano plot
 bb_volcano(de)
-#> Warning: Removed 490 rows containing missing values or values outside the scale range
-#> (`geom_text_repel()`).
 
 
 # MA plot

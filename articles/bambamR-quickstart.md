@@ -149,7 +149,6 @@ With Bioconductor installed you can also use `"tmm"` (edgeR) or `"rle"`
 ``` r
 
 tmm <- bb_normalize(counts, method = "tmm")
-#> calcNormFactors has been renamed to normLibSizes
 ```
 
 ------------------------------------------------------------------------
@@ -163,7 +162,8 @@ Visualize sample-level structure. Color by any metadata column:
 bb_pca(cpm, metadata, color_by = "condition")
 ```
 
-![](bambamR-quickstart_files/figure-html/pca-condition-1.png)
+![PCA plot of the example samples colored by
+condition.](bambamR-quickstart_files/figure-html/pca-condition-1.png)
 
 Add shape mapping and sample labels:
 
@@ -172,7 +172,9 @@ Add shape mapping and sample labels:
 bb_pca(cpm, metadata, color_by = "condition", shape_by = "batch", label = TRUE)
 ```
 
-![](bambamR-quickstart_files/figure-html/pca-batch-1.png)
+![PCA plot colored by condition, with point shape showing the batch and
+each point labeled by its sample
+name.](bambamR-quickstart_files/figure-html/pca-batch-1.png)
 
 ------------------------------------------------------------------------
 
@@ -185,7 +187,8 @@ Show the top 30 most variable genes:
 bb_heatmap(cpm, n_genes = 30)
 ```
 
-![](bambamR-quickstart_files/figure-html/heatmap-var-1.png)
+![Clustered heatmap of row-scaled expression (Z-scores) for the 30 most
+variable genes.](bambamR-quickstart_files/figure-html/heatmap-var-1.png)
 
 ------------------------------------------------------------------------
 
@@ -254,26 +257,26 @@ cat("Down-regulated (log2FC < -1):",
 ``` r
 
 bb_volcano(de_results, fc_cutoff = 1, p_cutoff = 0.05, n_label = 8)
-#> Warning: Removed 492 rows containing missing values or values outside the scale range
-#> (`geom_text_repel()`).
 ```
 
-![](bambamR-quickstart_files/figure-html/volcano-1.png)
+![Volcano plot of log2 fold change against negative log10 adjusted
+p-value with the most significant genes
+labeled.](bambamR-quickstart_files/figure-html/volcano-1.png)
 
 Customize the cutoffs and label specific genes:
 
 ``` r
 
 bb_volcano(de_results,
-           fc_cutoff = 0.5,
-           p_cutoff = 0.01,
+           fc_cutoff = 1.5,
+           p_cutoff = 0.05,
            label_genes = c("TP53", "KRAS", "EGFR", "PTEN"),
            colors = c(up = "#E41A1C", down = "#377EB8", ns = "grey80"))
-#> Warning: Removed 496 rows containing missing values or values outside the scale range
-#> (`geom_text_repel()`).
 ```
 
-![](bambamR-quickstart_files/figure-html/volcano-custom-1.png)
+![Volcano plot with a stricter fold-change cutoff, custom colors and
+labels for TP53, KRAS, EGFR and
+PTEN.](bambamR-quickstart_files/figure-html/volcano-custom-1.png)
 
 ------------------------------------------------------------------------
 
@@ -287,7 +290,9 @@ genes that change at different expression levels:
 bb_ma_plot(de_results, p_cutoff = 0.05)
 ```
 
-![](bambamR-quickstart_files/figure-html/ma-plot-1.png)
+![MA plot of log2 fold change against log10 mean expression with
+significant genes
+highlighted.](bambamR-quickstart_files/figure-html/ma-plot-1.png)
 
 ------------------------------------------------------------------------
 
@@ -303,7 +308,9 @@ variable:
 bb_heatmap(cpm, de_result = de_results, n_genes = 25)
 ```
 
-![](bambamR-quickstart_files/figure-html/heatmap-de-1.png)
+![Clustered heatmap of row-scaled expression (Z-scores) for the top 25
+differentially expressed
+genes.](bambamR-quickstart_files/figure-html/heatmap-de-1.png)
 
 ------------------------------------------------------------------------
 
@@ -340,7 +347,9 @@ head(mut$clinical)
 bb_oncoplot(mut$mutations, n_genes = 10)
 ```
 
-![](bambamR-quickstart_files/figure-html/oncoplot-basic-1.png)
+![Oncoplot of the ten most frequently mutated genes with tiles colored
+by mutation type and marginal bar
+charts.](bambamR-quickstart_files/figure-html/oncoplot-basic-1.png)
 
 ### With Clinical Annotations
 
@@ -349,7 +358,9 @@ bb_oncoplot(mut$mutations, n_genes = 10)
 bb_oncoplot(mut$mutations, n_genes = 10, annotation_df = mut$clinical)
 ```
 
-![](bambamR-quickstart_files/figure-html/oncoplot-clinical-1.png)
+![Oncoplot of the ten most frequently mutated genes with clinical
+annotation tracks below the mutation
+tiles.](bambamR-quickstart_files/figure-html/oncoplot-clinical-1.png)
 
 ### Select Specific Genes
 
@@ -359,7 +370,8 @@ bb_oncoplot(mut$mutations,
             genes = c("TP53", "KRAS", "PIK3CA", "BRAF", "EGFR"))
 ```
 
-![](bambamR-quickstart_files/figure-html/oncoplot-genes-1.png)
+![Oncoplot restricted to the five genes TP53, KRAS, PIK3CA, BRAF and
+EGFR.](bambamR-quickstart_files/figure-html/oncoplot-genes-1.png)
 
 See
 [`vignette("bambamR-oncoplot")`](https://cttir.github.io/bambamR/articles/bambamR-oncoplot.md)
@@ -436,7 +448,9 @@ Visualize QC metrics:
 bb_plot_qc(qc)
 ```
 
-![](bambamR-quickstart_files/figure-html/qc-plot-1.png)
+![Three stacked QC panels: mean Phred quality per read position with Q20
+and Q30 thresholds, the GC content distribution and the read length
+distribution.](bambamR-quickstart_files/figure-html/qc-plot-1.png)
 
 ------------------------------------------------------------------------
 

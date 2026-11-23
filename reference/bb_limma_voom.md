@@ -42,7 +42,6 @@ if (requireNamespace("limma", quietly = TRUE) &&
   result <- bb_limma_voom(counts, design)
   head(result)
 }
-#> calcNormFactors has been renamed to normLibSizes
 #>    gene      log2fc     pvalue      padj
 #> 1 gene1 -0.07229408 0.52407853 0.9092510
 #> 2 gene2 -0.04190298 0.71594977 0.9549223

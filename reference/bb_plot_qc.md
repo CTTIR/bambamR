@@ -26,7 +26,8 @@ bb_plot_qc(qc_object, which = c("all", "quality", "gc", "length"))
 
 A [ggplot2::ggplot](https://ggplot2.tidyverse.org/reference/ggplot.html)
 object (or a patchwork composition if `which = "all"` and patchwork is
-available).
+available). In the composition the file legend is drawn once, below the
+last panel; files keep the same color in every panel.
 
 ## Examples
 

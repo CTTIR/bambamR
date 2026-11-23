@@ -32,7 +32,7 @@ gene, mutation_type columns or a MAF-format data.frame."><meta property="og:imag
 <li class="nav-item"><a class="nav-link" href="../articles/index.html">Vignettes</a></li>
 <li class="active nav-item"><a class="nav-link" href="../reference/index.html">Functions</a></li>
 <li class="nav-item"><a class="nav-link" href="../news/index.html">News</a></li>
-      </ul><ul class="navbar-nav"><li class="nav-item"><a class="external-link nav-link" href="https://github.com/cttir/bambamR"><span class="fa fa-github"></span></a></li>
+      </ul><ul class="navbar-nav"><li class="nav-item"><a class="external-link nav-link" href="https://github.com/cttir/bambamR" aria-label="GitHub"><span class="fa fa-github"></span></a></li>
       </ul></div>
 
 
@@ -79,12 +79,13 @@ Alternatively, a MAF-like data.frame with <code>Hugo_Symbol</code>,
 
 <dt id="arg-genes">genes<a class="anchor" aria-label="anchor" href="#arg-genes"></a></dt>
 <dd><p>Character vector. Specific genes to display. If <code>NULL</code>,
-the top <code>n_genes</code> most frequently mutated genes are shown.</p></dd>
+the top <code>n_genes</code> most frequently mutated genes are shown. Duplicated
+entries are shown once.</p></dd>
 
 
 <dt id="arg-n-genes">n_genes<a class="anchor" aria-label="anchor" href="#arg-n-genes"></a></dt>
 <dd><p>Integer. Number of top mutated genes if <code>genes</code> is <code>NULL</code>.
-Default <code>20</code>.</p></dd>
+Must be a positive whole number, or <code>Inf</code> for all genes. Default <code>20</code>.</p></dd>
 
 
 <dt id="arg-sort-by">sort_by<a class="anchor" aria-label="anchor" href="#arg-sort-by"></a></dt>
@@ -96,12 +97,15 @@ Default <code>"frequency"</code>.</p></dd>
 <dt id="arg-annotation-df">annotation_df<a class="anchor" aria-label="anchor" href="#arg-annotation-df"></a></dt>
 <dd><p>A data.frame for sample annotations (bottom tracks).
 Rownames must be sample identifiers. Each column becomes an annotation
-track. Annotation tracks require <code>patchwork</code>.</p></dd>
+track. Annotation tracks require <code>patchwork</code>. A warning is raised when
+no row name matches a sample, because the tracks are then omitted.</p></dd>
 
 
 <dt id="arg-mutation-colors">mutation_colors<a class="anchor" aria-label="anchor" href="#arg-mutation-colors"></a></dt>
 <dd><p>Named character vector mapping mutation types to
-colors. If <code>NULL</code>, a default nature-style palette is used.</p></dd>
+colors. If <code>NULL</code>, a default nature-style palette is used. Mutation
+types without an entry take the <code>"Other"</code> color of this vector or, if it
+has none, a neutral gray.</p></dd>
 
 
 <dt id="arg-show-pct">show_pct<a class="anchor" aria-label="anchor" href="#arg-show-pct"></a></dt>
@@ -140,6 +144,13 @@ sample), main tile plot, and right barplot (mutated samples per gene).
 Without patchwork, the main tile plot is returned unless annotations were
 requested. Percentages use all samples represented in <code>data</code> before gene
 selection; samples with no recorded mutations cannot be inferred.</p>
+<p>The legend is placed below the plot in three columns so that it fits
+common device widths. When moving it, reset the layout as well. A plot
+with marginal barplots or annotation tracks is a patchwork composition, in
+which <code>&amp;</code> applies a change to every panel:
+<code>p &amp; ggplot2::theme(legend.position = "right") &amp; ggplot2::guides(fill = ggplot2::guide_legend(ncol = 1))</code>. For a single
+ggplot (<code>show_barplot = FALSE</code> and no <code>annotation_df</code>), use <code>+</code> instead
+of <code>&amp;</code>.</p>
     </div>
 
     <div class="section level2">

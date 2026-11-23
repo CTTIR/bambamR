@@ -30,7 +30,7 @@ the edgeR package."><meta property="og:image" content="https://cttir.github.io/b
 <li class="nav-item"><a class="nav-link" href="../articles/index.html">Vignettes</a></li>
 <li class="active nav-item"><a class="nav-link" href="../reference/index.html">Functions</a></li>
 <li class="nav-item"><a class="nav-link" href="../news/index.html">News</a></li>
-      </ul><ul class="navbar-nav"><li class="nav-item"><a class="external-link nav-link" href="https://github.com/cttir/bambamR"><span class="fa fa-github"></span></a></li>
+      </ul><ul class="navbar-nav"><li class="nav-item"><a class="external-link nav-link" href="https://github.com/cttir/bambamR" aria-label="GitHub"><span class="fa fa-github"></span></a></li>
       </ul></div>
 
 
@@ -62,11 +62,14 @@ the <code>edgeR</code> package.</p>
 
 
 <dt id="arg-group">group<a class="anchor" aria-label="anchor" href="#arg-group"></a></dt>
-<dd><p>Factor or character vector. Group assignment for each sample.</p></dd>
+<dd><p>Factor or character vector. Group assignment for each sample,
+without missing values.</p></dd>
 
 
 <dt id="arg-design">design<a class="anchor" aria-label="anchor" href="#arg-design"></a></dt>
-<dd><p>A design matrix. If <code>NULL</code>, a simple group design is created.</p></dd>
+<dd><p>A design matrix. If <code>NULL</code>, a simple group design
+(<code>~ group</code>) is created, which needs at least two groups. The last
+coefficient of the design is tested.</p></dd>
 
 </dl></div>
     <div class="section level2">
@@ -84,7 +87,6 @@ the <code>edgeR</code> package.</p>
 <span class="r-in"><span>  <span class="va">result</span> <span class="op">&lt;-</span> <span class="fu">bb_edger</span><span class="op">(</span><span class="va">counts</span>, <span class="va">group</span><span class="op">)</span></span></span>
 <span class="r-in"><span>  <span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">head</a></span><span class="op">(</span><span class="va">result</span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="op">}</span></span></span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> calcNormFactors has been renamed to normLibSizes</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>    gene      log2fc     pvalue      padj</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> 1 gene1  0.14622487 0.21590888 0.8996204</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> 2 gene2 -0.15832656 0.17448249 0.8996204</span>

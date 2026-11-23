@@ -32,12 +32,13 @@ bb_oncoplot(
 - genes:
 
   Character vector. Specific genes to display. If `NULL`, the top
-  `n_genes` most frequently mutated genes are shown.
+  `n_genes` most frequently mutated genes are shown. Duplicated entries
+  are shown once.
 
 - n_genes:
 
-  Integer. Number of top mutated genes if `genes` is `NULL`. Default
-  `20`.
+  Integer. Number of top mutated genes if `genes` is `NULL`. Must be a
+  positive whole number, or `Inf` for all genes. Default `20`.
 
 - sort_by:
 
@@ -49,12 +50,15 @@ bb_oncoplot(
 
   A data.frame for sample annotations (bottom tracks). Rownames must be
   sample identifiers. Each column becomes an annotation track.
-  Annotation tracks require `patchwork`.
+  Annotation tracks require `patchwork`. A warning is raised when no row
+  name matches a sample, because the tracks are then omitted.
 
 - mutation_colors:
 
   Named character vector mapping mutation types to colors. If `NULL`, a
-  default nature-style palette is used.
+  default nature-style palette is used. Mutation types without an entry
+  take the `"Other"` color of this vector or, if it has none, a neutral
+  gray.
 
 - show_pct:
 
@@ -93,6 +97,14 @@ sample), main tile plot, and right barplot (mutated samples per gene).
 Without patchwork, the main tile plot is returned unless annotations
 were requested. Percentages use all samples represented in `data` before
 gene selection; samples with no recorded mutations cannot be inferred.
+
+The legend is placed below the plot in three columns so that it fits
+common device widths. When moving it, reset the layout as well. A plot
+with marginal barplots or annotation tracks is a patchwork composition,
+in which `&` applies a change to every panel:
+`p & ggplot2::theme(legend.position = "right") & ggplot2::guides(fill = ggplot2::guide_legend(ncol = 1))`.
+For a single ggplot (`show_barplot = FALSE` and no `annotation_df`), use
+`+` instead of `&`.
 
 ## Examples
 

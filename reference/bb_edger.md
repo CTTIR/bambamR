@@ -17,11 +17,14 @@ bb_edger(counts, group, design = NULL)
 
 - group:
 
-  Factor or character vector. Group assignment for each sample.
+  Factor or character vector. Group assignment for each sample, without
+  missing values.
 
 - design:
 
-  A design matrix. If `NULL`, a simple group design is created.
+  A design matrix. If `NULL`, a simple group design (`~ group`) is
+  created, which needs at least two groups. The last coefficient of the
+  design is tested.
 
 ## Value
 
@@ -38,7 +41,6 @@ if (requireNamespace("edgeR", quietly = TRUE)) {
   result <- bb_edger(counts, group)
   head(result)
 }
-#> calcNormFactors has been renamed to normLibSizes
 #>    gene      log2fc     pvalue      padj
 #> 1 gene1  0.14622487 0.21590888 0.8996204
 #> 2 gene2 -0.15832656 0.17448249 0.8996204

@@ -69,7 +69,10 @@ A data.frame with MAF-style columns: `Hugo_Symbol`,
 bb_oncoplot(mut_data, n_genes = 10)
 ```
 
-![](bambamR-oncoplot_files/figure-html/basic-oncoplot-1.png)
+![Oncoplot of the ten most frequently mutated genes with tiles colored
+by mutation type, the percentage of mutated samples per gene and
+marginal bar
+charts.](bambamR-oncoplot_files/figure-html/basic-oncoplot-1.png)
 
 ## Customizing Colors
 
@@ -91,7 +94,8 @@ my_colors <- c(
 bb_oncoplot(mut_data, n_genes = 10, mutation_colors = my_colors)
 ```
 
-![](bambamR-oncoplot_files/figure-html/custom-colors-1.png)
+![The same oncoplot drawn with a user-supplied color for each mutation
+type.](bambamR-oncoplot_files/figure-html/custom-colors-1.png)
 
 ## Selecting Specific Genes
 
@@ -100,7 +104,8 @@ bb_oncoplot(mut_data, n_genes = 10, mutation_colors = my_colors)
 bb_oncoplot(mut_data, genes = c("TP53", "KRAS", "PIK3CA", "BRAF", "EGFR"))
 ```
 
-![](bambamR-oncoplot_files/figure-html/select-genes-1.png)
+![Oncoplot restricted to the five genes TP53, KRAS, PIK3CA, BRAF and
+EGFR.](bambamR-oncoplot_files/figure-html/select-genes-1.png)
 
 ## Adding Clinical Annotations
 
@@ -112,7 +117,9 @@ Provide a data.frame with sample annotations:
 bb_oncoplot(mut_data, n_genes = 8, annotation_df = clinical_data)
 ```
 
-![](bambamR-oncoplot_files/figure-html/annotations-1.png)
+![Oncoplot of eight genes with clinical annotation tracks for each
+sample below the mutation
+tiles.](bambamR-oncoplot_files/figure-html/annotations-1.png)
 
 ## Sorting Options
 
@@ -124,22 +131,29 @@ clustering:
 bb_oncoplot(mut_data, n_genes = 8, sort_by = "cluster")
 ```
 
-![](bambamR-oncoplot_files/figure-html/sort-cluster-1.png)
+![Oncoplot of eight genes with samples ordered by co-occurrence
+clustering instead of mutation
+frequency.](bambamR-oncoplot_files/figure-html/sort-cluster-1.png)
 
 ## Customizing with ggplot2
 
 Since
 [`bb_oncoplot()`](https://cttir.github.io/bambamR/reference/bb_oncoplot.md)
-returns a ggplot object, you can further customize:
+returns a ggplot object, you can further customize. The legend is laid
+out in three columns for its default position below the plot; reset the
+layout when you move it:
 
 ``` r
 
 p <- bb_oncoplot(mut_data, n_genes = 8, show_barplot = FALSE,
                  title = "Mutation Landscape")
-p + theme(legend.position = "right")
+p + theme(legend.position = "right") +
+  guides(fill = guide_legend(ncol = 1))
 ```
 
-![](bambamR-oncoplot_files/figure-html/customize-1.png)
+![Oncoplot without marginal bar charts, titled Mutation Landscape, with
+a one-column legend moved to the
+right.](bambamR-oncoplot_files/figure-html/customize-1.png)
 
 ## Exporting Publication-Quality Figures
 

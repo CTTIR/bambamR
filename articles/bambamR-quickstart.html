@@ -53,7 +53,7 @@
 <li class="nav-item"><a class="nav-link" href="../news/index.html">News</a></li>
       </ul>
 <ul class="navbar-nav">
-<li class="nav-item"><a class="external-link nav-link" href="https://github.com/cttir/bambamR"><span class="fa fa-github"></span></a></li>
+<li class="nav-item"><a class="external-link nav-link" href="https://github.com/cttir/bambamR" aria-label="GitHub"><span class="fa fa-github"></span></a></li>
       </ul>
 </div>
 
@@ -206,8 +206,7 @@ simulated differential expression between conditions.</p>
 <p>With Bioconductor installed you can also use <code>"tmm"</code>
 (edgeR) or <code>"rle"</code> (DESeq2):</p>
 <div class="sourceCode" id="cb8"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="va">tmm</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/bb_normalize.html">bb_normalize</a></span><span class="op">(</span><span class="va">counts</span>, method <span class="op">=</span> <span class="st">"tmm"</span><span class="op">)</span></span>
-<span><span class="co">#&gt; calcNormFactors has been renamed to normLibSizes</span></span></code></pre></div>
+<code class="sourceCode R"><span><span class="va">tmm</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/bb_normalize.html">bb_normalize</a></span><span class="op">(</span><span class="va">counts</span>, method <span class="op">=</span> <span class="st">"tmm"</span><span class="op">)</span></span></code></pre></div>
 <hr>
 </div>
 <div class="section level2">
@@ -216,11 +215,11 @@ simulated differential expression between conditions.</p>
 <p>Visualize sample-level structure. Color by any metadata column:</p>
 <div class="sourceCode" id="cb9"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="../reference/bb_pca.html">bb_pca</a></span><span class="op">(</span><span class="va">cpm</span>, <span class="va">metadata</span>, color_by <span class="op">=</span> <span class="st">"condition"</span><span class="op">)</span></span></code></pre></div>
-<p><img src="bambamR-quickstart_files/figure-html/pca-condition-1.png" class="r-plt" alt="" width="576"></p>
+<p><img src="bambamR-quickstart_files/figure-html/pca-condition-1.png" class="r-plt" alt="PCA plot of the example samples colored by condition." width="576"></p>
 <p>Add shape mapping and sample labels:</p>
 <div class="sourceCode" id="cb10"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="../reference/bb_pca.html">bb_pca</a></span><span class="op">(</span><span class="va">cpm</span>, <span class="va">metadata</span>, color_by <span class="op">=</span> <span class="st">"condition"</span>, shape_by <span class="op">=</span> <span class="st">"batch"</span>, label <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span></code></pre></div>
-<p><img src="bambamR-quickstart_files/figure-html/pca-batch-1.png" class="r-plt" alt="" width="576"></p>
+<p><img src="bambamR-quickstart_files/figure-html/pca-batch-1.png" class="r-plt" alt="PCA plot colored by condition, with point shape showing the batch and each point labeled by its sample name." width="576"></p>
 <hr>
 </div>
 <div class="section level2">
@@ -229,7 +228,7 @@ simulated differential expression between conditions.</p>
 <p>Show the top 30 most variable genes:</p>
 <div class="sourceCode" id="cb11"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="../reference/bb_heatmap.html">bb_heatmap</a></span><span class="op">(</span><span class="va">cpm</span>, n_genes <span class="op">=</span> <span class="fl">30</span><span class="op">)</span></span></code></pre></div>
-<p><img src="bambamR-quickstart_files/figure-html/heatmap-var-1.png" class="r-plt" alt="" width="672"></p>
+<p><img src="bambamR-quickstart_files/figure-html/heatmap-var-1.png" class="r-plt" alt="Clustered heatmap of row-scaled expression (Z-scores) for the 30 most variable genes." width="672"></p>
 <hr>
 </div>
 <div class="section level2">
@@ -291,20 +290,16 @@ explore all downstream plots without installing Bioconductor:</p>
 <h2 id="step-6-volcano-plot">Step 6: Volcano Plot<a class="anchor" aria-label="anchor" href="#step-6-volcano-plot"></a>
 </h2>
 <div class="sourceCode" id="cb15"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="fu"><a href="../reference/bb_volcano.html">bb_volcano</a></span><span class="op">(</span><span class="va">de_results</span>, fc_cutoff <span class="op">=</span> <span class="fl">1</span>, p_cutoff <span class="op">=</span> <span class="fl">0.05</span>, n_label <span class="op">=</span> <span class="fl">8</span><span class="op">)</span></span>
-<span><span class="co">#&gt; Warning: Removed 492 rows containing missing values or values outside the scale range</span></span>
-<span><span class="co">#&gt; (`geom_text_repel()`).</span></span></code></pre></div>
-<p><img src="bambamR-quickstart_files/figure-html/volcano-1.png" class="r-plt" alt="" width="672"></p>
+<code class="sourceCode R"><span><span class="fu"><a href="../reference/bb_volcano.html">bb_volcano</a></span><span class="op">(</span><span class="va">de_results</span>, fc_cutoff <span class="op">=</span> <span class="fl">1</span>, p_cutoff <span class="op">=</span> <span class="fl">0.05</span>, n_label <span class="op">=</span> <span class="fl">8</span><span class="op">)</span></span></code></pre></div>
+<p><img src="bambamR-quickstart_files/figure-html/volcano-1.png" class="r-plt" alt="Volcano plot of log2 fold change against negative log10 adjusted p-value with the most significant genes labeled." width="672"></p>
 <p>Customize the cutoffs and label specific genes:</p>
 <div class="sourceCode" id="cb16"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="../reference/bb_volcano.html">bb_volcano</a></span><span class="op">(</span><span class="va">de_results</span>,</span>
-<span>           fc_cutoff <span class="op">=</span> <span class="fl">0.5</span>,</span>
-<span>           p_cutoff <span class="op">=</span> <span class="fl">0.01</span>,</span>
+<span>           fc_cutoff <span class="op">=</span> <span class="fl">1.5</span>,</span>
+<span>           p_cutoff <span class="op">=</span> <span class="fl">0.05</span>,</span>
 <span>           label_genes <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"TP53"</span>, <span class="st">"KRAS"</span>, <span class="st">"EGFR"</span>, <span class="st">"PTEN"</span><span class="op">)</span>,</span>
-<span>           colors <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span>up <span class="op">=</span> <span class="st">"#E41A1C"</span>, down <span class="op">=</span> <span class="st">"#377EB8"</span>, ns <span class="op">=</span> <span class="st">"grey80"</span><span class="op">)</span><span class="op">)</span></span>
-<span><span class="co">#&gt; Warning: Removed 496 rows containing missing values or values outside the scale range</span></span>
-<span><span class="co">#&gt; (`geom_text_repel()`).</span></span></code></pre></div>
-<p><img src="bambamR-quickstart_files/figure-html/volcano-custom-1.png" class="r-plt" alt="" width="672"></p>
+<span>           colors <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span>up <span class="op">=</span> <span class="st">"#E41A1C"</span>, down <span class="op">=</span> <span class="st">"#377EB8"</span>, ns <span class="op">=</span> <span class="st">"grey80"</span><span class="op">)</span><span class="op">)</span></span></code></pre></div>
+<p><img src="bambamR-quickstart_files/figure-html/volcano-custom-1.png" class="r-plt" alt="Volcano plot with a stricter fold-change cutoff, custom colors and labels for TP53, KRAS, EGFR and PTEN." width="672"></p>
 <hr>
 </div>
 <div class="section level2">
@@ -314,7 +309,7 @@ explore all downstream plots without installing Bioconductor:</p>
 genes that change at different expression levels:</p>
 <div class="sourceCode" id="cb17"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="../reference/bb_ma_plot.html">bb_ma_plot</a></span><span class="op">(</span><span class="va">de_results</span>, p_cutoff <span class="op">=</span> <span class="fl">0.05</span><span class="op">)</span></span></code></pre></div>
-<p><img src="bambamR-quickstart_files/figure-html/ma-plot-1.png" class="r-plt" alt="" width="672"></p>
+<p><img src="bambamR-quickstart_files/figure-html/ma-plot-1.png" class="r-plt" alt="MA plot of log2 fold change against log10 mean expression with significant genes highlighted." width="672"></p>
 <hr>
 </div>
 <div class="section level2">
@@ -324,7 +319,7 @@ genes that change at different expression levels:</p>
 differentially expressed genes instead of the most variable:</p>
 <div class="sourceCode" id="cb18"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="../reference/bb_heatmap.html">bb_heatmap</a></span><span class="op">(</span><span class="va">cpm</span>, de_result <span class="op">=</span> <span class="va">de_results</span>, n_genes <span class="op">=</span> <span class="fl">25</span><span class="op">)</span></span></code></pre></div>
-<p><img src="bambamR-quickstart_files/figure-html/heatmap-de-1.png" class="r-plt" alt="" width="672"></p>
+<p><img src="bambamR-quickstart_files/figure-html/heatmap-de-1.png" class="r-plt" alt="Clustered heatmap of row-scaled expression (Z-scores) for the top 25 differentially expressed genes." width="672"></p>
 <hr>
 </div>
 <div class="section level2">
@@ -355,14 +350,14 @@ mutation landscape across samples. Load the bundled mutation data:</p>
 </h3>
 <div class="sourceCode" id="cb20"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="../reference/bb_oncoplot.html">bb_oncoplot</a></span><span class="op">(</span><span class="va">mut</span><span class="op">$</span><span class="va">mutations</span>, n_genes <span class="op">=</span> <span class="fl">10</span><span class="op">)</span></span></code></pre></div>
-<p><img src="bambamR-quickstart_files/figure-html/oncoplot-basic-1.png" class="r-plt" alt="" width="960"></p>
+<p><img src="bambamR-quickstart_files/figure-html/oncoplot-basic-1.png" class="r-plt" alt="Oncoplot of the ten most frequently mutated genes with tiles colored by mutation type and marginal bar charts." width="960"></p>
 </div>
 <div class="section level3">
 <h3 id="with-clinical-annotations">With Clinical Annotations<a class="anchor" aria-label="anchor" href="#with-clinical-annotations"></a>
 </h3>
 <div class="sourceCode" id="cb21"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="../reference/bb_oncoplot.html">bb_oncoplot</a></span><span class="op">(</span><span class="va">mut</span><span class="op">$</span><span class="va">mutations</span>, n_genes <span class="op">=</span> <span class="fl">10</span>, annotation_df <span class="op">=</span> <span class="va">mut</span><span class="op">$</span><span class="va">clinical</span><span class="op">)</span></span></code></pre></div>
-<p><img src="bambamR-quickstart_files/figure-html/oncoplot-clinical-1.png" class="r-plt" alt="" width="960"></p>
+<p><img src="bambamR-quickstart_files/figure-html/oncoplot-clinical-1.png" class="r-plt" alt="Oncoplot of the ten most frequently mutated genes with clinical annotation tracks below the mutation tiles." width="960"></p>
 </div>
 <div class="section level3">
 <h3 id="select-specific-genes">Select Specific Genes<a class="anchor" aria-label="anchor" href="#select-specific-genes"></a>
@@ -370,7 +365,7 @@ mutation landscape across samples. Load the bundled mutation data:</p>
 <div class="sourceCode" id="cb22"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="../reference/bb_oncoplot.html">bb_oncoplot</a></span><span class="op">(</span><span class="va">mut</span><span class="op">$</span><span class="va">mutations</span>,</span>
 <span>            genes <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"TP53"</span>, <span class="st">"KRAS"</span>, <span class="st">"PIK3CA"</span>, <span class="st">"BRAF"</span>, <span class="st">"EGFR"</span><span class="op">)</span><span class="op">)</span></span></code></pre></div>
-<p><img src="bambamR-quickstart_files/figure-html/oncoplot-genes-1.png" class="r-plt" alt="" width="960"></p>
+<p><img src="bambamR-quickstart_files/figure-html/oncoplot-genes-1.png" class="r-plt" alt="Oncoplot restricted to the five genes TP53, KRAS, PIK3CA, BRAF and EGFR." width="960"></p>
 <p>See <code><a href="../articles/bambamR-oncoplot.html">vignette("bambamR-oncoplot")</a></code> for more customization
 options.</p>
 <hr>
@@ -429,7 +424,7 @@ options.</p>
 <p>Visualize QC metrics:</p>
 <div class="sourceCode" id="cb27"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="../reference/bb_plot_qc.html">bb_plot_qc</a></span><span class="op">(</span><span class="va">qc</span><span class="op">)</span></span></code></pre></div>
-<p><img src="bambamR-quickstart_files/figure-html/qc-plot-1.png" class="r-plt" alt="" width="672"></p>
+<p><img src="bambamR-quickstart_files/figure-html/qc-plot-1.png" class="r-plt" alt="Three stacked QC panels: mean Phred quality per read position with Q20 and Q30 thresholds, the GC content distribution and the read length distribution." width="672"></p>
 <hr>
 </div>
 <div class="section level2">

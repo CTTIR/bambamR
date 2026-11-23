@@ -20,7 +20,8 @@ bb_qc(fastq_path = NULL, bam_path = NULL, use_fastqc = TRUE)
 
 - use_fastqc:
 
-  Logical. Try to use system FastQC if available. Default `TRUE`.
+  Logical. Reserved for a FastQC backend and currently ignored: all
+  metrics are computed in R. Default `TRUE`.
 
 ## Value
 
@@ -61,6 +62,6 @@ qc
 #> bambamR QC Summary
 #> ==================
 #> Files analyzed: 1 
-#>   file19ec523255af.fastq: 2 reads
+#>   file19a95b490119.fastq: 2 reads
 # }
 ```

@@ -47,7 +47,10 @@ cat(nrow(cpm), "genes,", ncol(cpm), "samples\n")
 bb_pca(cpm, ex$metadata, color_by = "condition", label = TRUE)
 ```
 
-![](bambamR-tutorial_files/figure-html/pca-1.png)
+![PCA plot of the example samples colored by condition, with each point
+labeled by its sample name; control and treatment samples separate along
+the first principal
+component.](bambamR-tutorial_files/figure-html/pca-1.png)
 
 ## 3. Volcano Plot: What Changed?
 
@@ -57,11 +60,12 @@ Use the pre-computed DE results (no Bioconductor needed):
 
 de <- bb_example_de()
 bb_volcano(de, fc_cutoff = 1, p_cutoff = 0.05, n_label = 6)
-#> Warning: Removed 494 rows containing missing values or values outside the scale range
-#> (`geom_text_repel()`).
 ```
 
-![](bambamR-tutorial_files/figure-html/volcano-1.png)
+![Volcano plot of log2 fold change against negative log10 adjusted
+p-value; up- and down-regulated genes are colored and the most
+significant genes are
+labeled.](bambamR-tutorial_files/figure-html/volcano-1.png)
 
 ## 4. MA Plot: Effect vs. Expression
 
@@ -70,7 +74,9 @@ bb_volcano(de, fc_cutoff = 1, p_cutoff = 0.05, n_label = 6)
 bb_ma_plot(de)
 ```
 
-![](bambamR-tutorial_files/figure-html/ma-1.png)
+![MA plot of log2 fold change against log10 mean expression with
+significant genes
+highlighted.](bambamR-tutorial_files/figure-html/ma-1.png)
 
 ## 5. Heatmap: Top DE Genes
 
@@ -79,7 +85,9 @@ bb_ma_plot(de)
 bb_heatmap(cpm, de_result = de, n_genes = 20)
 ```
 
-![](bambamR-tutorial_files/figure-html/heatmap-1.png)
+![Clustered heatmap of row-scaled expression (Z-scores) for the top
+differentially expressed genes across the example
+samples.](bambamR-tutorial_files/figure-html/heatmap-1.png)
 
 ## 6. Oncoplot: Mutation Landscape
 
@@ -89,7 +97,10 @@ mut <- bb_example_mutations()
 bb_oncoplot(mut$mutations, n_genes = 10, annotation_df = mut$clinical)
 ```
 
-![](bambamR-tutorial_files/figure-html/oncoplot-1.png)
+![Oncoplot of the ten most frequently mutated genes: tiles colored by
+mutation type, bar charts of mutated genes per sample and of samples per
+gene, and clinical annotation tracks
+below.](bambamR-tutorial_files/figure-html/oncoplot-1.png)
 
 ## 7. Export
 

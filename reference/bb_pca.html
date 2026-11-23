@@ -28,7 +28,7 @@
 <li class="nav-item"><a class="nav-link" href="../articles/index.html">Vignettes</a></li>
 <li class="active nav-item"><a class="nav-link" href="../reference/index.html">Functions</a></li>
 <li class="nav-item"><a class="nav-link" href="../news/index.html">News</a></li>
-      </ul><ul class="navbar-nav"><li class="nav-item"><a class="external-link nav-link" href="https://github.com/cttir/bambamR"><span class="fa fa-github"></span></a></li>
+      </ul><ul class="navbar-nav"><li class="nav-item"><a class="external-link nav-link" href="https://github.com/cttir/bambamR" aria-label="GitHub"><span class="fa fa-github"></span></a></li>
       </ul></div>
 
 
@@ -63,7 +63,9 @@
 
 
 <dl><dt id="arg-counts">counts<a class="anchor" aria-label="anchor" href="#arg-counts"></a></dt>
-<dd><p>Numeric matrix. Normalized count matrix (genes x samples).</p></dd>
+<dd><p>Numeric matrix. Normalized count matrix (genes x samples).
+Log-transformed values, for example <code>log2(cpm + 1)</code>, usually separate
+samples better than untransformed counts.</p></dd>
 
 
 <dt id="arg-metadata">metadata<a class="anchor" aria-label="anchor" href="#arg-metadata"></a></dt>
@@ -83,7 +85,7 @@ shapes.</p></dd>
 
 <dt id="arg-n-genes">n_genes<a class="anchor" aria-label="anchor" href="#arg-n-genes"></a></dt>
 <dd><p>Integer. Number of top variable genes to use for PCA.
-Default <code>500</code>.</p></dd>
+Must be a positive whole number, or <code>Inf</code> for all genes. Default <code>500</code>.</p></dd>
 
 
 <dt id="arg-label">label<a class="anchor" aria-label="anchor" href="#arg-label"></a></dt>

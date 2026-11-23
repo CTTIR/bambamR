@@ -31,7 +31,8 @@ bb_heatmap(
 
 - n_genes:
 
-  Integer. Number of top genes to display. Default `50`.
+  Integer. Number of top genes to display. Must be a positive whole
+  number, or `Inf` for all genes. Default `50`.
 
 - annotation_col:
 
@@ -54,12 +55,19 @@ bb_heatmap(
 
 - color_palette:
 
-  Character vector. Colors for the heatmap gradient.
+  Character vector. Colors for the heatmap gradient. The default is a
+  blue-white-red diverging palette.
 
 ## Value
 
 A [ggplot2::ggplot](https://ggplot2.tidyverse.org/reference/ggplot.html)
-object.
+object (a patchwork composition when `annotation_col` is supplied).
+
+## Details
+
+With `scale = "row"` or `scale = "column"` the color scale is symmetric
+around zero, so the middle color of `color_palette` always marks a
+Z-score of zero. Rows or columns without variance are shown as zero.
 
 ## Examples
 

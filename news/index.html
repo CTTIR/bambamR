@@ -28,7 +28,7 @@
 <li class="nav-item"><a class="nav-link" href="../articles/index.html">Vignettes</a></li>
 <li class="nav-item"><a class="nav-link" href="../reference/index.html">Functions</a></li>
 <li class="active nav-item"><a class="nav-link" href="../news/index.html">News</a></li>
-      </ul><ul class="navbar-nav"><li class="nav-item"><a class="external-link nav-link" href="https://github.com/cttir/bambamR"><span class="fa fa-github"></span></a></li>
+      </ul><ul class="navbar-nav"><li class="nav-item"><a class="external-link nav-link" href="https://github.com/cttir/bambamR" aria-label="GitHub"><span class="fa fa-github"></span></a></li>
       </ul></div>
 
 
@@ -42,6 +42,38 @@
 
     <div class="section level2">
 <h2 class="pkg-version" data-toc-text="0.2.0" id="bambamr-020">bambamR 0.2.0<a class="anchor" aria-label="anchor" href="#bambamr-020"></a></h2>
+<div class="section level3">
+<h3 id="bug-fixes-0-2-0">Bug fixes<a class="anchor" aria-label="anchor" href="#bug-fixes-0-2-0"></a></h3>
+<ul><li>
+<code><a href="../reference/bb_align.html">bb_align()</a></code> with <code>aligner = "STAR"</code> now decompresses gzipped FASTQ files with <code>gunzip -c</code> instead of <code>zcat</code>. The <code>zcat</code> shipped with macOS only reads <code>.Z</code> files, so STAR could not read <code>.fastq.gz</code> input there.</li>
+<li>
+<code><a href="../reference/bb_edger.html">bb_edger()</a></code> now stops with a clear message when <code>group</code> has a single level and no <code>design</code> is given, or when <code>group</code> contains missing values. Both cases previously failed with an unrelated error from the model matrix.</li>
+<li>
+<code><a href="../reference/bb_qc.html">bb_qc()</a></code> computes GC content and per-position quality in time linear in the number of bases; the per-position summary previously looped over every read for every position. Reads are processed in blocks of about ten million bases, so memory stays bounded for long reads as well. Results are unchanged.</li>
+<li>
+<code><a href="../reference/bb_qc.html">bb_qc()</a></code>: <code>use_fastqc</code> is documented as reserved and ignored; it never called FastQC.</li>
+<li>
+<code><a href="../reference/bb_oncoplot.html">bb_oncoplot()</a></code> no longer fails when a custom <code>mutation_colors</code> vector has no <code>"Other"</code> entry and the data contain an unlisted mutation type (a neutral gray is used), or when <code>genes</code> contains duplicates. <code>n_genes</code>, <code>genes</code>, <code>mutation_colors</code> and <code>annotation_df</code> are validated, and a warning is raised when no row name of <code>annotation_df</code> matches a sample instead of dropping the tracks silently.</li>
+<li>
+<code><a href="../reference/bb_edger.html">bb_edger()</a></code>, <code><a href="../reference/bb_limma_voom.html">bb_limma_voom()</a></code> and TMM normalization no longer print the edgeR 4.0 notice that <code>calcNormFactors()</code> was renamed to <code>normLibSizes()</code>.</li>
+<li>
+<code><a href="../reference/bb_volcano.html">bb_volcano()</a></code> no longer warns about removed rows for every unlabeled gene, and drops rows without a fold change. <code><a href="../reference/bb_volcano.html">bb_volcano()</a></code> and <code><a href="../reference/bb_ma_plot.html">bb_ma_plot()</a></code> accept an unnamed <code>colors</code> vector in the documented order and report wrong names clearly; <code>n_label = 0</code> draws no labels.</li>
+<li>
+<code><a href="../reference/bb_heatmap.html">bb_heatmap()</a></code> shows a single-sample matrix as zeros instead of missing tiles when scaling, and <code><a href="../reference/bb_heatmap.html">bb_heatmap()</a></code> and <code><a href="../reference/bb_pca.html">bb_pca()</a></code> validate <code>n_genes</code> and the metadata arguments.</li>
+</ul></div>
+<div class="section level3">
+<h3 id="plot-readability-0-2-0">Plot readability<a class="anchor" aria-label="anchor" href="#plot-readability-0-2-0"></a></h3>
+<ul><li><p><code><a href="../reference/bb_oncoplot.html">bb_oncoplot()</a></code>: the legend is collected below the whole figure with its title on top and at most three columns, so it is no longer clipped at the device edge; the top barplot title is split over two lines and no longer runs into the plot title, and its axis of gene counts uses whole-number breaks. Annotation tracks drawn without barplots collect their legends in the same way. When moving the legend, reset its layout too: for the patchwork composition use <code>p &amp; ggplot2::theme(legend.position = "right") &amp; ggplot2::guides(fill = ggplot2::guide_legend(ncol = 1))</code>, for a single ggplot (<code>show_barplot = FALSE</code>, no <code>annotation_df</code>) use <code>+</code> instead of <code>&amp;</code>.</p></li>
+<li><p><code><a href="../reference/bb_heatmap.html">bb_heatmap()</a></code>: the Z-score color scale is symmetric, so the middle color always marks zero; with <code>annotation_col</code>, sample labels are drawn once below the annotation track instead of twice and overlapping.</p></li>
+<li><p><code><a href="../reference/bb_plot_qc.html">bb_plot_qc()</a></code>: the Q20 and Q30 thresholds are labeled and use a color-blind-safe pair with different line types; the read-length histogram uses one bin per length for narrow ranges and whole-number axis breaks. The combined panel draws the file legend once instead of three times, which leaves more room for the panels.</p></li>
+<li><p>Shiny app: plots are drawn at 96 dpi instead of 72 dpi, so axis and gene labels are readable in the result tabs. The PCA and MA tabs say why they are empty (no <code>condition</code> column, or a DE method without mean expression) instead of staying blank, and the DE table shows three significant digits.</p></li>
+</ul></div>
+<div class="section level3">
+<h3 id="documentation-0-2-0">Documentation<a class="anchor" aria-label="anchor" href="#documentation-0-2-0"></a></h3>
+<ul><li>Figures in the tutorial, quick-start and oncoplot vignettes carry alt text.</li>
+<li>The custom volcano example in the vignettes uses cutoffs that leave significant genes, so the custom colors are visible.</li>
+<li>The GitHub icon in the site navigation bar has an accessible label.</li>
+</ul></div>
 <div class="section level3">
 <h3 id="cran-preparation-0-2-0">CRAN preparation<a class="anchor" aria-label="anchor" href="#cran-preparation-0-2-0"></a></h3>
 <ul><li>

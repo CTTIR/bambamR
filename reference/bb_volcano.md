@@ -45,7 +45,8 @@ bb_volcano(
 - n_label:
 
   Integer. Number of top significant genes to auto-label when
-  `label_genes` is `NULL`. Default `10`.
+  `label_genes` is `NULL`; `0` draws no labels and `Inf` labels every
+  significant gene. Default `10`.
 
 - point_size:
 
@@ -53,8 +54,8 @@ bb_volcano(
 
 - colors:
 
-  Named character vector of length 3 for up, down, and non-significant
-  colors.
+  Character vector of length 3 with the names `"up"`, `"down"` and
+  `"ns"` (non-significant). An unnamed vector is read in that order.
 
 ## Value
 
@@ -71,7 +72,5 @@ de <- data.frame(
   padj = 10^(-runif(200, 0, 4))
 )
 bb_volcano(de)
-#> Warning: Removed 190 rows containing missing values or values outside the scale range
-#> (`geom_text_repel()`).
 
 ```
