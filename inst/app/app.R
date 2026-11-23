@@ -343,13 +343,15 @@ server <- function(input, output, session) {
     })
   })
 
-  # Plots
+  # Plots. Shiny draws at 72 dpi by default, which leaves axis and gene
+  # labels too small to read in the 600-700 px plot areas.
+  plot_res <- 96
   output$volcano_plot <- shiny::renderPlot({
     req <- shiny::req
     req(rv$de_results)
     bambamR::bb_volcano(rv$de_results, fc_cutoff = input$fc_cutoff,
                         p_cutoff = input$p_cutoff)
-  })
+  }, res = plot_res)
 
   output$pca_plot <- shiny::renderPlot({
     req <- shiny::req
@@ -357,13 +359,13 @@ server <- function(input, output, session) {
     if ("condition" %in% colnames(rv$metadata) && ncol(rv$norm_counts) >= 2L) {
       bambamR::bb_pca(rv$norm_counts, rv$metadata, color_by = "condition")
     }
-  })
+  }, res = plot_res)
 
   output$heatmap_plot <- shiny::renderPlot({
     req <- shiny::req
     req(rv$norm_counts)
     bambamR::bb_heatmap(rv$norm_counts, de_result = rv$de_results, n_genes = 50)
-  })
+  }, res = plot_res)
 
   output$ma_plot <- shiny::renderPlot({
     req <- shiny::req
@@ -371,7 +373,7 @@ server <- function(input, output, session) {
     if ("basemean" %in% colnames(rv$de_results)) {
       bambamR::bb_ma_plot(rv$de_results, p_cutoff = input$p_cutoff)
     }
-  })
+  }, res = plot_res)
 
   # DE table
   if (use_dt) {
