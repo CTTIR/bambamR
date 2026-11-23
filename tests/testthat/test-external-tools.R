@@ -107,17 +107,28 @@ test_that(".align_star decompresses gzipped input portably and adds extra_args",
   close(con)
   out_dir <- withr::local_tempdir()
 
+  passed <- NULL
   local_mocked_bindings(check_tool = function(tool) invisible(tool),
                         .package = "bambamR")
-  local_mocked_bindings(.run_tool = fake_alignment_tool, .package = "bambamR")
+  local_mocked_bindings(.run_tool = function(tool, args, ...) {
+    passed <<- as.character(args)
+    fake_alignment_tool(tool, args, ...)
+  }, .package = "bambamR")
 
   res <- bambamR:::.align_star(fq, "idx", out_dir, threads = 1L,
                                paired = FALSE, extra_args = c("--quantMode",
                                                               "GeneCounts"))
   # BSD zcat on macOS rejects .gz files; gunzip -c works on every platform.
-  expect_match(res$command, "'--readFilesCommand' 'gunzip' '-c'", fixed = TRUE)
-  expect_no_match(res$command, "zcat")
-  expect_match(res$command, "GeneCounts")
+  # Check the argument vector STAR receives, not the logged command, whose
+  # quoting follows shQuote() and so differs between Unix and Windows.
+  at <- match("--readFilesCommand", passed)
+  expect_false(is.na(at))
+  expect_identical(passed[at + 1:2], c("gunzip", "-c"))
+  expect_false(any(grepl("zcat", passed, fixed = TRUE)))
+  expect_identical(utils::tail(passed, 2L), c("--quantMode", "GeneCounts"))
+  # The logged command is exactly the quoted form of those arguments.
+  expect_identical(res$command,
+                   paste("STAR", paste(shQuote(passed), collapse = " ")))
 })
 
 test_that(".align_hisat2 builds a paired-end command", {
