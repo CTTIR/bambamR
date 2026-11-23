@@ -18,11 +18,11 @@
 #' @param annotation_df A data.frame for sample annotations (bottom tracks).
 #'   Rownames must be sample identifiers. Each column becomes an annotation
 #'   track. Annotation tracks require `patchwork`. A warning is raised when
-#'   no rowname matches a sample, because the tracks are then omitted.
+#'   no row name matches a sample, because the tracks are then omitted.
 #' @param mutation_colors Named character vector mapping mutation types to
 #'   colors. If `NULL`, a default nature-style palette is used. Mutation
 #'   types without an entry take the `"Other"` color of this vector or, if it
-#'   has none, a neutral grey.
+#'   has none, a neutral gray.
 #' @param show_pct Logical. Show mutation percentage per gene on the right
 #'   margin. Default `TRUE`.
 #' @param show_barplot Logical. Show top (mutated genes per sample) and side
@@ -265,7 +265,7 @@ bb_oncoplot <- function(data,
         ) +
         .legend_title_top()
     } else {
-      warning("No rowname of 'annotation_df' matches a sample; ",
+      warning("No row name of 'annotation_df' matches a sample; ",
               "annotation tracks are omitted.", call. = FALSE)
       annotation_df <- NULL
     }

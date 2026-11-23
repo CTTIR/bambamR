@@ -74,7 +74,7 @@ cat(nrow(cpm), "genes,", ncol(cpm), "samples\n")
 ## 2. PCA: Do the Groups Separate?
 
 ```{r pca, fig.width=6, fig.height=4.5}
-#| fig.alt: "PCA plot of the example samples colored by condition, with each point labelled by its sample name; control and treatment samples separate along the first principal component."
+#| fig.alt: "PCA plot of the example samples colored by condition, with each point labeled by its sample name; control and treatment samples separate along the first principal component."
 bb_pca(cpm, ex$metadata, color_by = "condition", label = TRUE)
 ```
 
@@ -83,7 +83,7 @@ bb_pca(cpm, ex$metadata, color_by = "condition", label = TRUE)
 Use the pre-computed DE results (no Bioconductor needed):
 
 ```{r volcano, fig.width=7, fig.height=5}
-#| fig.alt: "Volcano plot of log2 fold change against negative log10 adjusted p-value; up- and down-regulated genes are colored and the most significant genes are labelled."
+#| fig.alt: "Volcano plot of log2 fold change against negative log10 adjusted p-value; up- and down-regulated genes are colored and the most significant genes are labeled."
 de <- bb_example_de()
 bb_volcano(de, fc_cutoff = 1, p_cutoff = 0.05, n_label = 6)
 ```

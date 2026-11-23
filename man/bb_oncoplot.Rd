@@ -36,12 +36,12 @@ Default \code{"frequency"}.}
 \item{annotation_df}{A data.frame for sample annotations (bottom tracks).
 Rownames must be sample identifiers. Each column becomes an annotation
 track. Annotation tracks require \code{patchwork}. A warning is raised when
-no rowname matches a sample, because the tracks are then omitted.}
+no row name matches a sample, because the tracks are then omitted.}
 
 \item{mutation_colors}{Named character vector mapping mutation types to
 colors. If \code{NULL}, a default nature-style palette is used. Mutation
 types without an entry take the \code{"Other"} color of this vector or, if it
-has none, a neutral grey.}
+has none, a neutral gray.}
 
 \item{show_pct}{Logical. Show mutation percentage per gene on the right
 margin. Default \code{TRUE}.}

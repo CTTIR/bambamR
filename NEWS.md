@@ -15,13 +15,13 @@
   called FastQC.
 * `bb_oncoplot()` no longer fails when a custom `mutation_colors` vector has no
   `"Other"` entry and the data contain an unlisted mutation type (a neutral
-  grey is used), or when `genes` contains duplicates. `n_genes`, `genes`,
+  gray is used), or when `genes` contains duplicates. `n_genes`, `genes`,
   `mutation_colors` and `annotation_df` are validated, and a warning is raised
-  when no rowname of `annotation_df` matches a sample instead of dropping the
+  when no row name of `annotation_df` matches a sample instead of dropping the
   tracks silently.
-* `bb_edger()`, `bb_limma_voom()` and TMM normalization no longer print
-  "calcNormFactors has been renamed to normLibSizes" with edgeR 4.0 or later.
-* `bb_volcano()` no longer warns about removed rows for every unlabelled gene,
+* `bb_edger()`, `bb_limma_voom()` and TMM normalization no longer print the
+  edgeR 4.0 notice that `calcNormFactors()` was renamed to `normLibSizes()`.
+* `bb_volcano()` no longer warns about removed rows for every unlabeled gene,
   and drops rows without a fold change. `bb_volcano()` and `bb_ma_plot()`
   accept an unnamed `colors` vector in the documented order and report wrong
   names clearly; `n_label = 0` draws no labels.
@@ -41,12 +41,14 @@
 * `bb_heatmap()`: the Z-score color scale is symmetric, so the middle color
   always marks zero; with `annotation_col`, sample labels are drawn once below
   the annotation track instead of twice and overlapping.
-* `bb_plot_qc()`: the Q20 and Q30 thresholds are labelled and use a
+* `bb_plot_qc()`: the Q20 and Q30 thresholds are labeled and use a
   color-blind-safe pair with different line types; the read-length histogram
   uses one bin per length for narrow ranges and whole-number axis breaks.
 
 * Shiny app: plots are drawn at 96 dpi instead of 72 dpi, so axis and gene
-  labels are readable in the result tabs.
+  labels are readable in the result tabs. The PCA and MA tabs say why they are
+  empty (no `condition` column, or a DE method without mean expression)
+  instead of staying blank, and the DE table shows three significant digits.
 
 ## Documentation
 

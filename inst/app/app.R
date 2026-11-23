@@ -356,9 +356,14 @@ server <- function(input, output, session) {
   output$pca_plot <- shiny::renderPlot({
     req <- shiny::req
     req(rv$norm_counts, rv$metadata)
-    if ("condition" %in% colnames(rv$metadata) && ncol(rv$norm_counts) >= 2L) {
-      bambamR::bb_pca(rv$norm_counts, rv$metadata, color_by = "condition")
-    }
+    # Say why the panel is empty instead of leaving it blank.
+    shiny::validate(
+      shiny::need("condition" %in% colnames(rv$metadata),
+                  "The PCA plot needs a 'condition' column in the sample metadata."),
+      shiny::need(ncol(rv$norm_counts) >= 2L,
+                  "The PCA plot needs at least two samples.")
+    )
+    bambamR::bb_pca(rv$norm_counts, rv$metadata, color_by = "condition")
   }, res = plot_res)
 
   output$heatmap_plot <- shiny::renderPlot({
@@ -370,9 +375,12 @@ server <- function(input, output, session) {
   output$ma_plot <- shiny::renderPlot({
     req <- shiny::req
     req(rv$de_results)
-    if ("basemean" %in% colnames(rv$de_results)) {
-      bambamR::bb_ma_plot(rv$de_results, p_cutoff = input$p_cutoff)
-    }
+    shiny::validate(shiny::need(
+      "basemean" %in% colnames(rv$de_results),
+      paste("The MA plot needs mean expression values, which only the DESeq2",
+            "results contain. Choose DESeq2 as DE method to see it.")
+    ))
+    bambamR::bb_ma_plot(rv$de_results, p_cutoff = input$p_cutoff)
   }, res = plot_res)
 
   # DE table
@@ -380,7 +388,12 @@ server <- function(input, output, session) {
     output$de_table <- DT::renderDT({
       req <- shiny::req
       req(rv$de_results)
-      DT::datatable(rv$de_results, options = list(pageLength = 25))
+      numeric_cols <- names(rv$de_results)[vapply(rv$de_results, is.numeric,
+                                                   logical(1))]
+      DT::formatSignif(
+        DT::datatable(rv$de_results, options = list(pageLength = 25)),
+        columns = numeric_cols, digits = 3
+      )
     })
   }
 

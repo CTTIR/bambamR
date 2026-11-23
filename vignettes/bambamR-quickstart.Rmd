@@ -156,7 +156,7 @@ bb_pca(cpm, metadata, color_by = "condition")
 Add shape mapping and sample labels:
 
 ```{r pca-batch, fig.width=6, fig.height=5}
-#| fig.alt: "PCA plot colored by condition, with point shape showing the batch and each point labelled by its sample name."
+#| fig.alt: "PCA plot colored by condition, with point shape showing the batch and each point labeled by its sample name."
 bb_pca(cpm, metadata, color_by = "condition", shape_by = "batch", label = TRUE)
 ```
 
@@ -206,7 +206,7 @@ cat("Down-regulated (log2FC < -1):",
 ## Step 6: Volcano Plot
 
 ```{r volcano, fig.width=7, fig.height=5}
-#| fig.alt: "Volcano plot of log2 fold change against negative log10 adjusted p-value with the most significant genes labelled."
+#| fig.alt: "Volcano plot of log2 fold change against negative log10 adjusted p-value with the most significant genes labeled."
 bb_volcano(de_results, fc_cutoff = 1, p_cutoff = 0.05, n_label = 8)
 ```
 
