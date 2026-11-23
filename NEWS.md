@@ -36,7 +36,8 @@
 * `bb_oncoplot()`: the legend is collected below the whole figure with its
   title on top and at most three columns, so it is no longer clipped at the
   device edge; the top barplot title is split over two lines and no longer
-  runs into the plot title.
+  runs into the plot title, and its axis of gene counts uses whole-number
+  breaks.
   Annotation tracks drawn without barplots collect their legends in the same
   way. When moving the legend, reset its layout too: for the patchwork
   composition use `p & ggplot2::theme(legend.position = "right") &

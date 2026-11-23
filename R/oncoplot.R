@@ -213,6 +213,11 @@ bb_oncoplot <- function(data,
     p_top <- ggplot2::ggplot(sample_burden,
                              ggplot2::aes(x = sample, y = n_mutations)) +
       ggplot2::geom_bar(stat = "identity", fill = "#636363", width = 0.8) +
+      # The bars count genes, so the axis breaks are whole numbers.
+      ggplot2::scale_y_continuous(breaks = function(limits) {
+        breaks <- unique(round(pretty(limits)))
+        breaks[breaks >= limits[1] & breaks <= limits[2]]
+      }) +
       # Two lines: the panel is short, a one-line title would run past it.
       ggplot2::labs(y = "Mutated\ngenes") +
       ggplot2::theme_minimal(base_size = 10) +

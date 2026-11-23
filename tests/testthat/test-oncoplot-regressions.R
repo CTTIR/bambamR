@@ -68,6 +68,22 @@ test_that("bb_oncoplot collects legends below the whole composition", {
   expect_true("Mutated\ngenes" %in% y_titles)
 })
 
+test_that("the top barplot of gene counts uses whole-number axis breaks", {
+  skip_if_not_installed("patchwork")
+  p <- bb_oncoplot(bb_example_mutations()$mutations, n_genes = 20)
+  # patchwork orders the panels by area name, so find the top barplot by title
+  built <- lapply(seq_len(length(p$patches$plots) + 1L),
+                  function(i) ggplot2::ggplot_build(p[[i]]))
+  is_top <- vapply(built, function(b) identical(b$plot$labels$y, "Mutated\ngenes"),
+                   logical(1))
+  expect_equal(sum(is_top), 1L)
+  breaks <- built[[which(is_top)]]$layout$panel_params[[1]]$y$breaks
+  breaks <- breaks[!is.na(breaks)]
+  expect_true(is.numeric(breaks))
+  expect_gte(length(breaks), 2L)
+  expect_equal(breaks, round(breaks))
+})
+
 test_that("cluster ordering of oncoplot samples matches the row-wise reference", {
   dat <- bambamR:::.handle_multi_hit(onco_data())
   genes <- unique(dat$gene)
