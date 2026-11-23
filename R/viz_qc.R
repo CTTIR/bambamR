@@ -89,9 +89,10 @@ bb_plot_qc <- function(qc_object, which = c("all", "quality", "gc", "length")) {
 
   ggplot2::ggplot(df_all, ggplot2::aes(x = position, y = mean_quality)) +
     ggplot2::geom_line(ggplot2::aes(color = file), linewidth = 0.8) +
-    # Thresholds are labelled and differ in line type as well as in color
-    # (Okabe-Ito vermillion and bluish green), so they do not rely on a
-    # red-green contrast.
+    # Thresholds are labelled and differ in line type as well as in color, so
+    # they do not rely on a red-green contrast. Colors: vermillion (#D55E00)
+    # and bluish green (#009E73) of the color-blind-safe palette in Wong
+    # (2011), Nat Methods 8(6):441, doi:10.1038/nmeth.1618, Figure 2, p. 441.
     ggplot2::geom_hline(yintercept = 20, linetype = "dashed", color = "#D55E00") +
     ggplot2::geom_hline(yintercept = 30, linetype = "dotdash", color = "#009E73") +
     ggplot2::annotate("text", x = Inf, y = c(20, 30), label = c("Q20", "Q30"),
