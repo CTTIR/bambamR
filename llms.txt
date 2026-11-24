@@ -3,6 +3,9 @@
 Version 0.2.0, prepared for CRAN submission. A published release DOI has
 not been verified.
 
+Zenodo DOI reserved for the release: `10.5281/zenodo.21889924` (not yet
+published).
+
 **End-to-end RNA-seq processing from FASTQ to publication-ready plots.**
 
 bambamR provides a streamlined toolkit for RNA-seq analysis covering
